@@ -218,11 +218,39 @@
     });
   }
 
+  /**
+ * Vercel 서버리스 함수에서 공개 설정값을 불러와 카카오맵을 자동 연결한다.
+ *
+ * @returns {Promise<void>}
+ */
+async function autoConnectKakaoMapFromConfig(){
+  try {
+    const res = await fetch("/api/config");
+
+    if (!res.ok) return;
+
+    const config = await res.json();
+    const key = config && config.kakaoJsKey;
+
+    if (!key) return;
+
+    const input = document.getElementById("mapKey");
+    if (input) input.value = key;
+
+    connectKakaoMap(key);
+  } catch (e) {
+    // 자동 연결 실패 시 기존 개념도/수동 입력 방식으로 유지한다.
+  }
+}
+
   const mapKeyInput = document.getElementById("mapKey");
   document.getElementById("mapConnect").addEventListener("click", ()=>{
     const key = mapKeyInput.value.trim();
     if (key) connectKakaoMap(key);
   });
+
+  autoConnectKakaoMapFromConfig();
+  
   mapKeyInput.addEventListener("keydown", e=>{
     if (e.key==="Enter") { e.preventDefault(); document.getElementById("mapConnect").click(); }
   });
@@ -230,6 +258,7 @@
     const body = document.getElementById("mapSettingsBody");
     body.hidden = !body.hidden;
   });
+
 
   // ---- 등시간대(isochrone) 반경 — 정책 뷰 전용 오버레이 ----
   // 실이동시간 라우팅 API 연동 전까지는 데모 추정 반경(15분/30분)이며, 실도로망 기준이 아님.
