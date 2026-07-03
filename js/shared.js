@@ -165,8 +165,8 @@
       f.polys.forEach(part=>{
         const path = part.map(pt => new kakao.maps.LatLng(pt[1], pt[0])); // pt = [lon,lat]
         const polygon = new kakao.maps.Polygon({
-          path, strokeWeight: 1, strokeColor: "#8FA39C", strokeOpacity: 0.6,
-          fillColor: "#2FA37E", fillOpacity: 0.15,
+          path, strokeWeight: 1, strokeColor: "#D9C2A8", strokeOpacity: 0.6,
+          fillColor: "#1F8F5B", fillOpacity: 0.15,
         });
         polygon.setMap(kakaoMap);
         kakaoPolygons.push({polygon, zoneId: f.zone});
@@ -265,7 +265,7 @@ async function autoConnectKakaoMapFromConfig(){
   // ---- 등시간대(isochrone) 반경 — 정책 뷰 전용 오버레이 ----
   // 실이동시간 라우팅 API 연동 전까지는 데모 추정 반경(15분/30분)이며, 실도로망 기준이 아님.
   const ISO_RINGS = [ {minutes:15, r:6.2, cls:"r15"}, {minutes:30, r:12.5, cls:"r30"} ];
-  const KAKAO_ISO_RINGS = [ {minutes:15, meters:6000, color:"#0E6E5A"}, {minutes:30, meters:12000, color:"#E0952F"} ];
+  const KAKAO_ISO_RINGS = [ {minutes:15, meters:6000, color:"#E8620E"}, {minutes:30, meters:12000, color:"#4E54C4"} ];
   let isoGroup = null;
   function setIsochronesVisible(show){
     if (isoGroup) { isoGroup.remove(); isoGroup = null; }
@@ -308,7 +308,7 @@ async function autoConnectKakaoMapFromConfig(){
   function zoneFillStyle(z){
     const covered = zoneCovered(z.id);
     const intensity = z.pop / maxPop; // 0..1, 인구밀도 클수록 색이 진해짐
-    const rgb = covered ? "47,163,126" : "206,78,57";
+    const rgb = covered ? "31,143,91" : "211,64,44";
     const cardAlpha = covered ? (0.16 + intensity*0.34) : (0.18 + intensity*0.48);
     const polyAlpha = covered ? (0.10 + intensity*0.30) : (0.14 + intensity*0.42);
     return { covered, rgb, cardAlpha, polyAlpha };
@@ -333,9 +333,9 @@ async function autoConnectKakaoMapFromConfig(){
       if (!z) return;
       const style = zoneFillStyle(z);
       kp.polygon.setOptions({
-        fillColor: style.covered ? "#2FA37E" : "#CE4E39",
+        fillColor: style.covered ? "#1F8F5B" : "#D3402C",
         fillOpacity: style.polyAlpha,
-        strokeColor: style.covered ? "#2FA37E" : "#CE4E39",
+        strokeColor: style.covered ? "#1F8F5B" : "#D3402C",
       });
     });
     markerEls.forEach(m => m.g.classList.toggle("closed", !isOpen(m.c)));

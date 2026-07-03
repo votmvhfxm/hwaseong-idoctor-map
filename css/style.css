@@ -1,8 +1,10 @@
 :root{
-  --bg:#EDF0EA; --surface:#FFFFFF; --ink:#17241F; --muted:#5C6B64;
-  --line:#DCE3DB; --primary:#0E6E5A; --primary-d:#0A5546; --primary-soft:#E1EFE9;
-  --warm:#E0952F; --alert:#CE4E39;
-  --cov0:#2FA37E; --cov1:#E0952F; --cov2:#CE4E39;
+  /* 팀원(윤정빈) 오렌지 팔레트로 리브랜딩 — 변수 이름은 유지, 값만 교체 */
+  --bg:#FAF6F1; --surface:#FFFFFF; --ink:#231E1A; --muted:#7B726A;
+  --line:#EEE4D9; --primary:#E8620E; --primary-d:#C9500A; --primary-soft:#FCEBDD;
+  --warm:#4E54C4; --alert:#D3402C;
+  --cov0:#1F8F5B; --cov1:#E0952F; --cov2:#D3402C;
+  --sky-day:#CDE6EE; --sky-night:#2A3550;
   --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
   --sans:-apple-system,"Apple SD Gothic Neo","Malgun Gothic","Noto Sans KR",system-ui,sans-serif;
 }
@@ -89,7 +91,7 @@ svg.trend{width:100%;height:44px;display:block;overflow:visible}
 .sliderwrap label{font-size:12.5px;font-weight:700;color:var(--muted)}
 .timeval{font-family:var(--mono);font-weight:700;font-size:15px}
 input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:6px;border-radius:5px;
-  background:linear-gradient(90deg,#c9dbe0,#173a4a);outline:none}
+  background:linear-gradient(90deg,var(--sky-night) 0%,var(--sky-day) 25%,#FFE7B0 50%,var(--sky-day) 75%,var(--sky-night) 100%);outline:none}
 input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;border-radius:50%;
   background:var(--surface);border:3px solid var(--primary);cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,.2)}
 input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:var(--surface);
@@ -117,7 +119,7 @@ input[type=range]:focus-visible{box-shadow:0 0 0 3px var(--primary-soft)}
 .chip.danger[aria-pressed="true"]{background:var(--alert);border-color:var(--alert)}
 .verdict{border-radius:12px;padding:13px 14px;font-size:13.5px;margin-top:4px;display:none}
 .verdict.show{display:block}
-.verdict.mild{background:var(--primary-soft);border:1px solid #bfe0d4}
+.verdict.mild{background:var(--primary-soft);border:1px solid #F3D2AE}
 .verdict.emerg{background:#fbe6e1;border:1px solid #f2c4b9}
 .verdict b{display:block;font-size:14px;margin-bottom:3px}
 
@@ -148,7 +150,7 @@ input[type=range]:focus-visible{box-shadow:0 0 0 3px var(--primary-soft)}
 .aiMsg.user{align-self:flex-end;background:var(--primary);color:#fff;border-bottom-right-radius:3px}
 .aiMsg.ai{align-self:flex-start;background:var(--bg);border:1px solid var(--line);border-bottom-left-radius:3px}
 .aiMsg.ai.emerg{background:#fbe6e1;border-color:#f2c4b9}
-.aiMsg.ai.mild{background:var(--primary-soft);border-color:#bfe0d4}
+.aiMsg.ai.mild{background:var(--primary-soft);border-color:#F3D2AE}
 .aiMsg.ai.error{background:#fbe6e1;border-color:#f2c4b9;color:var(--alert)}
 .aiMsg b{display:block;font-size:12.5px;margin-bottom:2px}
 .aiDots{display:inline-flex;gap:3px;vertical-align:middle}
