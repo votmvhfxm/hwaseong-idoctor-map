@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>화성 아이닥터 맵</title>
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="brand">
+      <div class="mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M12 21s-7-4.5-7-9.5A4.5 4.5 0 0 1 12 7a4.5 4.5 0 0 1 7 4.5C19 16.5 12 21 12 21Z" fill="#fff"/><path d="M12 10v4M10 12h4" stroke="#0E6E5A" stroke-width="1.6" stroke-linecap="round"/></svg>
+      </div>
+      <div>
+        <h1>화성 아이닥터 맵</h1>
+        <p>AI 소아의료 공백 예측·안내 · 화성특례시</p>
+      </div>
+    </div>
+    <div class="clock"><span class="dot" id="clockdot"></span>기준 시각 <b id="clocktxt">14:00</b></div>
+    <div class="tabs" role="tablist" aria-label="화면 전환">
+      <button role="tab" id="tab-citizen" aria-selected="true" aria-controls="panel-citizen">시민 뷰</button>
+      <button role="tab" id="tab-policy" aria-selected="false" aria-controls="panel-policy">정책 뷰</button>
+    </div>
+  </header>
+
+  <div class="grid">
+    <!-- LEFT -->
+    <div>
+      <!-- Coverage + slider (shared) -->
+      <section class="panel">
+        <p class="eyebrow">실시간 커버리지</p>
+        <div class="cov">
+          <span class="num" id="covNum">89</span><span class="pct">%</span>
+        </div>
+        <div class="covlabel">이 시각, 진료 가능 지역의 <b>영유아 인구 커버리지</b></div>
+        <div class="bar"><i id="covBar" style="width:89%;background:var(--cov0)"></i></div>
+
+        <div class="trendwrap" id="trendWrap" hidden>
+          <div class="trendhead"><span>24시간 커버리지 추이</span><b id="trendNow"></b></div>
+          <svg class="trend" id="trendSvg" viewBox="0 0 240 44" preserveAspectRatio="none" role="img" aria-label="24시간 커버리지 추이 그래프"></svg>
+        </div>
+
+        <div class="sliderwrap">
+          <div class="row"><label for="time">하루 중 시각</label><span class="timeval" id="timeval">14:00</span></div>
+          <input type="range" id="time" min="0" max="23" value="14" step="1" aria-label="시각 선택" />
+          <div class="ticks"><span>00</span><span>06</span><span>12</span><span>18</span><span>23</span></div>
+          <div class="presets">
+            <button data-h="10">오전 10시</button>
+            <button data-h="15">오후 3시</button>
+            <button data-h="21">밤 9시</button>
+            <button data-h="23">밤 11시</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Citizen panel -->
+      <section class="panel" id="panel-citizen" role="tabpanel" aria-labelledby="tab-citizen">
+        <div class="triageHead">
+          <div>
+            <p class="eyebrow">증상 확인</p>
+            <h2 class="h2" id="triageTitle">아이 증상을 눌러주세요</h2>
+            <p class="sub" id="triageSub">응급 신호가 있으면 바로 응급실을 안내해요.</p>
+          </div>
+          <div class="modeToggle" role="tablist" aria-label="증상 확인 방식">
+            <button class="modeBtn" id="mode-quick" type="button" aria-selected="true">빠른 선택</button>
+            <button class="modeBtn" id="mode-ai" type="button" aria-selected="false">AI 문진</button>
+          </div>
+        </div>
+
+        <div id="quickPane">
+          <div class="chips" id="chips"></div>
+        </div>
+
+        <div id="aiPane" hidden>
+          <div class="aiSettings">
+            <button class="aiSettingsToggle" id="aiSettingsBtn" type="button">⚙ AI 연결 설정<span class="aiStatus" id="aiStatus">미연결</span></button>
+            <div class="aiSettingsBody" id="aiSettingsBody" hidden>
+              <label for="aiKey">Anthropic API 키</label>
+              <input type="password" id="aiKey" placeholder="sk-ant-..." autocomplete="off" />
+              <p class="aiNote">이 키는 저장되지 않고 이 브라우저 탭에서만 사용돼요. 서버를 거치지 않고 Anthropic API로 직접 전송돼요. 실제 서비스로 배포할 때는 백엔드 프록시로 키를 감춰야 해요.</p>
+            </div>
+          </div>
+          <div class="aiChat" id="aiChat">
+            <div class="aiEmpty" id="aiEmpty">아이 증상을 편한 문장으로 설명해주세요.<br/><span class="aiExample">예: "밤 11시인데 39도 열이 나고 계속 보채요"</span></div>
+          </div>
+          <div class="aiInputRow">
+            <textarea id="aiInput" rows="2" placeholder="예: 아이가 갑자기 숨쉬기 힘들어해요"></textarea>
+            <button class="btn primary" id="aiSend" type="button">AI에게 물어보기</button>
+          </div>
+        </div>
+
+        <div class="verdict" id="verdict"></div>
+        <p class="eyebrow" style="margin-top:16px">지금 갈 수 있는 곳</p>
+        <div class="originRow">
+          <span class="originLabel" id="originLabel">기준 위치: 동탄역 인근(데모)</span>
+          <button class="originBtn" id="useMyLocation" type="button">📍 내 위치 사용</button>
+        </div>
+        <div class="list" id="clinicList"></div>
+      </section>
+
+      <!-- Policy panel -->
+      <section class="panel" id="panel-policy" role="tabpanel" aria-labelledby="tab-policy" hidden>
+        <p class="eyebrow">공백 우선순위</p>
+        <h2 class="h2">이 시각 진료 공백 지역</h2>
+        <p class="sub">영유아 인구가 많은데 열린 소아 진료가 없는 지역 순. 지도 색이 진할수록 영유아 인구밀도가 높아요.</p>
+        <div class="rank" id="rank"></div>
+
+        <div class="isoBlock">
+          <p class="eyebrow">접근성 정밀화</p>
+          <label class="switchRow" for="isoToggle">
+            <input type="checkbox" id="isoToggle" />
+            지도에 병원별 등시간대(이동시간) 반경 표시
+          </label>
+          <div class="isoLegend">
+            <span><i></i>15분 반경</span>
+            <span><i class="dash"></i>30분 반경</span>
+          </div>
+          <p class="isoNote">문 연 병원 기준 데모 추정 반경이에요. 실도로망 이동시간이 아니라 직선거리 환산치이며, 지도 API Directions 연동 시 정밀해질 예정이에요.</p>
+        </div>
+
+        <div class="sim">
+          <p class="eyebrow">배치 시뮬레이션</p>
+          <div class="sub" style="margin-bottom:0">야간·휴일 소아진료를 한 곳 추가하면 커버리지가 얼마나 오르는지 확인해요.</div>
+          <select id="simZone" aria-label="추가할 지역"></select>
+          <div class="actions">
+            <button class="btn primary" id="simAdd">야간진료 추가</button>
+            <button class="btn" id="simReset">초기화</button>
+          </div>
+          <div class="simout" id="simOut"></div>
+        </div>
+      </section>
+    </div>
+
+    <!-- MAP -->
+    <div>
+      <div class="mapcard">
+        <div class="maphead">
+          <span class="t" id="mapTitle">화성시 소아 진료 접근성 (개념도)</span>
+          <div class="legend" id="legend">
+            <span><i style="background:var(--cov0)"></i>진료 가능</span>
+            <span><i style="background:var(--cov2)"></i>공백</span>
+            <span><i style="background:var(--primary)"></i>소아과</span>
+            <span><i style="background:var(--warm)"></i>달빛(야간)</span>
+          </div>
+        </div>
+
+        <div class="mapSettings">
+          <button class="aiSettingsToggle" id="mapSettingsBtn" type="button">🗺 지도 연결 설정<span class="aiStatus" id="mapStatus">개념도</span></button>
+          <div class="aiSettingsBody" id="mapSettingsBody" hidden>
+            <label for="mapKey">카카오맵 JavaScript 키</label>
+            <input type="text" id="mapKey" placeholder="카카오 디벨로퍼스 JavaScript 키" autocomplete="off" />
+            <button class="btn primary" id="mapConnect" type="button" style="margin-top:8px;width:100%">지도 연결</button>
+            <p class="aiNote">이 키는 저장되지 않고 이 브라우저 탭에서만 사용돼요. 카카오 디벨로퍼스 콘솔 → 플랫폼 설정에 이 페이지 도메인(예: localhost)이 등록돼 있어야 지도가 떠요. 연결에 성공하면 아래 개념도 대신 실제 지도로 전환돼요.</p>
+            <p class="aiNote" id="mapKeyError" style="color:var(--alert);display:none"></p>
+          </div>
+        </div>
+
+        <div class="kakaoMapEl" id="kakaoMapEl" hidden></div>
+        <svg class="map" id="svg" viewBox="0 0 128 104" role="img" aria-label="화성시 지역별 소아 진료 접근성 지도"></svg>
+        <p class="note" id="mapNote">서쪽(해안·농촌)일수록 소아과가 적어 밤이 되면 공백이 커집니다. 슬라이더를 밤으로 옮겨보세요. · <b>표본 데이터</b>이며, 실서비스에서는 심평원 병원정보·응급의료(E-Gen) API·화성시 영유아 인구를 연동합니다. 지도 연결 전에는 타일 경계가 약식 개념도로 표시됩니다. 지도 연결 후에는 화성시 28개 읍면동의 실제 경계(통계청 행정동 경계 데이터)가 표시되며, 이를 이 데모의 10개 권역으로 근사 그룹핑해 색칠합니다 — 공식 행정구역 권역 구분은 아닙니다.</p>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    프로토타입 v0.3 · 지도/배치는 표본 데이터로 작동 · AI 문진은 Claude API 실연동(사용자 API 키 입력 시) · 응급신호 하드코딩 안전장치 병행<br/>
+    정책 뷰: 인구밀도 그라데이션 지도 · 등시간대(15/30분) 반경 · 24시간 커버리지 트렌드 · 배치 시뮬레이션<br/>
+    실연동 예정: 건강보험심사평가원 병원정보서비스, 국립중앙의료원 응급의료정보(E-Gen), 화성시 행정동별 영유아 인구, 지도 API Directions, 실제 행정동 GeoJSON 경계<br/>
+    2026 화성시 시민·공무원 AI 공모전 출품 준비용 · 팁: <span class="kbd">시민 뷰</span>에서 증상을 고르고, <span class="kbd">정책 뷰</span>에서 등시간대 반경과 배치 시뮬을 눌러보세요.
+  </footer>
+</div>
+
+<script src="js/data.js"></script>
+<script src="js/geo.js"></script>
+<script src="js/shared.js"></script>
+<script src="js/policy.js"></script>
+<script src="js/citizen.js"></script>
+</body>
+</html>

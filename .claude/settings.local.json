@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pandoc -t markdown \"C:/Users/NURI/Documents/화성시 AI 공모전/화성_아이닥터맵_솔루션소개서\\(서식3\\)_클로드버전1.docx\")",
+      "Bash(python3 -c \"import docx\")",
+      "Bash(python3 -c \"print\\('hello'\\)\")",
+      "Bash(cd /c/Users/NURI/AppData/Local/Temp/claude/docx_extract && grep -o '<w:t[^>]*>[^<]*</w:t>' unpacked/word/document.xml | sed -E 's/<w:t[^>]*>//; s/<\\\\/w:t>//' > extracted_text.txt; wc -l extracted_text.txt; cat extracted_text.txt)",
+      "Bash(pdftotext -layout \"C:/Users/NURI/Documents/화성시 AI 공모전/화성기획.pdf\" hwaseong_plan.txt)",
+      "Bash(pdftotext \"C:/Users/NURI/Documents/화성시 AI 공모전/화성기획.pdf\" plan2.txt)",
+      "Bash(echo \"exit: $?\")",
+      "Bash(ls /mingw64/bin/ | grep -i pdf; ls /mingw64/bin/ | grep -i poppler)",
+      "Bash(pdftotext -layout \"C:/Users/NURI/Documents/화성시 AI 공모전/\\(화성시 공고 제2026–2236호\\)2026년 시민공무원 AI 공모전 공고.pdf\" notice.txt)"
+    ]
+  }
+}
