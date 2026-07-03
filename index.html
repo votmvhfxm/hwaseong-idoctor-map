@@ -18,6 +18,8 @@
         <p>AI 소아의료 공백 예측·안내 · 화성특례시</p>
       </div>
     </div>
+    <span class="badge">누구나 무료 · 설치 없이</span>
+    <button class="fontbtn" id="fontBtn" type="button" aria-pressed="false">가+ 글자 크게</button>
     <div class="clock"><span class="dot" id="clockdot"></span>기준 시각 <b id="clocktxt">14:00</b></div>
     <div class="tabs" role="tablist" aria-label="화면 전환">
       <button role="tab" id="tab-citizen" aria-selected="true" aria-controls="panel-citizen">시민 뷰</button>
@@ -30,12 +32,21 @@
     <div>
       <!-- Coverage + slider (shared) -->
       <section class="panel">
+        <div class="daynight">
+          <div class="dnicon" id="dnIcon"></div>
+          <div class="txt"><b id="dnTitle">낮 시간대</b><span id="dnClock">오후 2:00 기준</span></div>
+        </div>
+        <div class="statusMsg" id="statusMsg"></div>
         <p class="eyebrow">실시간 커버리지</p>
         <div class="cov">
           <span class="num" id="covNum">89</span><span class="pct">%</span>
         </div>
         <div class="covlabel">이 시각, 진료 가능 지역의 <b>영유아 인구 커버리지</b></div>
         <div class="bar"><i id="covBar" style="width:89%;background:var(--cov0)"></i></div>
+        <div class="miniStats">
+          <div class="mini"><b id="mOpen" style="color:var(--primary)">–</b><span>문 연 소아 진료기관</span></div>
+          <div class="mini"><b id="mGap" style="color:var(--alert)">–</b><span>공백 지역 수</span></div>
+        </div>
 
         <div class="trendwrap" id="trendWrap" hidden>
           <div class="trendhead"><span>24시간 커버리지 추이</span><b id="trendNow"></b></div>
@@ -57,6 +68,10 @@
 
       <!-- Citizen panel -->
       <section class="panel" id="panel-citizen" role="tabpanel" aria-labelledby="tab-citizen">
+        <div class="redflag" role="note">
+          <div class="rfic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M12 4 3 19h18L12 4Z" stroke="#fff" stroke-width="1.7" stroke-linejoin="round"/><path d="M12 10v4M12 16.5v.5" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+          <div><b>이런 증상이면 지금 바로 119·응급실로 가세요</b><div class="rflist">숨쉬기 힘들어할 때 · 의식이 처지거나 축 늘어질 때 · 5분 이상 경련 · 입술이 파랗게 변할 때</div></div>
+        </div>
         <div class="triageHead">
           <div>
             <p class="eyebrow">증상 확인</p>
@@ -93,9 +108,29 @@
 
         <div class="verdict" id="verdict"></div>
         <p class="eyebrow" style="margin-top:16px">지금 갈 수 있는 곳</p>
-        <div class="originRow">
-          <span class="originLabel" id="originLabel">기준 위치: 동탄역 인근(데모)</span>
-          <button class="originBtn" id="useMyLocation" type="button">📍 내 위치 사용</button>
+        <div class="finderbar">
+          <div class="origin">
+            <span class="lbl">기준 위치</span>
+            <button class="ctrl mini" id="useMyLocation" type="button">📍 내 위치</button>
+            <select class="ctrl mini" id="originSel" aria-label="기준 동 선택"></select>
+            <span class="originStatus" id="originStatus"></span>
+          </div>
+          <div class="searchrow">
+            <div class="search">
+              <svg viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/><path d="m20 20-3-3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+              <input id="clinicSearch" placeholder="병원 이름 검색" aria-label="병원 이름 검색"/>
+            </div>
+            <select class="ctrl" id="sortSel" aria-label="정렬">
+              <option value="dist">거리순</option>
+              <option value="wait">대기 짧은순</option>
+              <option value="soon">마감 임박순</option>
+            </select>
+          </div>
+          <div class="filterchips" id="filterChips"></div>
+          <div class="resultmeta">
+            <span id="resultCount">–</span>
+            <label><input type="checkbox" id="incClosed"/> 닫힌 곳도 보기</label>
+          </div>
         </div>
         <div class="list" id="clinicList"></div>
       </section>
@@ -170,6 +205,11 @@
     실연동 예정: 건강보험심사평가원 병원정보서비스, 국립중앙의료원 응급의료정보(E-Gen), 화성시 행정동별 영유아 인구, 지도 API Directions, 실제 행정동 GeoJSON 경계<br/>
     2026 화성시 시민·공무원 AI 공모전 출품 준비용 · 팁: <span class="kbd">시민 뷰</span>에서 증상을 고르고, <span class="kbd">정책 뷰</span>에서 등시간대 반경과 배치 시뮬을 눌러보세요.
   </footer>
+</div>
+
+<!-- Detail modal -->
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="mName">
+  <div class="sheet" id="sheet"></div>
 </div>
 
 <script src="js/data.js"></script>

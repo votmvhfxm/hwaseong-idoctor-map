@@ -38,6 +38,8 @@
   }
   function covColor(p){ return p>=70 ? "var(--cov0)" : p>=40 ? "var(--cov1)" : "var(--cov2)"; }
   const hh = h => String(h).padStart(2,"0")+":00";
+  const isNightHour = h => h<7 || h>=20;
+  function ampm(h){ const m = h<12 ? "오전" : "오후"; let hr = h%12; if (hr===0) hr = 12; return m+" "+hr+":00"; }
 
   // ---- SVG 지도 빌드 ----
   const svg = document.getElementById("svg");
@@ -77,7 +79,7 @@
       state.selectedClinicZone = c.zone;
       highlightZone(c.zone);
       const hooks = viewHooks[state.view];
-      if (hooks && hooks.onMarkerClick) hooks.onMarkerClick(c.zone);
+      if (hooks && hooks.onMarkerClick) hooks.onMarkerClick(c);
     });
     svg.appendChild(g);
     markerEls.push({g, c, cx, cy});
@@ -188,7 +190,7 @@
         state.selectedClinicZone = c.zone;
         highlightZone(c.zone);
         const hooks = viewHooks[state.view];
-        if (hooks && hooks.onMarkerClick) hooks.onMarkerClick(c.zone);
+        if (hooks && hooks.onMarkerClick) hooks.onMarkerClick(c);
       });
       kakaoMarkerOverlays.push({overlay, c, dot});
     });
@@ -345,6 +347,24 @@ async function autoConnectKakaoMapFromConfig(){
     document.getElementById("covNum").textContent = p;
     const bar = document.getElementById("covBar");
     bar.style.width = p+"%"; bar.style.background = covColor(p);
+    document.getElementById("mOpen").textContent = clinics.filter(c => isOpen(c)).length+"곳";
+    document.getElementById("mGap").textContent = zones.filter(z => !zoneCovered(z.id)).length+"곳";
+  }
+
+  const SUN_ICON = '<svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="4.2" fill="#fff"/><g stroke="#fff" stroke-width="1.8" stroke-linecap="round"><path d="M12 3v2.4M12 18.6V21M3 12h2.4M18.6 12H21M5.6 5.6l1.7 1.7M16.7 16.7l1.7 1.7M18.4 5.6l-1.7 1.7M7.3 16.7l-1.7 1.7"/></g></svg>';
+  const MOON_ICON = '<svg viewBox="0 0 24 24" fill="none"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.3 6.3 0 0 0 10.5 10.5Z" fill="#fff"/></svg>';
+  function renderHero(){
+    const night = isNightHour(state.hour);
+    document.getElementById("dnIcon").innerHTML = night ? MOON_ICON : SUN_ICON;
+    document.getElementById("dnIcon").style.background = night ? "var(--warm)" : "var(--primary)";
+    document.getElementById("dnTitle").textContent = night ? "밤 시간대" : "낮 시간대";
+    document.getElementById("dnClock").textContent = ampm(state.hour)+" 기준";
+    const p = coveragePct();
+    let msg;
+    if (p>=70) msg = "지금은 소아과가 활발히 문을 여는 시간이에요. 대부분 지역에서 진료받을 수 있어요.";
+    else if (p>=40) msg = "문 연 소아과가 줄고 있어요. 서둘러 가까운 곳을 확인하세요.";
+    else msg = "지금은 문 연 소아과가 많지 않아요. 응급 신호가 있는지 함께 확인하세요.";
+    document.getElementById("statusMsg").textContent = msg;
   }
 
   function renderClock(){
@@ -360,7 +380,7 @@ async function autoConnectKakaoMapFromConfig(){
   function registerView(name, hooks){ viewHooks[name] = hooks; }
 
   function refresh(){
-    renderClock(); renderCoverage(); renderMap();
+    renderClock(); renderCoverage(); renderHero(); renderMap();
     const hooks = viewHooks[state.view];
     if (hooks && hooks.render) hooks.render();
   }
@@ -381,6 +401,12 @@ async function autoConnectKakaoMapFromConfig(){
   }
   document.getElementById("tab-citizen").addEventListener("click", ()=>setView("citizen"));
   document.getElementById("tab-policy").addEventListener("click", ()=>setView("policy"));
+
+  document.getElementById("fontBtn").addEventListener("click", function(){
+    const on = this.getAttribute("aria-pressed")==="true";
+    this.setAttribute("aria-pressed", String(!on));
+    document.querySelector(".wrap").style.zoom = on ? "1" : "1.12";
+  });
 
   document.getElementById("time").addEventListener("input", e=>{ state.hour = +e.target.value; refresh(); });
   document.querySelectorAll(".presets button").forEach(b=>{

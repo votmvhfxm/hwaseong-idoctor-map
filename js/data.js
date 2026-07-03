@@ -24,16 +24,26 @@
   ];
 
   // clinics: open/close in hours (24h). type: 소아과 | 달빛
+  // phone/address/intake(접수방식)/ageFrom(진료연령)/wait(예상 대기, 분)은 표본 값 — 실연동 시 심평원 상세정보로 대체
   const clinics = [
-    {name:"동탄365소아과",     zone:"dt13", type:"소아과", open:9,  close:20},
-    {name:"달빛어린이병원 동탄", zone:"dt13", type:"달빛",   open:10, close:23},
-    {name:"메타폴리스 소아과",   zone:"dt46", type:"소아과", open:9,  close:19},
-    {name:"동탄호수 키즈의원",   zone:"dt46", type:"소아과", open:9,  close:20},
-    {name:"동탄북 소아청소년과", zone:"dt79", type:"소아과", open:9,  close:18},
-    {name:"병점 튼튼소아과",     zone:"bj",   type:"소아과", open:9,  close:19},
-    {name:"봉담 아이맘의원",     zone:"bd",   type:"소아과", open:9,  close:18},
-    {name:"향남 미소소아과",     zone:"hn",   type:"소아과", open:9,  close:18},
-    {name:"남양 새싹의원",       zone:"ny",   type:"소아과", open:9,  close:18},
+    {name:"동탄365소아과",     zone:"dt13", type:"소아과", open:9,  close:20,
+      phone:"031-000-0001", address:"화성시 동탄대로 000", intake:"앱",   ageFrom:"0개월~", wait:25},
+    {name:"달빛어린이병원 동탄", zone:"dt13", type:"달빛",   open:10, close:23,
+      phone:"031-000-0002", address:"화성시 동탄순환대로 000", intake:"현장", ageFrom:"0개월~", wait:40},
+    {name:"메타폴리스 소아과",   zone:"dt46", type:"소아과", open:9,  close:19,
+      phone:"031-000-0003", address:"화성시 동탄지성로 000", intake:"앱",   ageFrom:"0개월~", wait:15},
+    {name:"동탄호수 키즈의원",   zone:"dt46", type:"소아과", open:9,  close:20,
+      phone:"031-000-0004", address:"화성시 동탄호수로 000", intake:"전화", ageFrom:"6개월~", wait:10},
+    {name:"동탄북 소아청소년과", zone:"dt79", type:"소아과", open:9,  close:18,
+      phone:"031-000-0005", address:"화성시 동탄대로 111", intake:"현장", ageFrom:"0개월~", wait:20},
+    {name:"병점 튼튼소아과",     zone:"bj",   type:"소아과", open:9,  close:19,
+      phone:"031-000-0006", address:"화성시 병점중앙로 000", intake:"앱",   ageFrom:"0개월~", wait:12},
+    {name:"봉담 아이맘의원",     zone:"bd",   type:"소아과", open:9,  close:18,
+      phone:"031-000-0007", address:"화성시 봉담읍 000", intake:"현장", ageFrom:"0개월~", wait:8},
+    {name:"향남 미소소아과",     zone:"hn",   type:"소아과", open:9,  close:18,
+      phone:"031-000-0008", address:"화성시 향남읍 000", intake:"전화", ageFrom:"0개월~", wait:5},
+    {name:"남양 새싹의원",       zone:"ny",   type:"소아과", open:9,  close:18,
+      phone:"031-000-0009", address:"화성시 남양읍 000", intake:"현장", ageFrom:"0개월~", wait:6},
     // 정남·송산·마도 : 소아 진료기관 없음 (구조적 공백)
   ];
 

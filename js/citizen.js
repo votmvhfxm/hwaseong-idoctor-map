@@ -40,9 +40,9 @@
 
   // ---- 이동시간: 서버리스 프록시(/api/directions)로 실이동시간, 실패 시 demoDist로 조용히 폴백 ----
   // 로컬 정적 프리뷰·Vercel 미배포 상태에서는 /api가 아예 없으므로 fetch가 실패하고, 그대로 데모 추정치를 계속 쓴다.
-  const DEMO_ORIGIN = { lat: 37.201, lng: 127.100 }; // 동탄역 인근 데모 사용자 위치
-  let originCoord = DEMO_ORIGIN;
-  let originIsLive = false;
+  let originZoneId = "dt13"; // 기본 기준 위치: 동탄1~3동(동탄역 인근)
+  let originCoord = { lat: S.zoneById[originZoneId].lat, lng: S.zoneById[originZoneId].lng };
+  let originIsLive = false;  // true면 실제 GPS 위치 기준
   const travelTimeCache = new Map(); // clinic -> {durationMin}
   const pendingFetches = new Set();  // clinic (중복 fetch 방지)
   const failedFetches = new Set();   // clinic (실패 후 재시도 안 함 — /api 미배포 상태에서 매 렌더마다 재요청 방지)
@@ -75,58 +75,163 @@
     }
   }
 
-  // ---- 실시간 소아진료 안내(이동시간순) ----
+  // ---- 파인더 툴바: 검색·정렬·필터 ----
+  const FILTERS = [
+    {id:"night",  label:"야간 가능"},
+    {id:"dalbit", label:"달빛병원"},
+    {id:"soon",   label:"마감 임박 제외"},
+  ];
+  const finderState = { search:"", sort:"dist", filters:new Set(), incClosed:false };
+  const isNightClinic = c => c.close >= 21;
+  const closingSoon = c => S.isOpen(c) && (c.close - S.state.hour) <= 1;
+
+  function buildFinderControls(){
+    const originSel = document.getElementById("originSel");
+    S.zones.forEach(z=>{
+      const o = document.createElement("option");
+      o.value = z.id; o.textContent = z.name;
+      originSel.appendChild(o);
+    });
+    originSel.value = originZoneId;
+
+    const fc = document.getElementById("filterChips");
+    FILTERS.forEach(f=>{
+      const b = document.createElement("button");
+      b.className = "fchip"; b.type = "button"; b.textContent = f.label;
+      b.setAttribute("aria-pressed", "false");
+      b.addEventListener("click", ()=>{
+        const on = b.getAttribute("aria-pressed")==="true";
+        b.setAttribute("aria-pressed", String(!on));
+        if (on) finderState.filters.delete(f.id); else finderState.filters.add(f.id);
+        renderClinics();
+      });
+      fc.appendChild(b);
+    });
+
+    document.getElementById("clinicSearch").addEventListener("input", e=>{
+      finderState.search = e.target.value.trim();
+      renderClinics();
+    });
+    document.getElementById("sortSel").addEventListener("change", e=>{
+      finderState.sort = e.target.value;
+      renderClinics();
+    });
+    document.getElementById("incClosed").addEventListener("change", e=>{
+      finderState.incClosed = e.target.checked;
+      renderClinics();
+    });
+  }
+
+  function filteredClinics(){
+    let arr = S.clinics.slice();
+    if (!finderState.incClosed) arr = arr.filter(c => S.isOpen(c));
+    if (finderState.filters.has("night")) arr = arr.filter(isNightClinic);
+    if (finderState.filters.has("dalbit")) arr = arr.filter(c => c.type==="달빛");
+    if (finderState.filters.has("soon")) arr = arr.filter(c => !closingSoon(c));
+    if (finderState.search) arr = arr.filter(c => c.name.includes(finderState.search));
+    if (finderState.sort==="wait") arr.sort((a,b)=>a.wait-b.wait);
+    else if (finderState.sort==="soon") arr.sort((a,b)=>(a.close-S.state.hour)-(b.close-S.state.hour));
+    else arr.sort((a,b)=>timeForClinic(a)-timeForClinic(b));
+    return arr;
+  }
+
+  const ICON_HOSP = '<svg viewBox="0 0 24 24" fill="none"><path d="M5 21V7l7-4 7 4v14" stroke="#fff" stroke-width="1.7" stroke-linejoin="round"/><path d="M12 9v5M9.5 11.5h5" stroke="#fff" stroke-width="1.7" stroke-linecap="round"/></svg>';
+
+  // ---- 실시간 소아진료 안내 ----
   function renderClinics(){
     const list = document.getElementById("clinicList");
-    const open = S.clinics.filter(c => S.isOpen(c)).sort((a,b) => timeForClinic(a)-timeForClinic(b));
+    const arr = filteredClinics();
+    document.getElementById("resultCount").textContent = "총 "+arr.length+"곳";
     list.innerHTML = "";
-    if (open.length===0) {
-      list.innerHTML = '<div class="empty">이 시각에 문 연 소아 진료기관이 없어요.<br/>바로 이게 우리가 푸는 문제입니다.</div>';
+    if (arr.length===0) {
+      list.innerHTML = '<div class="empty">조건에 맞는 곳이 없어요.<br/>필터를 줄이거나 \'닫힌 곳도 보기\'를 켜보세요.</div>';
       return;
     }
-    open.forEach(c=>{
+    arr.forEach(c=>{
+      const open = S.isOpen(c);
       const row = document.createElement("div");
-      row.className = "clinic";
-      const color = c.type==="달빛" ? "var(--warm)" : "var(--primary)";
-      const coord = S.clinicLatLng(c);
-      const navUrl = "https://map.kakao.com/link/to/"+encodeURIComponent(c.name)+","+coord.lat+","+coord.lng;
+      row.className = "clinic"+(open ? "" : " closed");
+      const bg = c.type==="달빛" ? "var(--warm)" : "var(--primary)";
       const isLive = travelTimeCache.has(c);
+      let tags = '<span class="tg">'+c.type+'</span><span class="tg">'+c.intake+' 접수</span><span class="tg wait">대기 '+c.wait+'분</span>';
+      if (closingSoon(c)) tags += '<span class="tg soon">마감 임박</span>';
+      if (isNightClinic(c)) tags += '<span class="tg night">야간</span>';
       row.innerHTML =
-        '<span class="pin" style="background:'+color+'"></span>'+
-        '<div class="info"><b>'+c.name+'</b><span>'+S.zoneById[c.zone].name+
-        ' · '+c.type+' · '+S.hh(c.open)+'~'+S.hh(c.close)+'</span></div>'+
-        '<span class="tag '+(isLive?"live":"demo")+'" title="'+(isLive?"카카오모빌리티 실이동시간":"데모 추정치")+'">'+timeForClinic(c)+'분</span>'+
-        '<a class="navlink" href="'+navUrl+'" target="_blank" rel="noopener noreferrer" aria-label="'+c.name+' 카카오맵 길찾기">길찾기</a>';
-      row.addEventListener("click", ()=>{ S.state.selectedClinicZone = c.zone; S.highlightZone(c.zone); });
+        '<div class="ic" style="background:'+bg+'">'+ICON_HOSP+'</div>'+
+        '<div class="info"><b>'+c.name+'</b><div class="meta">'+S.zoneById[c.zone].name+
+        ' · '+S.hh(c.open)+'~'+S.hh(c.close)+(open?'':' · 진료 종료')+'</div><div class="tags">'+tags+'</div></div>'+
+        '<div class="dist"><b class="'+(isLive?"live":"demo")+'" title="'+(isLive?"카카오모빌리티 실이동시간":"데모 추정치")+'">'+timeForClinic(c)+'</b><span>분 거리</span></div>';
+      row.addEventListener("click", ()=> openDetail(c));
       list.appendChild(row);
       if (!isLive) fetchTravelTime(c); // 아직 실시간 값이 없으면 백그라운드로 조회 시도
     });
   }
 
-  // ---- 기준 위치: 데모 위치(동탄역 인근) ↔ 내 위치 ----
+  // ---- 클리닉 상세 모달 ----
+  function drow(k, v){ return '<div class="drow"><div class="k">'+k+'</div><div class="v">'+v+'</div></div>'; }
+
+  function openDetail(c){
+    S.state.selectedClinicZone = c.zone;
+    S.highlightZone(c.zone);
+    const open = S.isOpen(c);
+    const bg = c.type==="달빛" ? "var(--warm)" : "var(--primary)";
+    const coord = S.clinicLatLng(c);
+    const navUrl = "https://map.kakao.com/link/to/"+encodeURIComponent(c.name)+","+coord.lat+","+coord.lng;
+    const isLive = travelTimeCache.has(c);
+    const distLabel = timeForClinic(c)+"분 ("+(isLive?"실이동시간":"데모 추정")+")";
+    document.getElementById("sheet").innerHTML =
+      '<div class="top"><div class="ic" style="background:'+bg+'">'+ICON_HOSP+'</div>'+
+      '<div><h3 id="mName">'+c.name+'</h3><div class="st">'+S.zoneById[c.zone].name+' · '+c.type+' · '+
+      (open ? '<b style="color:var(--cov0)">지금 진료 중</b>' : '<b style="color:var(--alert)">진료 종료</b>')+'</div></div>'+
+      '<button class="close" id="mClose" type="button" aria-label="닫기">✕</button></div>'+
+      drow("진료시간", S.hh(c.open)+" ~ "+S.hh(c.close)+(closingSoon(c)?' <b style="color:var(--alert)">(마감 임박)</b>':''))+
+      drow("거리", distLabel+" · "+S.zoneById[c.zone].name+" 기준")+
+      drow("예상 대기", c.wait+"분")+
+      drow("접수 방식", c.intake+" 접수")+
+      drow("진료 연령", c.ageFrom)+
+      drow("주소", c.address)+
+      drow("전화", c.phone)+
+      '<div class="cta"><a class="btn primary" href="'+navUrl+'" target="_blank" rel="noopener noreferrer">길찾기</a>'+
+      '<a class="btn" href="tel:'+c.phone+'">전화하기</a></div>'+
+      '<div class="disc">본 정보는 참고용 안내이며 진단이 아닙니다. 응급 상황에서는 즉시 119로 연락하세요. · 표본 데이터</div>';
+    document.getElementById("modal").classList.add("show");
+    document.getElementById("mClose").addEventListener("click", closeDetail);
+  }
+  function closeDetail(){ document.getElementById("modal").classList.remove("show"); }
+  document.getElementById("modal").addEventListener("click", e=>{ if (e.target.id==="modal") closeDetail(); });
+  document.addEventListener("keydown", e=>{ if (e.key==="Escape") closeDetail(); });
+
+  // ---- 기준 위치: 기준 동 선택 드롭다운 ↔ 내 위치(GPS) ----
   function setOrigin(coord, isLive){
     originCoord = coord;
     originIsLive = isLive;
     travelTimeCache.clear(); // 기준 위치가 바뀌면 캐시된 이동시간은 무효
     failedFetches.clear();   // 새 기준 위치는 다시 한 번 시도해볼 가치가 있음
-    document.getElementById("originLabel").textContent = isLive ? "기준 위치: 내 위치" : "기준 위치: 동탄역 인근(데모)";
+    document.getElementById("originStatus").textContent = isLive ? "· 내 위치 사용 중" : "";
     renderClinics();
   }
+  document.getElementById("originSel").addEventListener("change", e=>{
+    const z = S.zoneById[e.target.value];
+    if (!z) return;
+    originZoneId = e.target.value;
+    setOrigin({ lat: z.lat, lng: z.lng }, false);
+  });
   document.getElementById("useMyLocation").addEventListener("click", ()=>{
     const btn = document.getElementById("useMyLocation");
+    const statusEl = document.getElementById("originStatus");
     if (!navigator.geolocation) {
-      document.getElementById("originLabel").textContent = "이 브라우저는 위치 확인을 지원하지 않아요";
+      statusEl.textContent = "이 브라우저는 위치 확인을 지원하지 않아요";
       return;
     }
-    btn.disabled = true; btn.textContent = "위치 확인 중…";
+    btn.disabled = true; btn.textContent = "확인 중…";
     navigator.geolocation.getCurrentPosition(
       pos => {
         setOrigin({ lat: pos.coords.latitude, lng: pos.coords.longitude }, true);
-        btn.disabled = false; btn.textContent = "📍 내 위치 사용";
+        btn.disabled = false; btn.textContent = "📍 내 위치";
       },
       () => {
-        document.getElementById("originLabel").textContent = "위치 권한이 거부됐어요 — 데모 위치로 계속해요";
-        btn.disabled = false; btn.textContent = "📍 내 위치 사용";
+        statusEl.textContent = "위치 권한이 거부됐어요 — 선택한 동 기준으로 계속해요";
+        btn.disabled = false; btn.textContent = "📍 내 위치";
       },
       { timeout: 8000 }
     );
@@ -290,7 +395,9 @@
 
   S.registerView("citizen", {
     render(){ renderVerdict(); renderClinics(); },
+    onMarkerClick(c){ openDetail(c); },
   });
 
+  buildFinderControls();
   S.refresh(); // 초기 화면(기본값: 시민 뷰) 렌더 — 모든 모듈 로드·등록이 끝난 뒤 마지막에 1회 호출
 })();
