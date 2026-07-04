@@ -10,12 +10,14 @@
   const totalPop = zones.reduce((s,z)=>s+z.pop, 0);
   const maxPop = Math.max(...zones.map(z=>z.pop));
 
-  const state = {
-    hour: 14,
-    view: "citizen",
-    extraNight: new Set(),   // 정책 뷰 배치 시뮬레이션: 가상 야간진료가 추가된 zone id
-    selectedClinicZone: null,
-  };
+const initialHour = new Date().getHours();
+
+const state = {
+  hour: initialHour,
+  view: "citizen",
+  extraNight: new Set(),   // 정책 뷰 배치 시뮬레이션: 가상 야간진료가 추가된 zone id
+  selectedClinicZone: null,
+};
 
   /** @param {object} c clinic @param {number} [h] 24시간 기준 시각(생략 시 현재 상태) */
   function isOpen(c, h){ h = (h==null) ? state.hour : h; return h >= c.open && h < c.close; }

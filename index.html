@@ -20,7 +20,7 @@
     </div>
     <span class="badge">누구나 무료 · 설치 없이</span>
     <button class="fontbtn" id="fontBtn" type="button" aria-pressed="false">가+ 글자 크게</button>
-    <div class="clock"><span class="dot" id="clockdot"></span>기준 시각 <b id="clocktxt">14:00</b></div>
+    <div class="clock"><span class="dot" id="clockdot"></span>기준 시각 <b id="clocktxt">현재 시각</b></div>
     <div class="tabs" role="tablist" aria-label="화면 전환">
       <button role="tab" id="tab-citizen" aria-selected="true" aria-controls="panel-citizen">시민 뷰</button>
       <button role="tab" id="tab-policy" aria-selected="false" aria-controls="panel-policy">정책 뷰</button>
@@ -54,8 +54,8 @@
         </div>
 
         <div class="sliderwrap">
-          <div class="row"><label for="time">하루 중 시각</label><span class="timeval" id="timeval">14:00</span></div>
-          <input type="range" id="time" min="0" max="23" value="14" step="1" aria-label="시각 선택" />
+          <div class="row"><label for="time">하루 중 시각</label><span class="timeval" id="timeval">현재 시각</span></div>
+          <input type="range" id="time" min="0" max="23" value="12" step="1" aria-label="시각 선택" />
           <div class="ticks"><span>00</span><span>06</span><span>12</span><span>18</span><span>23</span></div>
           <div class="presets">
             <button data-h="10">오전 10시</button>
