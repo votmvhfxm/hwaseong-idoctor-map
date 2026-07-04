@@ -20,7 +20,12 @@ const state = {
 };
 
   /** @param {object} c clinic @param {number} [h] 24시간 기준 시각(생략 시 현재 상태) */
-  function isOpen(c, h){ h = (h==null) ? state.hour : h; return h >= c.open && h < c.close; }
+  function isOpen(c, h){
+    h = (h==null) ? state.hour : h;
+    if (typeof c.todayOpen === "boolean") return c.todayOpen;
+    if (typeof c.open !== "number" || typeof c.close !== "number") return false;
+    return h >= c.open && h < c.close;
+  }
 
   /** @param {string} zid zone id @param {number} [h] @param {Set<string>} [extra] */
   function zoneCovered(zid, h, extra){
@@ -70,7 +75,7 @@ const state = {
   clinics.forEach(c=>{
     perZone[c.zone] = perZone[c.zone] || 0;
     const idx = perZone[c.zone]++;
-    const z = zoneById[c.zone];
+    const z = zoneById[c.zone] || zones[0];
     const cx = z.x+6+idx*6, cy = z.y+H-4;
     const g = el("g", {class:"marker", "data-zone":c.zone});
     g.style.cursor = "pointer";
@@ -110,8 +115,12 @@ const state = {
     clinics.forEach(c=>{
       perZoneC[c.zone] = perZoneC[c.zone] || 0;
       const idx = perZoneC[c.zone]++;
-      const z = zoneById[c.zone];
-      clinicCoordMap.set(c, { lat: z.lat + idx*0.0016, lng: z.lng + idx*0.0016 });
+      const z = zoneById[c.zone] || zones[0];
+      if (Number.isFinite(c.lat) && Number.isFinite(c.lng)) {
+        clinicCoordMap.set(c, { lat: c.lat, lng: c.lng });
+      } else {
+        clinicCoordMap.set(c, { lat: z.lat + idx*0.0016, lng: z.lng + idx*0.0016 });
+      }
     });
   })();
   function clinicLatLng(c){ return clinicCoordMap.get(c); }

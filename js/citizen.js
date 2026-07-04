@@ -82,8 +82,15 @@
     {id:"soon",   label:"마감 임박 제외"},
   ];
   const finderState = { search:"", sort:"dist", filters:new Set(), incClosed:false };
-  const isNightClinic = c => c.close >= 21;
-  const closingSoon = c => S.isOpen(c) && (c.close - S.state.hour) <= 1;
+  const isPublicClinic = c => c.isPublic || c.source === "public-api" || c.source === "HIRA";
+  const hasKnownHours = c => typeof c.open === "number" && typeof c.close === "number";
+  const isNightClinic = c => hasKnownHours(c) && c.close >= 21;
+  const closingSoon = c => hasKnownHours(c) && S.isOpen(c) && (c.close - S.state.hour) <= 1;
+  const openStatusLabel = c => {
+    if (!hasKnownHours(c) && c.todayOpen == null) return "확인 필요";
+    return S.isOpen(c) ? "지금 진료 중" : "진료 종료";
+  };
+  const hoursLabel = c => hasKnownHours(c) ? S.hh(c.open)+"~"+S.hh(c.close) : (c.openText || "진료시간 확인 필요");
 
   function buildFinderControls(){
     const originSel = document.getElementById("originSel");
@@ -124,13 +131,13 @@
 
   function filteredClinics(){
     let arr = S.clinics.slice();
-    if (!finderState.incClosed) arr = arr.filter(c => S.isOpen(c));
+    if (!finderState.incClosed) arr = arr.filter(c => S.isOpen(c) || isPublicClinic(c));
     if (finderState.filters.has("night")) arr = arr.filter(isNightClinic);
     if (finderState.filters.has("dalbit")) arr = arr.filter(c => c.type==="달빛");
     if (finderState.filters.has("soon")) arr = arr.filter(c => !closingSoon(c));
     if (finderState.search) arr = arr.filter(c => c.name.includes(finderState.search));
-    if (finderState.sort==="wait") arr.sort((a,b)=>a.wait-b.wait);
-    else if (finderState.sort==="soon") arr.sort((a,b)=>(a.close-S.state.hour)-(b.close-S.state.hour));
+    if (finderState.sort==="wait") arr.sort((a,b)=>(a.wait ?? 9999)-(b.wait ?? 9999));
+    else if (finderState.sort==="soon") arr.sort((a,b)=>(a.close ?? 99)-(b.close ?? 99));
     else arr.sort((a,b)=>timeForClinic(a)-timeForClinic(b));
     return arr;
   }
@@ -141,7 +148,7 @@
   function renderClinics(){
     const list = document.getElementById("clinicList");
     const arr = filteredClinics();
-    document.getElementById("resultCount").textContent = "총 "+arr.length+"곳";
+    document.getElementById("resultCount").textContent = "총 "+arr.length+"곳 · "+(window.AppData.clinicDataMessage || "표본 데이터");
     list.innerHTML = "";
     if (arr.length===0) {
       list.innerHTML = '<div class="empty">조건에 맞는 곳이 없어요.<br/>필터를 줄이거나 \'닫힌 곳도 보기\'를 켜보세요.</div>';
@@ -149,21 +156,24 @@
     }
     arr.forEach(c=>{
       const open = S.isOpen(c);
+      const publicClinic = isPublicClinic(c);
       const row = document.createElement("div");
-      row.className = "clinic"+(open ? "" : " closed");
+      row.className = "clinic"+((open || publicClinic) ? "" : " closed");
       const bg = c.type==="달빛" ? "var(--warm)" : "var(--primary)";
       const isLive = travelTimeCache.has(c);
-      let tags = '<span class="tg">'+c.type+'</span><span class="tg">'+c.intake+' 접수</span><span class="tg wait">대기 '+c.wait+'분</span>';
+      let tags = '<span class="tg">'+(c.departments && c.departments[0] ? c.departments[0] : c.type)+'</span><span class="tg">'+openStatusLabel(c)+'</span>';
+      if (!publicClinic && c.intake) tags += '<span class="tg">'+c.intake+' 접수</span>';
+      if (!publicClinic && typeof c.wait === "number") tags += '<span class="tg wait">대기 '+c.wait+'분</span>';
       if (closingSoon(c)) tags += '<span class="tg soon">마감 임박</span>';
       if (isNightClinic(c)) tags += '<span class="tg night">야간</span>';
       row.innerHTML =
         '<div class="ic" style="background:'+bg+'">'+ICON_HOSP+'</div>'+
-        '<div class="info"><b>'+c.name+'</b><div class="meta">'+S.zoneById[c.zone].name+
-        ' · '+S.hh(c.open)+'~'+S.hh(c.close)+(open?'':' · 진료 종료')+'</div><div class="tags">'+tags+'</div></div>'+
-        '<div class="dist"><b class="'+(isLive?"live":"demo")+'" title="'+(isLive?"카카오모빌리티 실이동시간":"데모 추정치")+'">'+timeForClinic(c)+'</b><span>분 거리</span></div>';
+        '<div class="info"><b>'+c.name+'</b><div class="meta">'+(S.zoneById[c.zone] ? S.zoneById[c.zone].name : "화성시")+
+        ' · '+hoursLabel(c)+'</div><div class="tags">'+tags+'</div></div>'+
+        (publicClinic ? '' : '<div class="dist"><b class="'+(isLive?"live":"demo")+'" title="'+(isLive?"카카오모빌리티 실이동시간":"데모 추정치")+'">'+timeForClinic(c)+'</b><span>분 거리</span></div>');
       row.addEventListener("click", ()=> openDetail(c));
       list.appendChild(row);
-      if (!isLive) fetchTravelTime(c); // 아직 실시간 값이 없으면 백그라운드로 조회 시도
+      if (!isLive && !publicClinic) fetchTravelTime(c); // 표본 데이터에서만 백그라운드 이동시간 조회
     });
   }
 
@@ -174,11 +184,28 @@
     S.state.selectedClinicZone = c.zone;
     S.highlightZone(c.zone);
     const open = S.isOpen(c);
+    const publicClinic = isPublicClinic(c);
     const bg = c.type==="달빛" ? "var(--warm)" : "var(--primary)";
     const coord = S.clinicLatLng(c);
     const navUrl = "https://map.kakao.com/link/to/"+encodeURIComponent(c.name)+","+coord.lat+","+coord.lng;
     const isLive = travelTimeCache.has(c);
     const distLabel = timeForClinic(c)+"분 ("+(isLive?"실이동시간":"데모 추정")+")";
+    if (publicClinic) {
+      document.getElementById("sheet").innerHTML =
+        '<div class="top"><div class="ic" style="background:'+bg+'">'+ICON_HOSP+'</div>'+
+        '<div><h3 id="mName">'+c.name+'</h3><div class="st">소아청소년과 확인 필요 · '+
+        '<b style="color:var(--muted)">확인 필요</b></div></div>'+
+        '<button class="close" id="mClose" type="button" aria-label="닫기">✕</button></div>'+
+        drow("진료시간", hoursLabel(c))+
+        drow("주소", c.address || "주소 확인 필요")+
+        drow("전화번호", c.phone || "전화번호 확인 필요")+
+        '<div class="cta"><a class="btn primary" href="'+navUrl+'" target="_blank" rel="noopener noreferrer">길찾기</a>'+
+        (c.phone ? '<a class="btn" href="tel:'+c.phone+'">전화하기</a>' : '')+'</div>'+
+        '<div class="disc">공공데이터 기준 참고 정보이며 방문 전 전화 확인을 권장합니다. 응급 상황에서는 즉시 119로 연락하세요.</div>';
+      document.getElementById("modal").classList.add("show");
+      document.getElementById("mClose").addEventListener("click", closeDetail);
+      return;
+    }
     document.getElementById("sheet").innerHTML =
       '<div class="top"><div class="ic" style="background:'+bg+'">'+ICON_HOSP+'</div>'+
       '<div><h3 id="mName">'+c.name+'</h3><div class="st">'+S.zoneById[c.zone].name+' · '+c.type+' · '+
