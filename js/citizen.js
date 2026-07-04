@@ -38,10 +38,8 @@
     }
   }
 
-  // ---- 이동시간: 서버리스 프록시(/api/directions)로 실이동시간, 실패 시 demoDist로 조용히 폴백 ----
-  // 로컬 정적 프리뷰·Vercel 미배포 상태에서는 /api가 아예 없으므로 fetch가 실패하고, 그대로 데모 추정치를 계속 쓴다.
-  let originZoneId = "dt13"; // 기본 기준 위치: 동탄1~3동(동탄역 인근)
-  let originCoord = { lat: S.zoneById[originZoneId].lat, lng: S.zoneById[originZoneId].lng };
+  // ---- 이동시간: 내 위치 사용 후에만 서버리스 프록시(/api/directions)로 실이동시간 조회 ----
+  let originCoord = null;
   let originIsLive = false;  // true면 실제 GPS 위치 기준
   const travelTimeCache = new Map(); // clinic -> {durationMin}
   const pendingFetches = new Set();  // clinic (중복 fetch 방지)
@@ -49,10 +47,11 @@
 
   function timeForClinic(c){
     const live = travelTimeCache.get(c);
-    return live ? live.durationMin : S.demoDist[c.zone];
+    return live ? live.durationMin : null;
   }
 
   async function fetchTravelTime(c){
+    if (!originIsLive || !originCoord) return;
     if (pendingFetches.has(c) || failedFetches.has(c)) return;
     pendingFetches.add(c);
     try {
@@ -83,24 +82,51 @@
   ];
   const finderState = { search:"", sort:"dist", filters:new Set(), incClosed:false };
   const isPublicClinic = c => c.isPublic || c.source === "public-api" || c.source === "HIRA";
-  const hasKnownHours = c => typeof c.open === "number" && typeof c.close === "number";
-  const isNightClinic = c => hasKnownHours(c) && c.close >= 21;
-  const closingSoon = c => hasKnownHours(c) && S.isOpen(c) && (c.close - S.state.hour) <= 1;
+  const hasKnownHours = c => Boolean(c.hours) || (typeof c.open === "number" && typeof c.close === "number");
+  const dayKey = d => ["sun", "mon", "tue", "wed", "thu", "fri", "sat"][d.getDay()];
+  const fmtTime = value => {
+    const text = String(value || "").replace(/\D/g, "").padStart(4, "0").slice(0, 4);
+    return text ? text.slice(0, 2)+":"+text.slice(2, 4) : "";
+  };
+  const minuteFromTime = value => {
+    const text = String(value || "").replace(/\D/g, "").padStart(4, "0").slice(0, 4);
+    return text ? Number(text.slice(0, 2)) * 60 + Number(text.slice(2, 4)) : null;
+  };
+  const todayHours = c => c.hours ? c.hours[dayKey(new Date())] : null;
+  const closeHour = c => {
+    const today = todayHours(c);
+    if (today) {
+      const minutes = minuteFromTime(today.end);
+      return minutes == null ? null : minutes / 60;
+    }
+    return typeof c.close === "number" ? c.close : null;
+  };
+  const isNightClinic = c => {
+    const close = closeHour(c);
+    return close != null && close >= 21;
+  };
+  const closingSoon = c => {
+    const close = closeHour(c);
+    return close != null && S.isOpen(c) && (close - S.state.hour) <= 1;
+  };
+  const minutesUntilClose = c => {
+    const close = closeHour(c);
+    if (close == null || !S.isOpen(c)) return 9999;
+    return Math.max(0, (close - S.state.hour) * 60);
+  };
   const openStatusLabel = c => {
     if (!hasKnownHours(c) && c.todayOpen == null) return "확인 필요";
     return S.isOpen(c) ? "지금 진료 중" : "진료 종료";
   };
-  const hoursLabel = c => hasKnownHours(c) ? S.hh(c.open)+"~"+S.hh(c.close) : (c.openText || "진료시간 확인 필요");
+  const hoursLabel = c => {
+    if (c.hours) {
+      const today = c.hours[dayKey(new Date())];
+      return today ? fmtTime(today.start)+"~"+fmtTime(today.end) : "진료시간 확인 필요";
+    }
+    return hasKnownHours(c) ? S.hh(c.open)+"~"+S.hh(c.close) : (c.openText || "진료시간 확인 필요");
+  };
 
   function buildFinderControls(){
-    const originSel = document.getElementById("originSel");
-    S.zones.forEach(z=>{
-      const o = document.createElement("option");
-      o.value = z.id; o.textContent = z.name;
-      originSel.appendChild(o);
-    });
-    originSel.value = originZoneId;
-
     const fc = document.getElementById("filterChips");
     FILTERS.forEach(f=>{
       const b = document.createElement("button");
@@ -131,14 +157,13 @@
 
   function filteredClinics(){
     let arr = S.clinics.slice();
-    if (!finderState.incClosed) arr = arr.filter(c => S.isOpen(c) || isPublicClinic(c));
+    if (!finderState.incClosed) arr = arr.filter(c => S.isOpen(c) || (isPublicClinic(c) && !c.hours));
     if (finderState.filters.has("night")) arr = arr.filter(isNightClinic);
     if (finderState.filters.has("dalbit")) arr = arr.filter(c => c.type==="달빛");
     if (finderState.filters.has("soon")) arr = arr.filter(c => !closingSoon(c));
     if (finderState.search) arr = arr.filter(c => c.name.includes(finderState.search));
-    if (finderState.sort==="wait") arr.sort((a,b)=>(a.wait ?? 9999)-(b.wait ?? 9999));
-    else if (finderState.sort==="soon") arr.sort((a,b)=>(a.close ?? 99)-(b.close ?? 99));
-    else arr.sort((a,b)=>timeForClinic(a)-timeForClinic(b));
+    if (finderState.sort==="soon") arr.sort((a,b)=>minutesUntilClose(a)-minutesUntilClose(b));
+    else if (originIsLive) arr.sort((a,b)=>(timeForClinic(a) ?? 9999)-(timeForClinic(b) ?? 9999));
     return arr;
   }
 
@@ -158,9 +183,10 @@
       const open = S.isOpen(c);
       const publicClinic = isPublicClinic(c);
       const row = document.createElement("div");
-      row.className = "clinic"+((open || publicClinic) ? "" : " closed");
+      row.className = "clinic"+((open || (publicClinic && !c.hours)) ? "" : " closed");
       const bg = c.type==="달빛" ? "var(--warm)" : "var(--primary)";
       const isLive = travelTimeCache.has(c);
+      const travelTime = timeForClinic(c);
       let tags = '<span class="tg">'+(c.departments && c.departments[0] ? c.departments[0] : c.type)+'</span><span class="tg">'+openStatusLabel(c)+'</span>';
       if (!publicClinic && c.intake) tags += '<span class="tg">'+c.intake+' 접수</span>';
       if (!publicClinic && typeof c.wait === "number") tags += '<span class="tg wait">대기 '+c.wait+'분</span>';
@@ -170,10 +196,10 @@
         '<div class="ic" style="background:'+bg+'">'+ICON_HOSP+'</div>'+
         '<div class="info"><b>'+c.name+'</b><div class="meta">'+(S.zoneById[c.zone] ? S.zoneById[c.zone].name : "화성시")+
         ' · '+hoursLabel(c)+'</div><div class="tags">'+tags+'</div></div>'+
-        (publicClinic ? '' : '<div class="dist"><b class="'+(isLive?"live":"demo")+'" title="'+(isLive?"카카오모빌리티 실이동시간":"데모 추정치")+'">'+timeForClinic(c)+'</b><span>분 거리</span></div>');
+        (originIsLive && travelTime != null ? '<div class="dist"><b class="'+(isLive?"live":"demo")+'" title="카카오모빌리티 실이동시간">'+travelTime+'</b><span>분 거리</span></div>' : '');
       row.addEventListener("click", ()=> openDetail(c));
       list.appendChild(row);
-      if (!isLive && !publicClinic) fetchTravelTime(c); // 표본 데이터에서만 백그라운드 이동시간 조회
+      if (originIsLive && !isLive) fetchTravelTime(c);
     });
   }
 
@@ -193,8 +219,8 @@
     if (publicClinic) {
       document.getElementById("sheet").innerHTML =
         '<div class="top"><div class="ic" style="background:'+bg+'">'+ICON_HOSP+'</div>'+
-        '<div><h3 id="mName">'+c.name+'</h3><div class="st">소아청소년과 확인 필요 · '+
-        '<b style="color:var(--muted)">확인 필요</b></div></div>'+
+        '<div><h3 id="mName">'+c.name+'</h3><div class="st">'+(c.departments && c.departments[0] ? c.departments[0] : "소아청소년과")+' · '+
+        (S.isOpen(c) ? '<b style="color:var(--cov0)">지금 진료 중</b>' : '<b style="color:var(--muted)">'+openStatusLabel(c)+'</b>')+'</div></div>'+
         '<button class="close" id="mClose" type="button" aria-label="닫기">✕</button></div>'+
         drow("진료시간", hoursLabel(c))+
         drow("주소", c.address || "주소 확인 필요")+
@@ -237,12 +263,6 @@
     document.getElementById("originStatus").textContent = isLive ? "· 내 위치 사용 중" : "";
     renderClinics();
   }
-  document.getElementById("originSel").addEventListener("change", e=>{
-    const z = S.zoneById[e.target.value];
-    if (!z) return;
-    originZoneId = e.target.value;
-    setOrigin({ lat: z.lat, lng: z.lng }, false);
-  });
   document.getElementById("useMyLocation").addEventListener("click", ()=>{
     const btn = document.getElementById("useMyLocation");
     const statusEl = document.getElementById("originStatus");
@@ -257,7 +277,7 @@
         btn.disabled = false; btn.textContent = "📍 내 위치";
       },
       () => {
-        statusEl.textContent = "위치 권한이 거부됐어요 — 선택한 동 기준으로 계속해요";
+        statusEl.textContent = "위치 권한이 거부됐어요 — 기본 목록 순서로 계속해요";
         btn.disabled = false; btn.textContent = "📍 내 위치";
       },
       { timeout: 8000 }

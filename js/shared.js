@@ -20,9 +20,27 @@ const state = {
 };
 
   /** @param {object} c clinic @param {number} [h] 24시간 기준 시각(생략 시 현재 상태) */
+  function dayKey(d){
+    return ["sun", "mon", "tue", "wed", "thu", "fri", "sat"][d.getDay()];
+  }
+
+  function minuteFromTime(value){
+    const text = String(value || "").replace(/\D/g, "").padStart(4, "0").slice(0, 4);
+    if (!text || text === "0000") return null;
+    return Number(text.slice(0, 2)) * 60 + Number(text.slice(2, 4));
+  }
+
   function isOpen(c, h){
     h = (h==null) ? state.hour : h;
-    if (typeof c.todayOpen === "boolean") return c.todayOpen;
+    if (c.hours) {
+      const today = c.hours[dayKey(new Date())];
+      if (!today) return false;
+      const start = minuteFromTime(today.start);
+      const end = minuteFromTime(today.end);
+      if (start == null || end == null) return false;
+      const current = h * 60;
+      return current >= start && current < end;
+    }
     if (typeof c.open !== "number" || typeof c.close !== "number") return false;
     return h >= c.open && h < c.close;
   }
