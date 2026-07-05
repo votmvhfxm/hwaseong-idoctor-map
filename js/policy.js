@@ -41,23 +41,6 @@
         '</span><span class="p">영유아 '+z.pop+' · 공백</span>';
       wrap.appendChild(row);
     });
-
-    const sel = document.getElementById("simZone");
-    const prev = sel.value;
-    sel.innerHTML = "";
-    gaps.forEach(z=>{
-      const o = document.createElement("option");
-      o.value = z.id;
-      o.textContent = z.name+" (영유아 "+z.pop+")";
-      sel.appendChild(o);
-    });
-    if (gaps.length===0) {
-      const o = document.createElement("option");
-      o.textContent = "공백 지역 없음";
-      o.disabled = true;
-      sel.appendChild(o);
-    }
-    if ([...sel.options].some(o => o.value===prev)) sel.value = prev;
   }
 
   function combos(items, size, start, prefix, out){
@@ -293,29 +276,6 @@
     });
   }
 
-  document.getElementById("simAdd").addEventListener("click", ()=>{
-    const sel = document.getElementById("simZone");
-    if (!sel.value) return;
-    const before = S.coveragePct();
-    S.state.extraNight.add(sel.value);
-    const after = S.coveragePct();
-    const name = S.zoneById[sel.value] ? S.zoneById[sel.value].name : "";
-    const out = document.getElementById("simOut");
-    out.className = "simout show";
-    out.innerHTML = '<b>'+name+'</b> 야간진료 추가 시 커버리지 '+before+'% → '+after+
-      '% <span class="delta">(+'+(after-before)+'%p)</span>';
-    S.refresh();
-  });
-
-  document.getElementById("simReset").addEventListener("click", ()=>{
-    S.state.extraNight.clear();
-    document.getElementById("simOut").className = "simout";
-    S.refresh();
-  });
-
-  const isoToggle = document.getElementById("isoToggle");
-  isoToggle.addEventListener("change", ()=>{ S.setIsochronesVisible(isoToggle.checked); });
-
   function renderTrend(){
     const svgT = document.getElementById("trendSvg");
     const w = 240, h = 44, pad = 3;
@@ -344,18 +304,15 @@
       buildRecommendations();
       renderRecommendationCards();
     }
-    S.setIsochronesVisible(isoToggle.checked);
   }
 
   S.registerView("policy", {
     onShow(){
       document.getElementById("trendWrap").hidden = false;
-      if (isoToggle.checked) S.setIsochronesVisible(true);
       if (recState.selected) S.setRecommendationZones(recState.selected.zones.map(z=>z.id));
     },
     onHide(){
       document.getElementById("trendWrap").hidden = true;
-      S.setIsochronesVisible(false);
       S.setRecommendationZones([]);
     },
     render: renderPolicyView,

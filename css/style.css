@@ -271,25 +271,9 @@ svg.map{width:100%;height:auto;display:block}
 .rankrow .z{flex:1;font-size:13px;font-weight:700}
 .rankrow .p{font-family:var(--mono);font-size:11.5px;color:var(--muted)}
 
-.isoBlock{margin-top:14px;padding-top:14px;border-top:1px dashed var(--line)}
-.switchRow{display:flex;align-items:center;gap:8px;font-size:12.5px;font-weight:700;color:var(--ink);cursor:pointer;user-select:none}
-.switchRow input{width:15px;height:15px;accent-color:var(--primary);cursor:pointer}
-.isoLegend{display:flex;gap:14px;flex-wrap:wrap;font-size:11px;color:var(--muted);margin-top:8px}
-.isoLegend span{display:flex;align-items:center;gap:5px}
-.isoLegend i{width:14px;height:0;border-top:2px solid var(--primary);display:inline-block}
-.isoLegend i.dash{border-top:2px dashed var(--warm)}
-.isoNote{font-size:10.5px;color:var(--muted);margin-top:6px;line-height:1.5}
-
-.sim{margin-top:14px;padding-top:14px;border-top:1px dashed var(--line)}
-.sim select{width:100%;font-family:var(--sans);font-size:13px;padding:9px 10px;border:1px solid var(--line);
-  border-radius:9px;background:var(--surface);color:var(--ink);margin:8px 0}
-.sim .actions{display:flex;gap:8px}
 .btn{font-family:var(--sans);font-size:13px;font-weight:700;border-radius:9px;padding:9px 14px;cursor:pointer;border:1px solid var(--line);background:var(--bg);color:var(--ink);transition:.12s}
 .btn.primary{background:var(--primary);color:#fff;border-color:var(--primary)}
 .btn.primary:hover{background:var(--primary-d)}
-.simout{margin-top:11px;font-size:13px;display:none}
-.simout.show{display:block}
-.simout .delta{font-family:var(--mono);font-weight:700;color:var(--cov0);font-size:15px}
 
 .policyAi{margin-top:14px;padding-top:14px;border-top:1px dashed var(--line)}
 .recControls{display:flex;flex-direction:column;gap:12px;margin-top:12px}
