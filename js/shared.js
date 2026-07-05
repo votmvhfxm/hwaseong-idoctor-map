@@ -115,6 +115,26 @@ const state = {
     kakaoMarkerOverlays.forEach(m => m.dot.classList.toggle("hl", m.c.zone===zid));
   }
 
+  let recommendationGroup = null;
+  function setRecommendationZones(zoneIds){
+    const ids = new Set(zoneIds || []);
+    Object.keys(zoneRectEls).forEach(id => zoneRectEls[id].classList.toggle("rec-hl", ids.has(id)));
+    if (recommendationGroup) {
+      recommendationGroup.remove();
+      recommendationGroup = null;
+    }
+    if (!ids.size) return;
+    recommendationGroup = el("g", {class:"recMark"});
+    ids.forEach(id=>{
+      const z = zoneById[id];
+      if (!z) return;
+      const t = el("text", {x:z.x + W - 5, y:z.y + 7, "text-anchor":"middle"});
+      t.textContent = "+";
+      recommendationGroup.appendChild(t);
+    });
+    svg.appendChild(recommendationGroup);
+  }
+
   // ---- 카카오맵 실연동 — 지도 API 키 입력 시 아래 SVG 개념도 대신 실제 지도로 전환 ----
   // 지도 API 키는 코드에 하드코딩하지 않고 사용자가 이 브라우저 탭에만 입력한다(AI 키와 동일한 패턴).
   const mapEl = document.getElementById("kakaoMapEl");
@@ -445,7 +465,7 @@ async function autoConnectKakaoMapFromConfig(){
   window.Shared = {
     zones, clinics, demoDist, zoneById, totalPop, maxPop,
     state, isOpen, zoneCovered, coveragePct, covColor, hh,
-    svg, el, markerEls, zoneRectEls, highlightZone, setIsochronesVisible, hasRealMap, clinicLatLng,
+    svg, el, markerEls, zoneRectEls, highlightZone, setRecommendationZones, setIsochronesVisible, hasRealMap, clinicLatLng,
     registerView, refresh, setView,
   };
 })();

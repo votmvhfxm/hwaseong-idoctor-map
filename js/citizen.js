@@ -285,7 +285,6 @@
   });
 
   // ---- AI 자연어 트리아지(Claude API) ----
-  let aiApiKey = "";
   const aiChatEl = document.getElementById("aiChat");
   const aiInputEl = document.getElementById("aiInput");
 
@@ -321,6 +320,14 @@
       v.className = "verdict emerg show";
       v.innerHTML = "<b>AI 판단: 응급 신호로 보여요 — 지금 응급실로 가세요</b>"+
         escapeHtml(reasonText||"망설이지 말고 119 또는 소아응급 진료가 가능한 응급실로 이동하세요.");
+    } else if (level==="urgent") {
+      v.className = "verdict mild show";
+      v.innerHTML = "<b>AI 판단: 빠른 진료 확인이 필요해요</b>"+
+        escapeHtml(reasonText||"오늘 중 의료진 상담이나 진료를 권장합니다. 위험 증상이 있으면 119 또는 응급실로 이동하세요.");
+    } else if (level==="unknown") {
+      v.className = "verdict mild show";
+      v.innerHTML = "<b>AI 판단: 확인이 더 필요해요</b>"+
+        escapeHtml(reasonText||"정보가 부족합니다. 위험 증상이 있으면 119 또는 응급실로 이동하세요.");
     } else {
       v.className = "verdict mild show";
       v.innerHTML = "<b>AI 판단: 경증으로 보여요 — 야간·주간 소아진료 권장</b>"+
@@ -334,42 +341,20 @@
   }
 
   async function callTriageAPI(text){
-    const systemPrompt = [
-      "당신은 소아 증상 1차 분류를 돕는 트리아지 보조 도구입니다.",
-      "보호자가 입력한 문장만 보고, 아래 JSON 형식으로만 답하세요. 다른 말은 절대 포함하지 마세요.",
-      '{"level":"emergency 또는 mild","summary":"한국어 한 문장 요약, 40자 이내","advice":"한국어 권장 행동 한 문장, 40자 이내"}',
-      "판단 기준: 호흡곤란·의식저하·경련·청색증·심한탈수·지속고열 등 위험 신호가 있으면 반드시 emergency.",
-      "조금이라도 애매하면 emergency를 선택하세요(과소분류보다 과대분류가 안전합니다).",
-      "진단이나 처방은 하지 말고, 지금 응급실로 가야 하는지 여부만 판단하세요."
-    ].join("\n");
-
-    const res = await fetch("https://api.anthropic.com/v1/messages", {
+    const res = await fetch("/api/triage", {
       method: "POST",
-      headers: {
-        "content-type": "application/json",
-        "x-api-key": aiApiKey,
-        "anthropic-version": "2023-06-01",
-        "anthropic-dangerous-direct-browser-access": "true"
-      },
-      body: JSON.stringify({
-        model: "claude-sonnet-5",
-        max_tokens: 200,
-        temperature: 0.2,
-        system: systemPrompt,
-        messages: [{role:"user", content:text}]
-      })
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ text })
     });
-    if (!res.ok) {
-      const errText = await res.text().catch(()=> "");
-      throw new Error("HTTP "+res.status+" "+errText.slice(0,150));
-    }
+    if (!res.ok) throw new Error("HTTP "+res.status);
     const data = await res.json();
-    const block = (data.content||[]).find(b => b.type==="text");
-    if (!block) throw new Error("응답 형식 오류");
-    let raw = block.text.trim().replace(/^```json/i,"").replace(/^```/,"").replace(/```$/,"").trim();
-    const parsed = JSON.parse(raw);
-    if (!parsed.level) throw new Error("판단 결과 없음");
-    return parsed;
+    const allowed = new Set(["emergency", "urgent", "mild", "unknown"]);
+    return {
+      level: allowed.has(data.level) ? data.level : "unknown",
+      summary: data.summary || "AI 문진 결과를 확인하지 못했습니다.",
+      advice: data.advice || "위험 증상이 있으면 119 또는 응급실로 이동하세요.",
+      redFlags: Array.isArray(data.redFlags) ? data.redFlags : []
+    };
   }
 
   async function handleAISend(){
@@ -386,25 +371,23 @@
       return;
     }
 
-    if (!aiApiKey) {
-      addAIError("AI 문진을 쓰려면 위 'AI 연결 설정'에서 Anthropic API 키를 먼저 입력해주세요. 급하면 '빠른 선택' 탭을 이용해주세요.");
-      const body = document.getElementById("aiSettingsBody");
-      if (body) body.hidden = false;
-      return;
-    }
-
     addAILoading();
     try {
       const result = await callTriageAPI(text);
-      const levelClass = result.level==="emergency" ? "emerg" : "mild";
+      const levelClass = result.level==="emergency" ? "emerg" : (result.level==="urgent" ? "mild" : "");
       const title = result.level==="emergency"
         ? "AI 판단: 응급 신호로 보여요 — 지금 응급실로 가세요"
-        : "AI 판단: 경증으로 보여요 — 야간·주간 소아진료 권장";
-      const bodyText = ((result.summary||"")+" "+(result.advice||"")).trim();
+        : result.level==="urgent"
+          ? "AI 판단: 빠른 진료 확인이 필요해요"
+          : result.level==="mild"
+            ? "AI 판단: 경증으로 보여요 — 경과를 살펴보세요"
+            : "AI 판단: 확인이 더 필요해요";
+      const redFlags = result.redFlags && result.redFlags.length ? " 위험 신호: "+result.redFlags.join(", ")+"." : "";
+      const bodyText = ((result.summary||"")+" "+(result.advice||"")+redFlags).trim();
       addAIResult(levelClass, title, bodyText);
       setVerdictFromAI(result.level, bodyText);
     } catch (err) {
-      addAIError("AI 연결에 실패했어요 (키를 확인하거나 네트워크를 확인해주세요). 실제 배포판에서는 서버 프록시를 통해 안정적으로 연동돼요. 지금은 '빠른 선택' 탭을 이용해주세요.");
+      addAIError("AI 문진을 불러오지 못했습니다. 위험 증상이 있으면 119 또는 응급실로 이동하세요.");
       console.error(err);
     }
   }
@@ -413,16 +396,8 @@
   aiInputEl.addEventListener("keydown", e=>{
     if (e.key==="Enter" && !e.shiftKey) { e.preventDefault(); handleAISend(); }
   });
-  document.getElementById("aiKey").addEventListener("input", e=>{
-    aiApiKey = e.target.value.trim();
-    const badge = document.getElementById("aiStatus");
-    if (aiApiKey) { badge.textContent = "연결됨"; badge.classList.add("on"); }
-    else { badge.textContent = "미연결"; badge.classList.remove("on"); }
-  });
-  document.getElementById("aiSettingsBtn").addEventListener("click", ()=>{
-    const body = document.getElementById("aiSettingsBody");
-    body.hidden = !body.hidden;
-  });
+  const aiStatus = document.getElementById("aiStatus");
+  if (aiStatus) aiStatus.classList.add("on");
 
   // ---- 증상 확인 방식 토글(빠른 선택 / AI 문진) ----
   function setTriageMode(m){

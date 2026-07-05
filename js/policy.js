@@ -1,12 +1,30 @@
 /**
- * js/policy.js — 정책 뷰 전용 로직: 공백 우선순위, 배치 시뮬레이션, 등시간대 반경 토글, 24시간 커버리지 트렌드.
- * citizen.js를 직접 참조하지 않는다. 공통 상태·계산은 js/shared.js(window.Shared)를 통해서만 접근한다.
+ * js/policy.js - policy view logic: gap ranking, placement simulation,
+ * isochrone toggle, 24-hour coverage trend, deterministic recommendations,
+ * and Gemini-backed explanation of calculated scenarios.
  */
 (function(){
   "use strict";
   const S = window.Shared;
 
-  /** 이 시각 기준 공백(미커버) zone을 인구 많은 순으로 정렬 */
+  const recState = {
+    count: 1,
+    goal: "coverage",
+    recommendations: [],
+    selected: null,
+    aiRequestId: 0,
+  };
+  const strategyLabels = {
+    coverage: "커버리지형",
+    balance: "균형형",
+    vulnerable: "취약지 보완형",
+  };
+  const goalLabels = {
+    coverage: "커버리지 최대화",
+    balance: "지역 균형",
+    vulnerable: "취약지역 우선",
+  };
+
   function gapZones(){
     return S.zones.filter(z => !S.zoneCovered(z.id)).sort((a,b) => b.pop-a.pop);
   }
@@ -15,27 +33,264 @@
     const wrap = document.getElementById("rank");
     const gaps = gapZones();
     wrap.innerHTML = "";
-    if (gaps.length===0) { wrap.innerHTML = '<div class="empty">이 시각엔 모든 지역이 커버돼요.</div>'; }
+    if (gaps.length===0) wrap.innerHTML = '<div class="empty">이 시각에는 모든 지역이 커버돼요.</div>';
     gaps.forEach((z,i)=>{
-      const row = document.createElement("div"); row.className = "rankrow";
+      const row = document.createElement("div");
+      row.className = "rankrow";
       row.innerHTML = '<span class="r">'+(i+1)+'</span><span class="z">'+z.name+
         '</span><span class="p">영유아 '+z.pop+' · 공백</span>';
       wrap.appendChild(row);
     });
+
     const sel = document.getElementById("simZone");
     const prev = sel.value;
     sel.innerHTML = "";
     gaps.forEach(z=>{
       const o = document.createElement("option");
-      o.value = z.id; o.textContent = z.name+" (영유아 "+z.pop+")";
+      o.value = z.id;
+      o.textContent = z.name+" (영유아 "+z.pop+")";
       sel.appendChild(o);
     });
     if (gaps.length===0) {
       const o = document.createElement("option");
-      o.textContent = "공백 지역 없음"; o.disabled = true;
+      o.textContent = "공백 지역 없음";
+      o.disabled = true;
       sel.appendChild(o);
     }
     if ([...sel.options].some(o => o.value===prev)) sel.value = prev;
+  }
+
+  function combos(items, size, start, prefix, out){
+    if (prefix.length === size) {
+      out.push(prefix.slice());
+      return out;
+    }
+    for (let i=start; i<items.length; i++) {
+      prefix.push(items[i]);
+      combos(items, size, i+1, prefix, out);
+      prefix.pop();
+    }
+    return out;
+  }
+
+  function gapCount(extra){
+    return S.zones.filter(z => !S.zoneCovered(z.id, S.state.hour, extra)).length;
+  }
+
+  function addedPop(combo){
+    const beforeExtra = S.state.extraNight;
+    const afterExtra = new Set([...beforeExtra, ...combo.map(z => z.id)]);
+    return S.zones.reduce((sum, z) => {
+      const before = S.zoneCovered(z.id, S.state.hour, beforeExtra);
+      const after = S.zoneCovered(z.id, S.state.hour, afterExtra);
+      return sum + (!before && after ? z.pop : 0);
+    }, 0);
+  }
+
+  function sidePenalty(combo){
+    const east = combo.filter(z => z.lng >= 127).length;
+    const west = combo.length - east;
+    return Math.abs(east - west);
+  }
+
+  function evaluateCombo(combo, strategy){
+    const beforeExtra = S.state.extraNight;
+    const afterExtra = new Set([...beforeExtra, ...combo.map(z => z.id)]);
+    const beforeCoverage = S.coveragePct(S.state.hour, beforeExtra);
+    const afterCoverage = S.coveragePct(S.state.hour, afterExtra);
+    const beforeGaps = gapCount(beforeExtra);
+    const afterGaps = gapCount(afterExtra);
+    const added = addedPop(combo);
+    let score = (afterCoverage - beforeCoverage) * 10 + added * 4 + (beforeGaps - afterGaps) * 5;
+    if (strategy === "balance") score += (combo.length - sidePenalty(combo)) * 6;
+    if (strategy === "vulnerable") score += combo.reduce((s,z)=>s + z.pop*z.pop, 0);
+    return { strategy, zones: combo, beforeCoverage, afterCoverage, beforeGaps, afterGaps, added, score };
+  }
+
+  function buildRecommendations(){
+    const gaps = gapZones();
+    const candidates = gaps.length ? gaps : S.zones.slice().sort((a,b)=>b.pop-a.pop);
+    const size = Math.min(recState.count, candidates.length);
+    const allCombos = combos(candidates, size, 0, [], []);
+    const order = [recState.goal, "coverage", "balance", "vulnerable"].filter((v,i,a)=>a.indexOf(v)===i);
+    const usedKeys = new Set();
+    const picks = [];
+
+    order.forEach(strategy=>{
+      const best = allCombos.map(combo => evaluateCombo(combo, strategy)).sort((a,b)=>b.score-a.score)[0];
+      if (!best) return;
+      const key = best.zones.map(z=>z.id).sort().join("|");
+      if (usedKeys.has(key)) return;
+      usedKeys.add(key);
+      picks.push(best);
+    });
+
+    allCombos
+      .map(combo => evaluateCombo(combo, recState.goal))
+      .sort((a,b)=>b.score-a.score)
+      .forEach(item=>{
+        if (picks.length >= 3) return;
+        const key = item.zones.map(z=>z.id).sort().join("|");
+        if (usedKeys.has(key)) return;
+        usedKeys.add(key);
+        picks.push(item);
+      });
+
+    recState.recommendations = picks.slice(0, 3);
+    recState.selected = recState.recommendations[0] || null;
+  }
+
+  function scenarioPayload(rec, index){
+    return {
+      rank: index + 1,
+      type: strategyLabels[rec.strategy],
+      regions: rec.zones.map(z => z.name),
+      currentCoverage: rec.beforeCoverage,
+      afterCoverage: rec.afterCoverage,
+      currentGapCount: rec.beforeGaps,
+      afterGapCount: rec.afterGaps,
+      addedCoverageIndex: rec.added,
+    };
+  }
+
+  function policyAiPayload(){
+    return {
+      hour: S.state.hour,
+      objective: goalLabels[recState.goal],
+      count: recState.count,
+      currentCoverage: recState.selected ? recState.selected.beforeCoverage : S.coveragePct(),
+      selectedScenario: recState.selected ? scenarioPayload(recState.selected, recState.recommendations.indexOf(recState.selected)) : null,
+      scenarios: recState.recommendations.map(scenarioPayload),
+    };
+  }
+
+  function renderAiPlaceholder(message, className){
+    const box = document.getElementById("policyAiExplain");
+    const body = document.getElementById("policyAiBody");
+    if (!box || !body) return;
+    box.classList.remove("loading", "error");
+    if (className) box.classList.add(className);
+    body.innerHTML = '<p>'+message+'</p>';
+  }
+
+  function renderAiInsight(data){
+    const box = document.getElementById("policyAiExplain");
+    const body = document.getElementById("policyAiBody");
+    if (!box || !body) return;
+    box.classList.remove("loading", "error");
+    const reasons = Array.isArray(data.reasons) ? data.reasons : [];
+    body.innerHTML =
+      '<h3>'+escapeHtml(data.headline || "계산 결과 기반 정책 해석")+'</h3>'+
+      '<p>'+escapeHtml(data.summary || "")+'</p>'+
+      '<ul>'+reasons.map(reason => '<li>'+escapeHtml(reason)+'</li>').join("")+'</ul>'+
+      '<p class="caution">'+escapeHtml(data.caution || "실제 정책 적용 전 의료기관 참여 의향, 예산, 인력 확보, 교통 접근성을 검토해야 합니다.")+'</p>';
+  }
+
+  function escapeHtml(value){
+    return String(value).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+  }
+
+  async function requestPolicyInsight(){
+    if (!recState.selected || !recState.recommendations.length) return;
+    const requestId = ++recState.aiRequestId;
+    renderAiPlaceholder("AI가 계산 결과를 해석하고 있어요...", "loading");
+    try {
+      const res = await fetch("/api/policy-ai", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify(policyAiPayload()),
+      });
+      if (!res.ok) throw new Error("HTTP "+res.status);
+      const data = await res.json();
+      if (requestId !== recState.aiRequestId) return;
+      renderAiInsight(data);
+    } catch (error) {
+      if (requestId !== recState.aiRequestId) return;
+      console.error(error);
+      renderAiPlaceholder("AI 해석을 불러오지 못했습니다. 계산된 추천안은 정상 표시됩니다.", "error");
+    }
+  }
+
+  function renderCompare(){
+    const panel = document.getElementById("recCompare");
+    const rec = recState.selected;
+    if (!panel || !rec) return;
+    panel.hidden = false;
+    document.getElementById("cmpBefore").textContent = rec.beforeCoverage+"%";
+    document.getElementById("cmpAfter").textContent = rec.afterCoverage+"%";
+    document.getElementById("cmpGaps").textContent = rec.beforeGaps+"곳 → "+rec.afterGaps+"곳";
+    document.getElementById("cmpAdded").textContent = "+"+rec.added;
+  }
+
+  function renderRecommendationCards(){
+    const wrap = document.getElementById("recResults");
+    if (!wrap) return;
+    wrap.innerHTML = "";
+    if (!recState.recommendations.length) {
+      wrap.innerHTML = '<div class="empty">추천안 생성을 누르면 후보 조합 3개를 계산해요.</div>';
+      document.getElementById("recCompare").hidden = true;
+      S.setRecommendationZones([]);
+      renderAiPlaceholder("계산 결과 기반 AI 해석은 추천안 생성 후 표시됩니다.");
+      return;
+    }
+
+    recState.recommendations.forEach((rec, i)=>{
+      const card = document.createElement("button");
+      card.type = "button";
+      card.className = "recCard" + (rec === recState.selected ? " active" : "");
+      card.innerHTML =
+        '<div class="recTop"><b>'+(i+1)+'안 · '+strategyLabels[rec.strategy]+'</b><span>+'+(rec.afterCoverage-rec.beforeCoverage)+'%p</span></div>'+
+        '<div class="recZones">'+rec.zones.map(z=>z.name).join(" + ")+'</div>'+
+        '<div class="recMetrics">'+
+          '<div>현재 → 추천 후<b>'+rec.beforeCoverage+'% → '+rec.afterCoverage+'%</b></div>'+
+          '<div>공백 지역<b>'+rec.beforeGaps+'곳 → '+rec.afterGaps+'곳</b></div>'+
+          '<div>추가 커버 지수<b>+'+rec.added+'</b></div>'+
+          '<div>추천 지역 수<b>'+rec.zones.length+'곳</b></div>'+
+        '</div>';
+      card.addEventListener("click", ()=>{
+        recState.selected = rec;
+        renderRecommendationCards();
+        renderCompare();
+        S.setRecommendationZones(rec.zones.map(z=>z.id));
+        requestPolicyInsight();
+      });
+      wrap.appendChild(card);
+    });
+
+    renderCompare();
+    if (recState.selected) S.setRecommendationZones(recState.selected.zones.map(z=>z.id));
+  }
+
+  function setPressed(group, attr, value){
+    group.querySelectorAll("button").forEach(btn=>{
+      btn.setAttribute("aria-pressed", String(btn.dataset[attr] === String(value)));
+    });
+  }
+
+  function setupRecommendations(){
+    const countGroup = document.getElementById("recCountGroup");
+    const goalGroup = document.getElementById("recGoalGroup");
+    if (!countGroup || !goalGroup) return;
+
+    countGroup.addEventListener("click", e=>{
+      const btn = e.target.closest("button[data-count]");
+      if (!btn) return;
+      recState.count = Number(btn.dataset.count);
+      setPressed(countGroup, "count", recState.count);
+    });
+
+    goalGroup.addEventListener("click", e=>{
+      const btn = e.target.closest("button[data-goal]");
+      if (!btn) return;
+      recState.goal = btn.dataset.goal;
+      setPressed(goalGroup, "goal", recState.goal);
+    });
+
+    document.getElementById("recRun").addEventListener("click", ()=>{
+      buildRecommendations();
+      renderRecommendationCards();
+      requestPolicyInsight();
+    });
   }
 
   document.getElementById("simAdd").addEventListener("click", ()=>{
@@ -47,21 +302,20 @@
     const name = S.zoneById[sel.value] ? S.zoneById[sel.value].name : "";
     const out = document.getElementById("simOut");
     out.className = "simout show";
-    out.innerHTML = '<b>'+name+'</b>에 야간진료 추가 시 커버리지 '+before+'% → '+after+
+    out.innerHTML = '<b>'+name+'</b> 야간진료 추가 시 커버리지 '+before+'% → '+after+
       '% <span class="delta">(+'+(after-before)+'%p)</span>';
     S.refresh();
   });
+
   document.getElementById("simReset").addEventListener("click", ()=>{
     S.state.extraNight.clear();
     document.getElementById("simOut").className = "simout";
     S.refresh();
   });
 
-  // ---- 등시간대(isochrone) 반경 토글 ----
   const isoToggle = document.getElementById("isoToggle");
   isoToggle.addEventListener("change", ()=>{ S.setIsochronesVisible(isoToggle.checked); });
 
-  // ---- 24시간 커버리지 트렌드 스파크라인 ----
   function renderTrend(){
     const svgT = document.getElementById("trendSvg");
     const w = 240, h = 44, pad = 3;
@@ -86,6 +340,10 @@
   function renderPolicyView(){
     renderRank();
     renderTrend();
+    if (recState.recommendations.length) {
+      buildRecommendations();
+      renderRecommendationCards();
+    }
     S.setIsochronesVisible(isoToggle.checked);
   }
 
@@ -93,11 +351,15 @@
     onShow(){
       document.getElementById("trendWrap").hidden = false;
       if (isoToggle.checked) S.setIsochronesVisible(true);
+      if (recState.selected) S.setRecommendationZones(recState.selected.zones.map(z=>z.id));
     },
     onHide(){
       document.getElementById("trendWrap").hidden = true;
       S.setIsochronesVisible(false);
+      S.setRecommendationZones([]);
     },
     render: renderPolicyView,
   });
+
+  setupRecommendations();
 })();
