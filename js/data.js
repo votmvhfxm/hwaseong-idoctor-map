@@ -1,6 +1,6 @@
 /**
  * js/data.js — 화성시 소아의료 공백 지도의 공통 표본 데이터.
- * 지금은 코드 내 하드코딩 값이며, 추후 심평원 병원정보서비스·E-Gen·화성시 영유아 인구 공공데이터 API로 대체 예정.
+ * 지금은 코드 내 하드코딩 값이며, 0-9세 인구는 js/population.js의 정적 공공데이터로 보강한다.
  * policy.js/citizen.js는 이 파일을 직접 쓰지 말고 js/shared.js가 노출하는 값을 통해 접근한다.
  */
 (function(){
@@ -8,7 +8,7 @@
 
   // x,y = SVG tile 좌상단(viewBox 128x104), w=22 h=17 — 카카오맵 키 미입력 시 개념도 폴백용
   // lat,lng = 화성시 각 행정동/읍/면 소재지 근사 좌표(약식) — 실제 GeoJSON 경계 연동 전까지 중심점 근사치로 사용
-  // pop = 영유아 상대인구(표본)
+  // pop = 과거 표본 상대지수. 정책 계산은 js/population.js의 childPop을 사용한다.
   const W = 22, H = 17;
   const zones = [
     {id:"dt13", name:"동탄1~3동", x:102, y:6,  pop:9, lat:37.201, lng:127.100},

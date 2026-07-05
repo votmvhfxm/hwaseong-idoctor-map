@@ -24,9 +24,30 @@
     balance: "지역 균형",
     vulnerable: "취약지역 우선",
   };
+  const fmt = value => S.formatNumber ? S.formatNumber(value) : Number(value || 0).toLocaleString("ko-KR");
+  const zoneChildPop = z => S.zoneDemand ? S.zoneDemand(z) : Number(z.childPop || z.childPopulation || z.pop || 0);
+
+  function isPediatricClinic(c){
+    const text = [
+      c.type,
+      c.name,
+      Array.isArray(c.departments) ? c.departments.join(" ") : c.departments,
+    ].filter(Boolean).join(" ");
+    return /소아|청소년/.test(text);
+  }
+
+  function clinicsInZone(zid){
+    return S.clinics.filter(c => (c.zone === zid || c.zoneId === zid) && isPediatricClinic(c));
+  }
+
+  function childrenPerClinic(z){
+    const count = clinicsInZone(z.id).length;
+    if (!count) return "없음";
+    return fmt(Math.round(zoneChildPop(z) / count))+"명";
+  }
 
   function gapZones(){
-    return S.zones.filter(z => !S.zoneCovered(z.id)).sort((a,b) => b.pop-a.pop);
+    return S.zones.filter(z => !S.zoneCovered(z.id)).sort((a,b) => zoneChildPop(b)-zoneChildPop(a));
   }
 
   function renderRank(){
@@ -37,8 +58,11 @@
     gaps.forEach((z,i)=>{
       const row = document.createElement("div");
       row.className = "rankrow";
-      row.innerHTML = '<span class="r">'+(i+1)+'</span><span class="z">'+z.name+
-        '</span><span class="p">영유아 '+z.pop+' · 공백</span>';
+      const clinicCount = clinicsInZone(z.id).length;
+      row.innerHTML =
+        '<span class="r">'+(i+1)+'</span>'+
+        '<span class="z">'+z.name+'</span>'+
+        '<span class="p">0-9세 '+fmt(zoneChildPop(z))+'명 · 소아청소년과 '+clinicCount+'곳 · 1곳당 '+childrenPerClinic(z)+' · 공백</span>';
       wrap.appendChild(row);
     });
   }
@@ -66,7 +90,7 @@
     return S.zones.reduce((sum, z) => {
       const before = S.zoneCovered(z.id, S.state.hour, beforeExtra);
       const after = S.zoneCovered(z.id, S.state.hour, afterExtra);
-      return sum + (!before && after ? z.pop : 0);
+      return sum + (!before && after ? zoneChildPop(z) : 0);
     }, 0);
   }
 
@@ -84,15 +108,15 @@
     const beforeGaps = gapCount(beforeExtra);
     const afterGaps = gapCount(afterExtra);
     const added = addedPop(combo);
-    let score = (afterCoverage - beforeCoverage) * 10 + added * 4 + (beforeGaps - afterGaps) * 5;
+    let score = (afterCoverage - beforeCoverage) * 10 + (added / 1000) * 4 + (beforeGaps - afterGaps) * 5;
     if (strategy === "balance") score += (combo.length - sidePenalty(combo)) * 6;
-    if (strategy === "vulnerable") score += combo.reduce((s,z)=>s + z.pop*z.pop, 0);
+    if (strategy === "vulnerable") score += combo.reduce((s,z)=>s + Math.pow(zoneChildPop(z) / 1000, 2), 0);
     return { strategy, zones: combo, beforeCoverage, afterCoverage, beforeGaps, afterGaps, added, score };
   }
 
   function buildRecommendations(){
     const gaps = gapZones();
-    const candidates = gaps.length ? gaps : S.zones.slice().sort((a,b)=>b.pop-a.pop);
+    const candidates = gaps.length ? gaps : S.zones.slice().sort((a,b)=>zoneChildPop(b)-zoneChildPop(a));
     const size = Math.min(recState.count, candidates.length);
     const allCombos = combos(candidates, size, 0, [], []);
     const order = [recState.goal, "coverage", "balance", "vulnerable"].filter((v,i,a)=>a.indexOf(v)===i);
@@ -132,7 +156,14 @@
       afterCoverage: rec.afterCoverage,
       currentGapCount: rec.beforeGaps,
       afterGapCount: rec.afterGaps,
-      addedCoverageIndex: rec.added,
+      addedChildPopulation: rec.added,
+      regionsDetail: rec.zones.map(z => ({
+        name: z.name,
+        childPopulation: zoneChildPop(z),
+        pediatricClinics: clinicsInZone(z.id).length,
+        childrenPerClinic: childrenPerClinic(z),
+        currentGap: !S.zoneCovered(z.id, S.state.hour, S.state.extraNight),
+      })),
     };
   }
 
@@ -202,7 +233,7 @@
     document.getElementById("cmpBefore").textContent = rec.beforeCoverage+"%";
     document.getElementById("cmpAfter").textContent = rec.afterCoverage+"%";
     document.getElementById("cmpGaps").textContent = rec.beforeGaps+"곳 → "+rec.afterGaps+"곳";
-    document.getElementById("cmpAdded").textContent = "+"+rec.added;
+    document.getElementById("cmpAdded").textContent = "+"+fmt(rec.added)+"명";
   }
 
   function renderRecommendationCards(){
@@ -227,7 +258,7 @@
         '<div class="recMetrics">'+
           '<div>현재 → 추천 후<b>'+rec.beforeCoverage+'% → '+rec.afterCoverage+'%</b></div>'+
           '<div>공백 지역<b>'+rec.beforeGaps+'곳 → '+rec.afterGaps+'곳</b></div>'+
-          '<div>추가 커버 지수<b>+'+rec.added+'</b></div>'+
+          '<div>추가 커버 0-9세 인구<b>+'+fmt(rec.added)+'명</b></div>'+
           '<div>추천 지역 수<b>'+rec.zones.length+'곳</b></div>'+
         '</div>';
       card.addEventListener("click", ()=>{

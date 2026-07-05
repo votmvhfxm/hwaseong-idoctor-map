@@ -41,7 +41,7 @@
         <div class="cov">
           <span class="num" id="covNum">89</span><span class="pct">%</span>
         </div>
-        <div class="covlabel">이 시각, 진료 가능 지역의 <b>영유아 인구 커버리지</b></div>
+        <div class="covlabel">이 시각, 진료 가능 지역의 <b>0-9세 아동 인구 기준 커버리지</b></div>
         <div class="bar"><i id="covBar" style="width:89%;background:var(--cov0)"></i></div>
         <div class="miniStats">
           <div class="mini"><b id="mOpen" style="color:var(--primary)">–</b><span>문 연 소아 진료기관</span></div>
@@ -132,13 +132,13 @@
       <section class="panel" id="panel-policy" role="tabpanel" aria-labelledby="tab-policy" hidden>
         <p class="eyebrow">공백 우선순위</p>
         <h2 class="h2">이 시각 진료 공백 지역</h2>
-        <p class="sub">영유아 인구가 많은데 열린 소아 진료가 없는 지역 순. 지도 색이 진할수록 영유아 인구밀도가 높아요.</p>
+        <p class="sub">0-9세 아동 인구가 많은데 열린 소아 진료가 없는 지역 순. 지도 색이 진할수록 0-9세 아동 인구가 많아요.</p>
         <div class="rank" id="rank"></div>
 
         <div class="policyAi">
           <p class="eyebrow">AI 배치 추천</p>
           <h2 class="h2">추가 배치 후보 계산</h2>
-          <p class="sub">현재 시간대의 진료 공백과 영유아 인구를 기준으로 추가 배치 후보를 계산합니다.</p>
+          <p class="sub">현재 시간대의 진료 공백과 0-9세 아동 인구를 기준으로 추가 배치 후보를 계산합니다.</p>
 
           <div class="recControls">
             <div>
@@ -171,7 +171,7 @@
               <div><span>현재 커버리지</span><b id="cmpBefore">-</b></div>
               <div><span>추천 후 커버리지</span><b id="cmpAfter">-</b></div>
               <div><span>공백 지역 수</span><b id="cmpGaps">-</b></div>
-              <div><span>추가 커버 지수</span><b id="cmpAdded">-</b></div>
+              <div><span>추가 커버 0-9세 인구</span><b id="cmpAdded">-</b></div>
             </div>
           </div>
 
@@ -179,6 +179,7 @@
             <p class="eyebrow">계산 결과 기반 AI 해석</p>
             <p id="policyAiBody">계산 결과 기반 AI 해석은 2차 작업에서 Gemini API로 연결 예정입니다.</p>
           </div>
+          <p class="note dataSource">0-9세 인구는 공공데이터포털 경기도 화성시_인구_20260420의 행정구역별 0-9세 컬럼을 사용했습니다. 병원 정보는 현재 연동/표본 데이터 기준입니다.</p>
         </div>
 
       </section>
@@ -210,15 +211,15 @@
 
         <div class="kakaoMapEl" id="kakaoMapEl" hidden></div>
         <svg class="map" id="svg" viewBox="0 0 128 104" role="img" aria-label="화성시 지역별 소아 진료 접근성 지도"></svg>
-        <p class="note" id="mapNote">서쪽(해안·농촌)일수록 소아과가 적어 밤이 되면 공백이 커집니다. 슬라이더를 밤으로 옮겨보세요. · <b>표본 데이터</b>이며, 실서비스에서는 심평원 병원정보·응급의료(E-Gen) API·화성시 영유아 인구를 연동합니다. 지도 연결 전에는 타일 경계가 약식 개념도로 표시됩니다. 지도 연결 후에는 화성시 28개 읍면동의 실제 경계(통계청 행정동 경계 데이터)가 표시되며, 이를 이 데모의 10개 권역으로 근사 그룹핑해 색칠합니다 — 공식 행정구역 권역 구분은 아닙니다.</p>
+        <p class="note" id="mapNote">서쪽(해안·농촌)일수록 소아과가 적어 밤이 되면 공백이 커집니다. 슬라이더를 밤으로 옮겨보세요. · 0-9세 인구는 공공데이터포털 경기도 화성시_인구_20260420의 행정구역별 0-9세 컬럼을 10개 권역으로 근사 합산했습니다. 병원 정보는 현재 연동/표본 데이터 기준입니다. 지도 연결 전에는 타일 경계가 약식 개념도로 표시됩니다. 지도 연결 후에는 화성시 29개 읍면동의 실제 경계(통계청 행정동 경계 데이터)가 표시되며, 이를 이 데모의 10개 권역으로 근사 그룹핑해 색칠합니다 — 공식 행정구역 권역 구분은 아닙니다.</p>
       </div>
     </div>
   </div>
 
   <footer>
     프로토타입 v0.3 · 지도/배치는 표본 데이터로 작동 · AI 문진은 서버 API를 통해 연동 · 응급신호 하드코딩 안전장치 병행<br/>
-    정책 뷰: 인구밀도 그라데이션 지도 · 24시간 커버리지 트렌드 · AI 배치 추천<br/>
-    실연동 예정: 건강보험심사평가원 병원정보서비스, 국립중앙의료원 응급의료정보(E-Gen), 화성시 행정동별 영유아 인구, 지도 API Directions, 실제 행정동 GeoJSON 경계<br/>
+    정책 뷰: 0-9세 아동 인구 그라데이션 지도 · 24시간 커버리지 트렌드 · AI 배치 추천<br/>
+    실연동 예정: 건강보험심사평가원 병원정보서비스, 국립중앙의료원 응급의료정보(E-Gen), 지도 API Directions, 실제 행정동 GeoJSON 경계<br/>
     2026 화성시 시민·공무원 AI 공모전 출품 준비용 · 팁: <span class="kbd">시민 뷰</span>에서 증상을 고르고, <span class="kbd">정책 뷰</span>에서 추천안 생성을 눌러보세요.
   </footer>
 </div>
@@ -229,6 +230,7 @@
 </div>
 
 <script src="js/data.js"></script>
+<script src="js/population.js"></script>
 <script src="js/bootstrap.js"></script>
 </body>
 </html>

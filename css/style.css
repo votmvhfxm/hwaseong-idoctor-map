@@ -266,10 +266,10 @@ svg.map{width:100%;height:auto;display:block}
 
 /* Policy */
 .rank{display:flex;flex-direction:column;gap:7px;margin-top:4px}
-.rankrow{display:flex;align-items:center;gap:11px;padding:9px 11px;border-radius:10px;background:var(--bg)}
+.rankrow{display:flex;align-items:flex-start;gap:11px;padding:9px 11px;border-radius:10px;background:var(--bg)}
 .rankrow .r{font-family:var(--mono);font-weight:700;font-size:12px;color:var(--alert);width:16px}
-.rankrow .z{flex:1;font-size:13px;font-weight:700}
-.rankrow .p{font-family:var(--mono);font-size:11.5px;color:var(--muted)}
+.rankrow .z{flex:0 0 76px;font-size:13px;font-weight:700;line-height:1.35}
+.rankrow .p{flex:1;font-family:var(--mono);font-size:11.2px;color:var(--muted);line-height:1.45}
 
 .btn{font-family:var(--sans);font-size:13px;font-weight:700;border-radius:9px;padding:9px 14px;cursor:pointer;border:1px solid var(--line);background:var(--bg);color:var(--ink);transition:.12s}
 .btn.primary{background:var(--primary);color:#fff;border-color:var(--primary)}
@@ -307,6 +307,7 @@ svg.map{width:100%;height:auto;display:block}
 .aiExplain ul{margin:8px 0 8px 16px;padding:0;color:var(--ink);font-size:12px;line-height:1.45}
 .aiExplain li + li{margin-top:4px}
 .aiExplain .caution{padding-top:8px;border-top:1px dashed var(--line)}
+.dataSource{padding:8px 0 0;margin:10px 0 0}
 .zone.rec-hl{stroke:var(--primary);stroke-width:1.5;stroke-opacity:1;filter:drop-shadow(0 1px 2px rgba(232,98,14,.35))}
 .recMark text{font-family:var(--sans);font-size:7px;font-weight:900;fill:var(--primary);stroke:#fff;stroke-width:.7;paint-order:stroke}
 

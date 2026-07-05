@@ -7,8 +7,12 @@
   const { W, H, zones, clinics, demoDist } = window.AppData;
 
   const zoneById = Object.fromEntries(zones.map(z=>[z.id, z]));
-  const totalPop = zones.reduce((s,z)=>s+z.pop, 0);
-  const maxPop = Math.max(...zones.map(z=>z.pop));
+  function zoneDemand(z){
+    return Number(z.childPop || z.childPopulation || z.pop || 0);
+  }
+  const totalPop = zones.reduce((s,z)=>s+zoneDemand(z), 0);
+  const maxPop = Math.max(...zones.map(zoneDemand));
+  const formatNumber = value => Number(value || 0).toLocaleString("ko-KR");
 
 const initialHour = new Date().getHours();
 
@@ -58,7 +62,7 @@ const state = {
     h = (h==null) ? state.hour : h;
     extra = extra || state.extraNight;
     let cov = 0;
-    zones.forEach(z => { if (zoneCovered(z.id, h, extra)) cov += z.pop; });
+    zones.forEach(z => { if (zoneCovered(z.id, h, extra)) cov += zoneDemand(z); });
     return Math.round(cov / totalPop * 100);
   }
   function covColor(p){ return p>=70 ? "var(--cov0)" : p>=40 ? "var(--cov1)" : "var(--cov2)"; }
@@ -83,7 +87,7 @@ const state = {
     zoneRectEls[z.id] = rect;
     g.appendChild(rect);
     const lbl = el("text", {class:"zlabel", x:z.x+3, y:z.y+6}); lbl.textContent = z.name; g.appendChild(lbl);
-    const pop = el("text", {class:"zpop", x:z.x+3, y:z.y+11}); pop.textContent = "영유아 "+z.pop; g.appendChild(pop);
+    const pop = el("text", {class:"zpop", x:z.x+3, y:z.y+11}); pop.textContent = "0-9세 "+formatNumber(zoneDemand(z)); g.appendChild(pop);
     svg.appendChild(g);
   });
 
@@ -195,7 +199,7 @@ const state = {
     zones.forEach(z=>{
       const div = document.createElement("div");
       div.className = "kzone";
-      div.innerHTML = "<b>"+z.name+"</b><span>영유아 "+z.pop+"</span>";
+      div.innerHTML = "<b>"+z.name+"</b><span>0-9세 "+formatNumber(zoneDemand(z))+"명</span>";
       const overlay = new kakao.maps.CustomOverlay({
         position: new kakao.maps.LatLng(z.lat, z.lng),
         content: div, yAnchor: 0.5, xAnchor: 0.5, zIndex: 1,
@@ -356,7 +360,7 @@ async function autoConnectKakaoMapFromConfig(){
   // 커버리지 + 인구밀도로 zone 색상(rgb, alpha) 계산 — SVG/카카오 zone 카드/실폴리곤이 모두 이 값을 공유
   function zoneFillStyle(z){
     const covered = zoneCovered(z.id);
-    const intensity = z.pop / maxPop; // 0..1, 인구밀도 클수록 색이 진해짐
+    const intensity = zoneDemand(z) / maxPop; // 0..1, 0-9세 인구가 클수록 색이 진해짐
     const rgb = covered ? "31,143,91" : "211,64,44";
     const cardAlpha = covered ? (0.16 + intensity*0.34) : (0.18 + intensity*0.48);
     const polyAlpha = covered ? (0.10 + intensity*0.30) : (0.14 + intensity*0.42);
@@ -463,7 +467,7 @@ async function autoConnectKakaoMapFromConfig(){
   });
 
   window.Shared = {
-    zones, clinics, demoDist, zoneById, totalPop, maxPop,
+    zones, clinics, demoDist, zoneById, totalPop, maxPop, zoneDemand, formatNumber,
     state, isOpen, zoneCovered, coveragePct, covColor, hh,
     svg, el, markerEls, zoneRectEls, highlightZone, setRecommendationZones, setIsochronesVisible, hasRealMap, clinicLatLng,
     registerView, refresh, setView,
