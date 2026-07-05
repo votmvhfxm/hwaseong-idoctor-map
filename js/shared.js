@@ -175,11 +175,7 @@ const state = {
       else if (kakaoLoadState==="error") { badge.textContent="연결 실패"; badge.classList.remove("on"); }
       else { badge.textContent="개념도"; badge.classList.remove("on"); }
     }
-    const errEl = document.getElementById("mapKeyError");
-    if (errEl) {
-      if (errMsg) { errEl.textContent = errMsg; errEl.style.display = "block"; }
-      else { errEl.style.display = "none"; }
-    }
+    if (errMsg) console.warn(errMsg);
   }
 
   function loadKakaoSdk(key){
@@ -289,30 +285,13 @@ async function autoConnectKakaoMapFromConfig(){
 
     if (!key) return;
 
-    const input = document.getElementById("mapKey");
-    if (input) input.value = key;
-
     connectKakaoMap(key);
   } catch (e) {
-    // 자동 연결 실패 시 기존 개념도/수동 입력 방식으로 유지한다.
+    // 자동 연결 실패 시 기존 개념도를 유지한다.
   }
 }
 
-  const mapKeyInput = document.getElementById("mapKey");
-  document.getElementById("mapConnect").addEventListener("click", ()=>{
-    const key = mapKeyInput.value.trim();
-    if (key) connectKakaoMap(key);
-  });
-
   autoConnectKakaoMapFromConfig();
-  
-  mapKeyInput.addEventListener("keydown", e=>{
-    if (e.key==="Enter") { e.preventDefault(); document.getElementById("mapConnect").click(); }
-  });
-  document.getElementById("mapSettingsBtn").addEventListener("click", ()=>{
-    const body = document.getElementById("mapSettingsBody");
-    body.hidden = !body.hidden;
-  });
 
 
   // ---- 등시간대(isochrone) 반경 — 정책 뷰 전용 오버레이 ----

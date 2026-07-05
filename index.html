@@ -199,14 +199,7 @@
         </div>
 
         <div class="mapSettings">
-          <button class="aiSettingsToggle" id="mapSettingsBtn" type="button">🗺 지도 연결 설정<span class="aiStatus" id="mapStatus">개념도</span></button>
-          <div class="aiSettingsBody" id="mapSettingsBody" hidden>
-            <label for="mapKey">카카오맵 JavaScript 키</label>
-            <input type="text" id="mapKey" placeholder="카카오 디벨로퍼스 JavaScript 키" autocomplete="off" />
-            <button class="btn primary" id="mapConnect" type="button" style="margin-top:8px;width:100%">지도 연결</button>
-            <p class="aiNote">이 키는 저장되지 않고 이 브라우저 탭에서만 사용돼요. 카카오 디벨로퍼스 콘솔 → 플랫폼 설정에 이 페이지 도메인(예: localhost)이 등록돼 있어야 지도가 떠요. 연결에 성공하면 아래 개념도 대신 실제 지도로 전환돼요.</p>
-            <p class="aiNote" id="mapKeyError" style="color:var(--alert);display:none"></p>
-          </div>
+          <div class="mapStatusRow">🗺 지도 연결 상태<span class="aiStatus" id="mapStatus">개념도</span></div>
         </div>
 
         <div class="kakaoMapEl" id="kakaoMapEl" hidden></div>

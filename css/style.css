@@ -239,6 +239,8 @@ select.ctrl{background:var(--surface)}
 .legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:4px;vertical-align:-1px}
 svg.map{width:100%;height:auto;display:block}
 .mapSettings{padding:0 4px;margin-bottom:6px}
+.mapStatusRow{display:flex;align-items:center;gap:7px;font-family:var(--sans);font-size:12px;font-weight:700;
+  color:var(--muted);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:7px 10px;width:100%}
 
 /* 카카오맵 실연동 (키 입력 시 SVG 개념도 대신 표시) */
 .kakaoMapEl{width:100%;height:420px;border-radius:10px;overflow:hidden;background:var(--bg)}
