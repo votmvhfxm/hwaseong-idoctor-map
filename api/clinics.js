@@ -2,6 +2,7 @@ const HOSP_BASIS_ENDPOINT = "https://apis.data.go.kr/B551182/hospInfoServicev2/g
 const DETAIL_BASE_ENDPOINT = "https://apis.data.go.kr/B551182/MadmDtlInfoService2.8";
 
 const SIDO_GYEONGGI = "310000";
+const SGGU_HWASEONG = "312500";
 const PEDIATRICS_CODE = "11";
 const ROWS_PER_PAGE = 200;
 const MAX_SCAN_PAGES = 160;
@@ -28,12 +29,12 @@ function buildUrl(endpoint, serviceKey, params) {
   return endpoint + "?" + query.toString();
 }
 
-function buildHospBasisUrl(serviceKey, pageNo) {
-  return buildUrl(HOSP_BASIS_ENDPOINT, serviceKey, {
+function buildHospBasisUrl(serviceKey, pageNo, extraParams = {}) {
+  return buildUrl(HOSP_BASIS_ENDPOINT, serviceKey, Object.assign({
     pageNo: String(pageNo),
     numOfRows: String(ROWS_PER_PAGE),
     sidoCd: SIDO_GYEONGGI,
-  });
+  }, extraParams));
 }
 
 function buildDetailUrl(serviceKey, operation, ykiho) {
@@ -125,15 +126,17 @@ async function fetchHira(url, timeoutMs) {
   return { status: raw.status, parsed };
 }
 
-async function fetchPage(serviceKey, pageNo) {
-  const url = buildHospBasisUrl(serviceKey, pageNo);
+async function fetchPage(serviceKey, pageNo, extraParams = {}) {
+  const url = buildHospBasisUrl(serviceKey, pageNo, extraParams);
   const result = await fetchHira(url, FETCH_TIMEOUT_MS);
   return { pageNo, requestUrl: maskServiceKey(url), parsed: result.parsed };
 }
 
 function isHwaseong(item) {
   const address = item.addr || item.address || "";
-  return address.includes("화성");
+  const sgguCd = String(item.sgguCd || "").trim();
+  const sgguName = String(item.sgguCdNm || "").trim();
+  return sgguCd === SGGU_HWASEONG || sgguName.includes("화성") || /^경기도\s+화성시\s/.test(address);
 }
 
 function toNumber(value) {
@@ -262,6 +265,58 @@ function toClinic(item, index, enrichment) {
     openText: formatTodayHours(hours),
     isReal: true,
     source: "public-api",
+  };
+}
+
+async function fetchHwaseongDirect(serviceKey) {
+  const directParams = { sidoCd: SIDO_GYEONGGI, sgguCd: SGGU_HWASEONG };
+  const first = await fetchPage(serviceKey, 1, directParams);
+  const totalCount = first.parsed.totalCount || first.parsed.items.length;
+  const totalPages = Math.max(1, Math.ceil(totalCount / ROWS_PER_PAGE));
+  const maxPagesAllowed = Math.min(totalPages, MAX_SCAN_PAGES);
+
+  const pages = [first];
+  const pageErrors = [];
+  const allItems = first.parsed.items.slice();
+
+  for (let pageNo = 2; pageNo <= maxPagesAllowed; pageNo += PAGE_CONCURRENCY) {
+    const batch = [];
+    for (let offset = 0; offset < PAGE_CONCURRENCY && pageNo + offset <= maxPagesAllowed; offset += 1) {
+      const currentPage = pageNo + offset;
+      batch.push(
+        fetchPage(serviceKey, currentPage, directParams)
+          .then((page) => ({ ok: true, page }))
+          .catch((error) => ({ ok: false, pageNo: currentPage, message: error.message }))
+      );
+    }
+
+    const results = await Promise.all(batch);
+    for (const result of results) {
+      if (!result.ok) {
+        pageErrors.push({ pageNo: result.pageNo, message: result.message });
+        continue;
+      }
+      pages.push(result.page);
+      allItems.push(...result.page.parsed.items);
+    }
+  }
+
+  const hwaseongItems = allItems.filter(isHwaseong);
+  if (!hwaseongItems.length) {
+    throw new Error("Hwaseong direct query returned 0 address-matched items");
+  }
+
+  return {
+    totalCount,
+    totalPages,
+    maxPagesAllowed,
+    pagesScanned: pages.length,
+    itemsScanned: allItems.length,
+    directRawCount: allItems.length,
+    directAfterAddressFilterCount: hwaseongItems.length,
+    requestUrlSample: first.requestUrl,
+    pageErrors,
+    hwaseongItems,
   };
 }
 
@@ -464,20 +519,54 @@ module.exports = async (req, res) => {
 
   try {
     const debug = req.query && req.query.debug === "1";
-    const scan = await scanGyeonggi(serviceKey);
-    const baseItems = scan.hwaseongItems.filter((item) => item.yadmNm && item.addr);
-    const enrichment = await enrichClinics(serviceKey, baseItems);
-    const clinics = enrichment.detailResults
+    const requestedStrategy = req.query && req.query.strategy ? String(req.query.strategy) : "";
+    const forceDirect = requestedStrategy === "hwaseong-direct";
+    const forceGyeonggi = requestedStrategy === "gyeonggi-scan" || requestedStrategy === "gyeonggi-full-scan";
+    let directError = null;
+    let scan;
+    let strategy;
+
+    if (forceGyeonggi) {
+      scan = await scanGyeonggi(serviceKey);
+      strategy = "fallback: sidoCd=310000 page scan, accurate Hwaseong filter, getDgsbjtInfo2.8 pediatrics filter, getDtlInfo2.8 hours";
+    } else {
+      try {
+        scan = await fetchHwaseongDirect(serviceKey);
+        strategy = "direct sidoCd=310000, sgguCd=312500, then getDgsbjtInfo2.8 pediatrics filter, getDtlInfo2.8 hours";
+      } catch (error) {
+        directError = error.message;
+        if (forceDirect) throw error;
+        scan = await scanGyeonggi(serviceKey);
+        strategy = "fallback: direct Hwaseong query failed, sidoCd=310000 page scan, accurate Hwaseong filter, getDgsbjtInfo2.8 pediatrics filter, getDtlInfo2.8 hours";
+      }
+    }
+
+    let baseItems = scan.hwaseongItems.filter((item) => item.yadmNm && item.addr);
+    let enrichment = await enrichClinics(serviceKey, baseItems);
+    let clinics = enrichment.detailResults
       .map((result, index) => toClinic(result.item, index, result))
       .filter((clinic) => clinic.name && clinic.address);
+
+    if (!forceDirect && !forceGyeonggi && strategy.startsWith("direct") && clinics.length < 50) {
+      directError = "Hwaseong direct query returned fewer than 50 pediatric clinics after getDgsbjtInfo2.8 filter";
+      scan = await scanGyeonggi(serviceKey);
+      strategy = "fallback: direct Hwaseong query had too few pediatric clinics, sidoCd=310000 page scan, accurate Hwaseong filter, getDgsbjtInfo2.8 pediatrics filter, getDtlInfo2.8 hours";
+      baseItems = scan.hwaseongItems.filter((item) => item.yadmNm && item.addr);
+      enrichment = await enrichClinics(serviceKey, baseItems);
+      clinics = enrichment.detailResults
+        .map((result, index) => toClinic(result.item, index, result))
+        .filter((clinic) => clinic.name && clinic.address);
+    }
+
     const cache = setClinicsCacheHeader(res, clinics, enrichment);
 
     res.status(200).json({
       source: "HIRA",
-      strategy: "sidoCd=310000 page scan, address includes 화성, getDgsbjtInfo2.8 pediatrics filter, getDtlInfo2.8 hours",
+      strategy,
       count: clinics.length,
       withHoursCount: cache.withHoursCount,
       cacheStatus: cache.isGoodClinicsResponse ? "cacheable" : "no-store",
+      directError,
       scan: {
         totalCount: scan.totalCount,
         totalPages: scan.totalPages,
@@ -485,6 +574,9 @@ module.exports = async (req, res) => {
         pagesScanned: scan.pagesScanned,
         itemsScanned: scan.itemsScanned,
         hwaseongCount: baseItems.length,
+        directRawCount: scan.directRawCount || null,
+        directAfterAddressFilterCount: scan.directAfterAddressFilterCount || null,
+        directAfterPediatricsFilterCount: strategy.startsWith("direct") ? clinics.length : null,
         pageErrors: scan.pageErrors,
         requestUrlSample: scan.requestUrlSample,
       },
