@@ -1,5 +1,9 @@
+const fs = require("fs");
+const path = require("path");
+
 const HOSP_BASIS_ENDPOINT = "https://apis.data.go.kr/B551182/hospInfoServicev2/getHospBasisList";
 const DETAIL_BASE_ENDPOINT = "https://apis.data.go.kr/B551182/MadmDtlInfoService2.8";
+const STATIC_CACHE_PATH = path.join(__dirname, "..", "data", "clinics-cache.json");
 
 const SIDO_GYEONGGI = "310000";
 const SGGU_HWASEONG = "312500";
@@ -205,19 +209,66 @@ function getTodayOpenStatus(hours, now = new Date()) {
 }
 
 function setClinicsCacheHeader(res, clinics, enrichment) {
-  const withHoursCount = clinics.filter((clinic) => clinic.hours).length;
-  const isGoodClinicsResponse =
-    clinics.length >= 50 &&
-    withHoursCount >= 10 &&
-    enrichment.subjectStats.pediatrics >= 50 &&
-    enrichment.detailStats.failed === 0;
+  const quality = getClinicsPayloadQuality({ clinics, enrichment: {
+    subject: enrichment.subjectStats,
+    detail: enrichment.detailStats,
+  } });
 
   res.setHeader(
     "Cache-Control",
-    isGoodClinicsResponse ? "s-maxage=21600, stale-while-revalidate=86400" : "no-store"
+    quality.isGoodClinicsResponse ? "s-maxage=21600, stale-while-revalidate=86400" : "no-store"
   );
 
+  return quality;
+}
+
+function getClinicsPayloadQuality(payload) {
+  const clinics = Array.isArray(payload && payload.clinics) ? payload.clinics : [];
+  const enrichment = payload && payload.enrichment ? payload.enrichment : {};
+  const subject = enrichment.subject || {};
+  const detail = enrichment.detail || {};
+  const withHoursCount = clinics.filter((clinic) => clinic && clinic.hours).length;
+  const isGoodClinicsResponse =
+    clinics.length >= 50 &&
+    withHoursCount >= 10 &&
+    Number(subject.pediatrics || 0) >= 50 &&
+    Number(detail.failed || 0) === 0;
+
   return { withHoursCount, isGoodClinicsResponse };
+}
+
+function setNoStore(res) {
+  res.setHeader("Cache-Control", "no-store");
+}
+
+function readStaticClinicsCache() {
+  if (!fs.existsSync(STATIC_CACHE_PATH)) {
+    return { ok: false, error: "static cache file not found" };
+  }
+
+  try {
+    const payload = JSON.parse(fs.readFileSync(STATIC_CACHE_PATH, "utf8"));
+    const quality = getClinicsPayloadQuality(payload);
+    if (!quality.isGoodClinicsResponse) {
+      return {
+        ok: false,
+        error: "static cache failed quality gate",
+        quality,
+      };
+    }
+
+    return {
+      ok: true,
+      payload: Object.assign({}, payload, {
+        withHoursCount: quality.withHoursCount,
+        cacheStatus: "static-cache",
+        servedFromStaticCache: true,
+      }),
+      quality,
+    };
+  } catch (error) {
+    return { ok: false, error: error.message };
+  }
 }
 
 function formatTime(value) {
@@ -491,107 +542,148 @@ async function enrichClinics(serviceKey, baseItems) {
   return { detailResults, subjectStats, detailStats, sample };
 }
 
-module.exports = async (req, res) => {
+async function buildLiveClinicsPayload(serviceKey, options = {}) {
+  const requestedStrategy = options.strategy || "";
+  const debug = Boolean(options.debug);
+  const forceDirect = requestedStrategy === "hwaseong-direct";
+  const forceGyeonggi = requestedStrategy === "gyeonggi-scan" || requestedStrategy === "gyeonggi-full-scan";
+  let directError = null;
+  let scan;
+  let strategy;
+
+  if (forceGyeonggi) {
+    scan = await scanGyeonggi(serviceKey);
+    strategy = "fallback: sidoCd=310000 page scan, accurate Hwaseong filter, getDgsbjtInfo2.8 pediatrics filter, getDtlInfo2.8 hours";
+  } else {
+    try {
+      scan = await fetchHwaseongDirect(serviceKey);
+      strategy = "direct sidoCd=310000, sgguCd=312500, then getDgsbjtInfo2.8 pediatrics filter, getDtlInfo2.8 hours";
+    } catch (error) {
+      directError = error.message;
+      if (forceDirect) throw error;
+      scan = await scanGyeonggi(serviceKey);
+      strategy = "fallback: direct Hwaseong query failed, sidoCd=310000 page scan, accurate Hwaseong filter, getDgsbjtInfo2.8 pediatrics filter, getDtlInfo2.8 hours";
+    }
+  }
+
+  let baseItems = scan.hwaseongItems.filter((item) => item.yadmNm && item.addr);
+  let enrichment = await enrichClinics(serviceKey, baseItems);
+  let clinics = enrichment.detailResults
+    .map((result, index) => toClinic(result.item, index, result))
+    .filter((clinic) => clinic.name && clinic.address);
+
+  if (!forceDirect && !forceGyeonggi && strategy.startsWith("direct") && clinics.length < 50) {
+    directError = "Hwaseong direct query returned fewer than 50 pediatric clinics after getDgsbjtInfo2.8 filter";
+    scan = await scanGyeonggi(serviceKey);
+    strategy = "fallback: direct Hwaseong query had too few pediatric clinics, sidoCd=310000 page scan, accurate Hwaseong filter, getDgsbjtInfo2.8 pediatrics filter, getDtlInfo2.8 hours";
+    baseItems = scan.hwaseongItems.filter((item) => item.yadmNm && item.addr);
+    enrichment = await enrichClinics(serviceKey, baseItems);
+    clinics = enrichment.detailResults
+      .map((result, index) => toClinic(result.item, index, result))
+      .filter((clinic) => clinic.name && clinic.address);
+  }
+
+  const payload = {
+    source: "HIRA",
+    strategy,
+    count: clinics.length,
+    generatedAt: new Date().toISOString(),
+    directError,
+    scan: {
+      totalCount: scan.totalCount,
+      totalPages: scan.totalPages,
+      maxPagesAllowed: scan.maxPagesAllowed,
+      pagesScanned: scan.pagesScanned,
+      itemsScanned: scan.itemsScanned,
+      hwaseongCount: baseItems.length,
+      directRawCount: scan.directRawCount || null,
+      directAfterAddressFilterCount: scan.directAfterAddressFilterCount || null,
+      directAfterPediatricsFilterCount: strategy.startsWith("direct") ? clinics.length : null,
+      pageErrors: scan.pageErrors,
+      requestUrlSample: scan.requestUrlSample,
+    },
+    enrichment: {
+      subject: enrichment.subjectStats,
+      detail: enrichment.detailStats,
+    },
+    debug: debug ? enrichment.sample : undefined,
+    clinics,
+  };
+  const quality = getClinicsPayloadQuality(payload);
+  return Object.assign(payload, {
+    withHoursCount: quality.withHoursCount,
+    cacheStatus: quality.isGoodClinicsResponse ? "cacheable" : "no-store",
+  });
+}
+
+async function clinicsHandler(req, res) {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "GET, OPTIONS");
 
   if (req.method === "OPTIONS") {
-    res.setHeader("Cache-Control", "no-store");
+    setNoStore(res);
     res.status(204).end();
     return;
   }
 
   if (req.method !== "GET") {
-    res.setHeader("Cache-Control", "no-store");
+    setNoStore(res);
     res.status(405).json({ error: "GET only" });
+    return;
+  }
+
+  const debug = req.query && req.query.debug === "1";
+  const requestedStrategy = req.query && req.query.strategy ? String(req.query.strategy) : "";
+  const forceLive = req.query && (req.query.live === "1" || req.query.refresh === "1");
+  const staticCache = !requestedStrategy && !forceLive ? readStaticClinicsCache() : { ok: false };
+
+  if (staticCache.ok) {
+    res.setHeader("Cache-Control", "s-maxage=43200, stale-while-revalidate=86400");
+    const payload = debug
+      ? Object.assign({}, staticCache.payload, { staticCache: { ok: true, path: "data/clinics-cache.json" } })
+      : staticCache.payload;
+    res.status(200).json(payload);
     return;
   }
 
   const serviceKey = process.env.HIRA_SERVICE_KEY || process.env.PUBLIC_DATA_SERVICE_KEY;
   if (!serviceKey) {
-    res.setHeader("Cache-Control", "no-store");
+    setNoStore(res);
     res.status(500).json({
       error: "HIRA_SERVICE_KEY is not configured",
       hint: "Set HIRA_SERVICE_KEY in Vercel environment variables.",
+      staticCacheError: staticCache.error || null,
     });
     return;
   }
 
   try {
-    const debug = req.query && req.query.debug === "1";
-    const requestedStrategy = req.query && req.query.strategy ? String(req.query.strategy) : "";
-    const forceDirect = requestedStrategy === "hwaseong-direct";
-    const forceGyeonggi = requestedStrategy === "gyeonggi-scan" || requestedStrategy === "gyeonggi-full-scan";
-    let directError = null;
-    let scan;
-    let strategy;
-
-    if (forceGyeonggi) {
-      scan = await scanGyeonggi(serviceKey);
-      strategy = "fallback: sidoCd=310000 page scan, accurate Hwaseong filter, getDgsbjtInfo2.8 pediatrics filter, getDtlInfo2.8 hours";
-    } else {
-      try {
-        scan = await fetchHwaseongDirect(serviceKey);
-        strategy = "direct sidoCd=310000, sgguCd=312500, then getDgsbjtInfo2.8 pediatrics filter, getDtlInfo2.8 hours";
-      } catch (error) {
-        directError = error.message;
-        if (forceDirect) throw error;
-        scan = await scanGyeonggi(serviceKey);
-        strategy = "fallback: direct Hwaseong query failed, sidoCd=310000 page scan, accurate Hwaseong filter, getDgsbjtInfo2.8 pediatrics filter, getDtlInfo2.8 hours";
-      }
-    }
-
-    let baseItems = scan.hwaseongItems.filter((item) => item.yadmNm && item.addr);
-    let enrichment = await enrichClinics(serviceKey, baseItems);
-    let clinics = enrichment.detailResults
-      .map((result, index) => toClinic(result.item, index, result))
-      .filter((clinic) => clinic.name && clinic.address);
-
-    if (!forceDirect && !forceGyeonggi && strategy.startsWith("direct") && clinics.length < 50) {
-      directError = "Hwaseong direct query returned fewer than 50 pediatric clinics after getDgsbjtInfo2.8 filter";
-      scan = await scanGyeonggi(serviceKey);
-      strategy = "fallback: direct Hwaseong query had too few pediatric clinics, sidoCd=310000 page scan, accurate Hwaseong filter, getDgsbjtInfo2.8 pediatrics filter, getDtlInfo2.8 hours";
-      baseItems = scan.hwaseongItems.filter((item) => item.yadmNm && item.addr);
-      enrichment = await enrichClinics(serviceKey, baseItems);
-      clinics = enrichment.detailResults
-        .map((result, index) => toClinic(result.item, index, result))
-        .filter((clinic) => clinic.name && clinic.address);
-    }
-
-    const cache = setClinicsCacheHeader(res, clinics, enrichment);
-
-    res.status(200).json({
-      source: "HIRA",
-      strategy,
-      count: clinics.length,
-      withHoursCount: cache.withHoursCount,
-      cacheStatus: cache.isGoodClinicsResponse ? "cacheable" : "no-store",
-      directError,
-      scan: {
-        totalCount: scan.totalCount,
-        totalPages: scan.totalPages,
-        maxPagesAllowed: scan.maxPagesAllowed,
-        pagesScanned: scan.pagesScanned,
-        itemsScanned: scan.itemsScanned,
-        hwaseongCount: baseItems.length,
-        directRawCount: scan.directRawCount || null,
-        directAfterAddressFilterCount: scan.directAfterAddressFilterCount || null,
-        directAfterPediatricsFilterCount: strategy.startsWith("direct") ? clinics.length : null,
-        pageErrors: scan.pageErrors,
-        requestUrlSample: scan.requestUrlSample,
-      },
-      enrichment: {
-        subject: enrichment.subjectStats,
-        detail: enrichment.detailStats,
-      },
-      debug: debug ? enrichment.sample : undefined,
-      clinics,
-    });
+    const payload = await buildLiveClinicsPayload(serviceKey, { debug, strategy: requestedStrategy });
+    const quality = getClinicsPayloadQuality(payload);
+    res.setHeader(
+      "Cache-Control",
+      quality.isGoodClinicsResponse ? "s-maxage=21600, stale-while-revalidate=86400" : "no-store"
+    );
+    const responseBody = debug
+      ? Object.assign({}, payload, {
+        staticCache: {
+          ok: false,
+          error: staticCache.error || null,
+          quality: staticCache.quality || null,
+        },
+      })
+      : payload;
+    res.status(200).json(responseBody);
   } catch (error) {
-    res.setHeader("Cache-Control", "no-store");
+    setNoStore(res);
     res.status(502).json({
       error: "Failed to scan HIRA clinics",
       message: error.name === "AbortError" ? "HIRA request timed out" : error.message,
     });
   }
-};
+}
+
+module.exports = clinicsHandler;
+module.exports.buildLiveClinicsPayload = buildLiveClinicsPayload;
+module.exports.getClinicsPayloadQuality = getClinicsPayloadQuality;
+module.exports.STATIC_CACHE_PATH = STATIC_CACHE_PATH;

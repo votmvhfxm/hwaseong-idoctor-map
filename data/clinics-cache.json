@@ -1,0 +1,3537 @@
+{
+  "source": "HIRA",
+  "strategy": "fallback: direct Hwaseong query had too few pediatric clinics, sidoCd=310000 page scan, accurate Hwaseong filter, getDgsbjtInfo2.8 pediatrics filter, getDtlInfo2.8 hours",
+  "count": 124,
+  "generatedAt": "2026-07-06T17:37:21.310Z",
+  "directError": "Hwaseong direct query returned fewer than 50 pediatric clinics after getDgsbjtInfo2.8 filter",
+  "scan": {
+    "totalCount": 18172,
+    "totalPages": 91,
+    "maxPagesAllowed": 91,
+    "pagesScanned": 22,
+    "itemsScanned": 4400,
+    "hwaseongCount": 314,
+    "directRawCount": null,
+    "directAfterAddressFilterCount": null,
+    "directAfterPediatricsFilterCount": null,
+    "pageErrors": [],
+    "requestUrlSample": "https://apis.data.go.kr/B551182/hospInfoServicev2/getHospBasisList?pageNo=1&numOfRows=200&sidoCd=310000&serviceKey=[MASKED]"
+  },
+  "enrichment": {
+    "subject": {
+      "checked": 314,
+      "pediatrics": 124,
+      "failed": 0
+    },
+    "detail": {
+      "checked": 124,
+      "withHours": 37,
+      "failed": 0
+    }
+  },
+  "clinics": [
+    {
+      "id": "JDQ4MTYyMiM1MSMkMSMkMCMkODkkMzgxMzUxIzExIyQxIyQzIyQxMyQyNjE4MzIjNzEjJDEjJDgjJDgz",
+      "ykiho": "JDQ4MTYyMiM1MSMkMSMkMCMkODkkMzgxMzUxIzExIyQxIyQzIyQxMyQyNjE4MzIjNzEjJDEjJDgjJDgz",
+      "name": "의료법인 은혜와감사의료재단 화성중앙종합병원",
+      "address": "경기도 화성시 만세구 향남읍 발안로 5, (향남읍)",
+      "phone": "031-352-8114",
+      "lat": 37.1313512,
+      "lng": 126.9107797,
+      "type": "소아청소년과",
+      "zone": "hn",
+      "zoneId": "hn",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": {
+        "mon": {
+          "start": "0900",
+          "end": "1800"
+        },
+        "tue": {
+          "start": "0900",
+          "end": "1730"
+        },
+        "wed": {
+          "start": "0900",
+          "end": "1730"
+        },
+        "thu": {
+          "start": "0900",
+          "end": "1730"
+        },
+        "fri": {
+          "start": "0900",
+          "end": "1730"
+        },
+        "sat": {
+          "start": "0900",
+          "end": "1300"
+        },
+        "sun": null,
+        "hol": null
+      },
+      "todayOpen": false,
+      "openText": "09:00~17:30",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDQ4MTYyMiM1MSMkMSMkMCMkODkkMzgxMzUxIzExIyQxIyQ3IyQ3MiQyNjEwMDIjODEjJDEjJDIjJDgz",
+      "ykiho": "JDQ4MTYyMiM1MSMkMSMkMCMkODkkMzgxMzUxIzExIyQxIyQ3IyQ3MiQyNjEwMDIjODEjJDEjJDIjJDgz",
+      "name": "화성유일병원",
+      "address": "경기도 화성시 만세구 남양읍 남양로920번길 6, (남양읍)",
+      "phone": "031-355-0119",
+      "lat": 37.217785,
+      "lng": 126.8326549,
+      "type": "소아청소년과",
+      "zone": "ny",
+      "zoneId": "ny",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": null,
+      "todayOpen": null,
+      "openText": "진료시간 확인 필요",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDQ4MTYyMiM1MSMkMSMkMCMkOTkkMzgxOTYxIzExIyQxIyQ3IyQwMyQ0NjEwMDIjNjEjJDEjJDQjJDgz",
+      "ykiho": "JDQ4MTYyMiM1MSMkMSMkMCMkOTkkMzgxOTYxIzExIyQxIyQ3IyQwMyQ0NjEwMDIjNjEjJDEjJDQjJDgz",
+      "name": "나이스병원",
+      "address": "경기도 화성시 효행구 봉담읍 삼천병마로 1283, 4,5,6층",
+      "phone": "031-297-8875",
+      "lat": 37.2204652,
+      "lng": 126.9490095,
+      "type": "소아청소년과",
+      "zone": "bd",
+      "zoneId": "bd",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": {
+        "mon": {
+          "start": "0900",
+          "end": "2000"
+        },
+        "tue": {
+          "start": "0900",
+          "end": "2000"
+        },
+        "wed": {
+          "start": "0900",
+          "end": "2000"
+        },
+        "thu": {
+          "start": "0900",
+          "end": "2000"
+        },
+        "fri": {
+          "start": "0900",
+          "end": "2000"
+        },
+        "sat": {
+          "start": "0900",
+          "end": "1500"
+        },
+        "sun": {
+          "start": "0900",
+          "end": "1500"
+        },
+        "hol": null
+      },
+      "todayOpen": false,
+      "openText": "09:00~20:00",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDQ4MTYyMiM1MSMkMSMkMCMkOTkkMzgxOTYxIzExIyQyIyQ3IyQwMCQ0NjEwMDIjODEjJDEjJDYjJDgz",
+      "ykiho": "JDQ4MTYyMiM1MSMkMSMkMCMkOTkkMzgxOTYxIzExIyQyIyQ3IyQwMCQ0NjEwMDIjODEjJDEjJDYjJDgz",
+      "name": "동탄성모병원",
+      "address": "경기도 화성시 동탄구 동탄순환대로 127-19, 동탄에스비타운 3(일부),6,7층 (산척동)",
+      "phone": "031-375-1122",
+      "lat": 37.1674053,
+      "lng": 127.1072593,
+      "type": "소아청소년과",
+      "zone": "dt13",
+      "zoneId": "dt13",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": null,
+      "todayOpen": null,
+      "openText": "진료시간 확인 필요",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDQ4MTYyMiM1MSMkMSMkMCMkOTkkMzgxOTYxIzExIyQxIyQ3IyQ5OSQ0NjE0ODEjNTEjJDEjJDYjJDgz",
+      "ykiho": "JDQ4MTYyMiM1MSMkMSMkMCMkOTkkMzgxOTYxIzExIyQxIyQ3IyQ5OSQ0NjE0ODEjNTEjJDEjJDYjJDgz",
+      "name": "베스트아이들병원",
+      "address": "경기도 화성시 동탄구 동탄지성로 20, 2~7층 (반송동)",
+      "phone": "031-613-8852",
+      "lat": 37.2053061,
+      "lng": 127.0724115,
+      "type": "소아청소년과",
+      "zone": "dt13",
+      "zoneId": "dt13",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": {
+        "mon": {
+          "start": "0830",
+          "end": "2300"
+        },
+        "tue": {
+          "start": "0830",
+          "end": "2300"
+        },
+        "wed": {
+          "start": "0830",
+          "end": "2300"
+        },
+        "thu": {
+          "start": "0830",
+          "end": "2300"
+        },
+        "fri": {
+          "start": "0830",
+          "end": "2300"
+        },
+        "sat": {
+          "start": "0830",
+          "end": "2200"
+        },
+        "sun": {
+          "start": "0830",
+          "end": "2200"
+        },
+        "hol": null
+      },
+      "todayOpen": false,
+      "openText": "08:30~23:00",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDQ4MTYyMiM1MSMkMSMkMCMkOTkkMzgxMzUxIzUxIyQxIyQ1IyQwMyQzNjE0ODEjNDEjJDEjJDQjJDgz",
+      "ykiho": "JDQ4MTYyMiM1MSMkMSMkMCMkOTkkMzgxMzUxIzUxIyQxIyQ1IyQwMyQzNjE0ODEjNDEjJDEjJDQjJDgz",
+      "name": "센트럴아동병원",
+      "address": "경기도 화성시 동탄구 동탄지성로 17, 지하1~2층 일부층 (반송동, 풍성위버폴리스)",
+      "phone": "031-8060-5000",
+      "lat": 37.2046148,
+      "lng": 127.0720455,
+      "type": "소아청소년과",
+      "zone": "dt13",
+      "zoneId": "dt13",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": {
+        "mon": {
+          "start": "0900",
+          "end": "2100"
+        },
+        "tue": {
+          "start": "0900",
+          "end": "2100"
+        },
+        "wed": {
+          "start": "0900",
+          "end": "2100"
+        },
+        "thu": {
+          "start": "0900",
+          "end": "2300"
+        },
+        "fri": {
+          "start": "0900",
+          "end": "2100"
+        },
+        "sat": {
+          "start": "0900",
+          "end": "1800"
+        },
+        "sun": {
+          "start": "0900",
+          "end": "1800"
+        },
+        "hol": null
+      },
+      "todayOpen": false,
+      "openText": "09:00~21:00",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDQ4MTYyMiM1MSMkMSMkMCMkOTkkMzgxOTYxIzExIyQxIyQ3IyQ5MiQzNjEyMjIjNTEjJDEjJDYjJDgz",
+      "ykiho": "JDQ4MTYyMiM1MSMkMSMkMCMkOTkkMzgxOTYxIzExIyQxIyQ3IyQ5MiQzNjEyMjIjNTEjJDEjJDYjJDgz",
+      "name": "의료법인 시몬의료재단 우리가병원",
+      "address": "경기도 화성시 만세구 서신면 해양공단로 24-3, (서신면)",
+      "phone": "031-355-0081",
+      "lat": 37.173053,
+      "lng": 126.6613576,
+      "type": "소아청소년과",
+      "zone": "ss",
+      "zoneId": "ss",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": null,
+      "todayOpen": null,
+      "openText": "진료시간 확인 필요",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDQ4MTYyMiM1MSMkMSMkMCMkOTkkMzgxOTYxIzExIyQxIyQzIyQ5MiQ0NjEwMDIjNDEjJDEjJDgjJDgz",
+      "ykiho": "JDQ4MTYyMiM1MSMkMSMkMCMkOTkkMzgxOTYxIzExIyQxIyQzIyQ5MiQ0NjEwMDIjNDEjJDEjJDgjJDgz",
+      "name": "의료법인 은혜와감사의료재단 향남스마트병원",
+      "address": "경기도 화성시 만세구 향남읍 상신하길로298번길 11, 6일부,8,9,10층",
+      "phone": "031-233-9114",
+      "lat": 37.1147838,
+      "lng": 126.9110534,
+      "type": "소아청소년과",
+      "zone": "hn",
+      "zoneId": "hn",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": {
+        "mon": {
+          "start": "0900",
+          "end": "1800"
+        },
+        "tue": {
+          "start": "0900",
+          "end": "1730"
+        },
+        "wed": {
+          "start": "0900",
+          "end": "1730"
+        },
+        "thu": {
+          "start": "0900",
+          "end": "1730"
+        },
+        "fri": {
+          "start": "0900",
+          "end": "1730"
+        },
+        "sat": {
+          "start": "0900",
+          "end": "1300"
+        },
+        "sun": null,
+        "hol": null
+      },
+      "todayOpen": false,
+      "openText": "09:00~17:30",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDQ4MTYyMiM1MSMkMSMkMCMkOTkkMzgxMzUxIzUxIyQxIyQxIyQxMyQyNjEwMDIjNjEjJDEjJDgjJDgz",
+      "ykiho": "JDQ4MTYyMiM1MSMkMSMkMCMkOTkkMzgxMzUxIzUxIyQxIyQxIyQxMyQyNjEwMDIjNjEjJDEjJDgjJDgz",
+      "name": "의료법인상운의료재단 동탄제일병원",
+      "address": "경기도 화성시 동탄구 삼성1로 144-6, (석우동)",
+      "phone": "031-8015-9999",
+      "lat": 37.2165467,
+      "lng": 127.0785386,
+      "type": "소아청소년과",
+      "zone": "dt13",
+      "zoneId": "dt13",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": null,
+      "todayOpen": null,
+      "openText": "진료시간 확인 필요",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDQ4MTYyMiM1MSMkMSMkMCMkOTkkMzgxOTYxIzExIyQxIyQ3IyQ5OSQzNjE0ODEjNDEjJDEjJDgjJDgz",
+      "ykiho": "JDQ4MTYyMiM1MSMkMSMkMCMkOTkkMzgxOTYxIzExIyQxIyQ3IyQ5OSQzNjE0ODEjNDEjJDEjJDgjJDgz",
+      "name": "화성디에스병원",
+      "address": "경기도 화성시 만세구 남양읍 시청로160번길 46-13, 1,3~8층",
+      "phone": "1600-5982",
+      "lat": 37.1992313,
+      "lng": 126.8257097,
+      "type": "소아청소년과",
+      "zone": "ny",
+      "zoneId": "ny",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": null,
+      "todayOpen": null,
+      "openText": "진료시간 확인 필요",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDQ4MTYyMiM1MSMkMSMkMCMkOTkkNTgxMzUxIzIxIyQxIyQxIyQ4OSQ0NjE0ODEjNDEjJDEjJDgjJDgz",
+      "ykiho": "JDQ4MTYyMiM1MSMkMSMkMCMkOTkkNTgxMzUxIzIxIyQxIyQxIyQ4OSQ0NjE0ODEjNDEjJDEjJDgjJDgz",
+      "name": "연세나은요양병원",
+      "address": "경기도 화성시 만세구 팔탄면 버들로 1576, 1576",
+      "phone": "031-350-0001",
+      "lat": 37.1148846,
+      "lng": 126.8738256,
+      "type": "소아청소년과",
+      "zone": "dt13",
+      "zoneId": "dt13",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": {
+        "mon": {
+          "start": "0900",
+          "end": "1800"
+        },
+        "tue": {
+          "start": "0900",
+          "end": "1800"
+        },
+        "wed": {
+          "start": "0900",
+          "end": "1800"
+        },
+        "thu": {
+          "start": "0900",
+          "end": "1800"
+        },
+        "fri": {
+          "start": "0900",
+          "end": "1800"
+        },
+        "sat": {
+          "start": "0900",
+          "end": "1300"
+        },
+        "sun": null,
+        "hol": null
+      },
+      "todayOpen": false,
+      "openText": "09:00~18:00",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDQ4MTYyMiM1MSMkMSMkMCMkOTkkNTgxOTYxIzExIyQxIyQzIyQ3OSQyNjE4MzIjNjEjJDEjJDQjJDgz",
+      "ykiho": "JDQ4MTYyMiM1MSMkMSMkMCMkOTkkNTgxOTYxIzExIyQxIyQzIyQ3OSQyNjE4MzIjNjEjJDEjJDQjJDgz",
+      "name": "메타메디병원",
+      "address": "경기도 화성시 동탄구 동탄원천로 338-7, 동탄V프라자, 3~7층 (능동)",
+      "phone": "031-8003-5800",
+      "lat": 37.2172623,
+      "lng": 127.0588438,
+      "type": "소아청소년과",
+      "zone": "dt13",
+      "zoneId": "dt13",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": {
+        "mon": {
+          "start": "0930",
+          "end": "1900"
+        },
+        "tue": {
+          "start": "0930",
+          "end": "1900"
+        },
+        "wed": {
+          "start": "0930",
+          "end": "1800"
+        },
+        "thu": {
+          "start": "0930",
+          "end": "1900"
+        },
+        "fri": {
+          "start": "0930",
+          "end": "1900"
+        },
+        "sat": {
+          "start": "0930",
+          "end": "1400"
+        },
+        "sun": null,
+        "hol": null
+      },
+      "todayOpen": false,
+      "openText": "09:30~19:00",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDQ4MTYyMiM1MSMkMiMkMCMkMDAkNTgxOTYxIzIxIyQyIyQ5IyQwMCQyNjE4MzIjNzEjJDEjJDgjJDgz",
+      "ykiho": "JDQ4MTYyMiM1MSMkMiMkMCMkMDAkNTgxOTYxIzIxIyQyIyQ5IyQwMCQyNjE4MzIjNzEjJDEjJDgjJDgz",
+      "name": "153정형외과의원",
+      "address": "경기도 화성시 효행구 봉담읍 동화서북안2길 9, 5층",
+      "phone": "031-613-7575",
+      "lat": 37.2190954,
+      "lng": 126.9703872,
+      "type": "소아청소년과",
+      "zone": "bd",
+      "zoneId": "bd",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": {
+        "mon": {
+          "start": "0900",
+          "end": "1900"
+        },
+        "tue": {
+          "start": "0900",
+          "end": "1900"
+        },
+        "wed": {
+          "start": "0900",
+          "end": "1900"
+        },
+        "thu": {
+          "start": "0900",
+          "end": "1900"
+        },
+        "fri": {
+          "start": "0900",
+          "end": "1900"
+        },
+        "sat": {
+          "start": "0900",
+          "end": "1400"
+        },
+        "sun": null,
+        "hol": null
+      },
+      "todayOpen": false,
+      "openText": "09:00~19:00",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkMzgxMzUxIzMxIyQxIyQzIyQ5MiQzNjE4MzIjODEjJDEjJDYjJDgz",
+      "ykiho": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkMzgxMzUxIzMxIyQxIyQzIyQ5MiQzNjE4MzIjODEjJDEjJDYjJDgz",
+      "name": "21세기우리의원",
+      "address": "경기도 화성시 동탄구 동탄솔빛로 48, 2,3,4,층 (반송동, 거택프라자)",
+      "phone": "031-8003-9003",
+      "lat": 37.193149,
+      "lng": 127.0733201,
+      "type": "소아청소년과",
+      "zone": "dt13",
+      "zoneId": "dt13",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": null,
+      "todayOpen": null,
+      "openText": "진료시간 확인 필요",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNTgxMzUxIzExIyQxIyQ3IyQxMyQyNjEyMjIjNDEjJDEjJDgjJDgz",
+      "ykiho": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNTgxMzUxIzExIyQxIyQ3IyQxMyQyNjEyMjIjNDEjJDEjJDgjJDgz",
+      "name": "가온이비인후과의원",
+      "address": "경기도 화성시 효행구 봉담읍 상리2길 55, 406~408호",
+      "phone": "031-293-8922",
+      "lat": 37.2250815,
+      "lng": 126.9469963,
+      "type": "소아청소년과",
+      "zone": "bd",
+      "zoneId": "bd",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": null,
+      "todayOpen": null,
+      "openText": "진료시간 확인 필요",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDQ4MTYyMiM1MSMkMiMkMCMkMDAkNDgxNzAyIzExIyQxIyQzIyQ4OSQzNjEyMjIjNDEjJDEjJDgjJDgz",
+      "ykiho": "JDQ4MTYyMiM1MSMkMiMkMCMkMDAkNDgxNzAyIzExIyQxIyQzIyQ4OSQzNjEyMjIjNDEjJDEjJDgjJDgz",
+      "name": "강소아청소년과의원",
+      "address": "경기도 화성시 동탄구 동탄지성로 139, 양진빌딩 (능동)",
+      "phone": "031-8015-9720",
+      "lat": 37.2093431,
+      "lng": 127.0601939,
+      "type": "소아청소년과",
+      "zone": "dt13",
+      "zoneId": "dt13",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": null,
+      "todayOpen": null,
+      "openText": "진료시간 확인 필요",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDQ4MTYyMiM1MSMkMiMkMCMkMDAkNDgxOTYxIzExIyQxIyQ3IyQxMyQ0NjEwMDIjODEjJDEjJDYjJDgz",
+      "ykiho": "JDQ4MTYyMiM1MSMkMiMkMCMkMDAkNDgxOTYxIzExIyQxIyQ3IyQxMyQ0NjEwMDIjODEjJDEjJDYjJDgz",
+      "name": "고동혁내과의원",
+      "address": "경기도 화성시 만세구 향남읍 삼천병마로 189, 2층",
+      "phone": "031-353-8486",
+      "lat": 37.1300558,
+      "lng": 126.9096095,
+      "type": "소아청소년과",
+      "zone": "hn",
+      "zoneId": "hn",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": null,
+      "todayOpen": null,
+      "openText": "진료시간 확인 필요",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkMzgxNzAyIzMxIyQxIyQ3IyQ3OSQ0NjEwMDIjNzEjJDEjJDgjJDgz",
+      "ykiho": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkMzgxNzAyIzMxIyQxIyQ3IyQ3OSQ0NjEwMDIjNzEjJDEjJDgjJDgz",
+      "name": "고은미의원",
+      "address": "경기도 화성시 동탄구 동탄원천로 163, 403호 (반송동, 위너스타빌딩)",
+      "phone": "031-8003-7862",
+      "lat": 37.2073856,
+      "lng": 127.0737048,
+      "type": "소아청소년과",
+      "zone": "dt13",
+      "zoneId": "dt13",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": null,
+      "todayOpen": null,
+      "openText": "진료시간 확인 필요",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNDgxOTYxIzIxIyQxIyQxIyQ5MiQzNjE0ODEjNTEjJDEjJDIjJDgz",
+      "ykiho": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNDgxOTYxIzIxIyQxIyQxIyQ5MiQzNjE0ODEjNTEjJDEjJDIjJDgz",
+      "name": "굿모닝소아청소년과의원",
+      "address": "경기도 화성시 병점구 경기대로 985, 1층 (병점동, 홈플러스)",
+      "phone": "031-231-1477",
+      "lat": 37.2037169,
+      "lng": 127.0367529,
+      "type": "소아청소년과",
+      "zone": "bj",
+      "zoneId": "bj",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": null,
+      "todayOpen": null,
+      "openText": "진료시간 확인 필요",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDQ4MTYyMiM1MSMkMiMkMCMkMDAkMzgxNzAyIzIxIyQxIyQ5IyQ2MiQzNjE0ODEjNDEjJDEjJDQjJDgz",
+      "ykiho": "JDQ4MTYyMiM1MSMkMiMkMCMkMDAkMzgxNzAyIzIxIyQxIyQ5IyQ2MiQzNjE0ODEjNDEjJDEjJDQjJDgz",
+      "name": "굿모닝항외과의원",
+      "address": "경기도 화성시 동탄구 동탄지성로 136, 우리프라자 3층 (능동)",
+      "phone": "031-8015-1881",
+      "lat": 37.2096686,
+      "lng": 127.0606973,
+      "type": "소아청소년과",
+      "zone": "dt13",
+      "zoneId": "dt13",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": null,
+      "todayOpen": null,
+      "openText": "진료시간 확인 필요",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDU4MTI3MSM1MSMkMiMkNCMkMDAkMzgxMzUxIzIxIyQxIyQxIyQwMyQyNjE4MzIjODEjJDEjJDIjJDgz",
+      "ykiho": "JDU4MTI3MSM1MSMkMiMkNCMkMDAkMzgxMzUxIzIxIyQxIyQxIyQwMyQyNjE4MzIjODEjJDEjJDIjJDgz",
+      "name": "굿초이스내과의원",
+      "address": "경기도 화성시 효행구 비봉면 푸른들판로 1628, 솔보프라자 3층 303~305호",
+      "phone": "031-355-8899",
+      "lat": 37.2474206,
+      "lng": 126.8731759,
+      "type": "소아청소년과",
+      "zone": "dt13",
+      "zoneId": "dt13",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": null,
+      "todayOpen": null,
+      "openText": "진료시간 확인 필요",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkMzgxOTYxIzIxIyQxIyQ1IyQ5MiQyNjEyMjIjNDEjJDEjJDgjJDgz",
+      "ykiho": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkMzgxOTYxIzIxIyQxIyQ1IyQ5MiQyNjEyMjIjNDEjJDEjJDgjJDgz",
+      "name": "굿키즈소아청소년과의원",
+      "address": "경기도 화성시 병점구 효행로 1051, 409호 (진안동, 메인프라자)",
+      "phone": "031-221-6582",
+      "lat": 37.214627,
+      "lng": 127.0419608,
+      "type": "소아청소년과",
+      "zone": "bj",
+      "zoneId": "bj",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": null,
+      "todayOpen": null,
+      "openText": "진료시간 확인 필요",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDQ4MTYyMiM1MSMkMiMkMCMkMDAkNDgxOTYxIzIxIyQxIyQ5IyQ4MiQyNjEwMDIjNDEjJDEjJDgjJDgz",
+      "ykiho": "JDQ4MTYyMiM1MSMkMiMkMCMkMDAkNDgxOTYxIzIxIyQxIyQ5IyQ4MiQyNjEwMDIjNDEjJDEjJDgjJDgz",
+      "name": "권내과의원",
+      "address": "경기도 화성시 만세구 우정읍 조암서로 1, (우정읍)",
+      "phone": "031-358-9048",
+      "lat": 37.0816647,
+      "lng": 126.8157336,
+      "type": "소아청소년과",
+      "zone": "dt13",
+      "zoneId": "dt13",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": null,
+      "todayOpen": null,
+      "openText": "진료시간 확인 필요",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDQ4MTYyMiM1MSMkMiMkMCMkMDAkNTgxMzUxIzExIyQyIyQzIyQwMCQzNjE4MzIjODEjJDEjJDYjJDgz",
+      "ykiho": "JDQ4MTYyMiM1MSMkMiMkMCMkMDAkNTgxMzUxIzExIyQyIyQzIyQwMCQzNjE4MzIjODEjJDEjJDYjJDgz",
+      "name": "김가정의원",
+      "address": "경기도 화성시 만세구 우정읍 조암남로 12, 2층",
+      "phone": "031-358-3323",
+      "lat": 37.0824293,
+      "lng": 126.8173587,
+      "type": "소아청소년과",
+      "zone": "dt13",
+      "zoneId": "dt13",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": null,
+      "todayOpen": null,
+      "openText": "진료시간 확인 필요",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkMzgxMTkxIzExIyQxIyQ3IyQ4MiQzNjE4MzIjNzEjJDEjJDgjJDgz",
+      "ykiho": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkMzgxMTkxIzExIyQxIyQ3IyQ4MiQzNjE4MzIjNzEjJDEjJDgjJDgz",
+      "name": "김덕하소아청소년과의원",
+      "address": "경기도 화성시 동탄구 동탄지성로 134, 한솔프라자, 402호 (능동)",
+      "phone": "031-613-6275",
+      "lat": 37.2095824,
+      "lng": 127.0609874,
+      "type": "소아청소년과",
+      "zone": "dt13",
+      "zoneId": "dt13",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": {
+        "mon": {
+          "start": "0900",
+          "end": "1900"
+        },
+        "tue": {
+          "start": "0900",
+          "end": "1900"
+        },
+        "wed": {
+          "start": "0900",
+          "end": "1900"
+        },
+        "thu": {
+          "start": "0900",
+          "end": "1900"
+        },
+        "fri": {
+          "start": "0900",
+          "end": "1900"
+        },
+        "sat": {
+          "start": "0900",
+          "end": "1400"
+        },
+        "sun": null,
+        "hol": null
+      },
+      "todayOpen": false,
+      "openText": "09:00~19:00",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNDgxNzAyIzUxIyQxIyQ1IyQ3OSQ0NjEwMDIjODEjJDEjJDIjJDgz",
+      "ykiho": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNDgxNzAyIzUxIyQxIyQ1IyQ3OSQ0NjEwMDIjODEjJDEjJDIjJDgz",
+      "name": "김형식이비인후과의원",
+      "address": "경기도 화성시 동탄구 동탄오산로 86-3, 동탄MK타워 502호 (오산동)",
+      "phone": "031-377-6449",
+      "lat": 37.1981205,
+      "lng": 127.0977805,
+      "type": "소아청소년과",
+      "zone": "dt13",
+      "zoneId": "dt13",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": null,
+      "todayOpen": null,
+      "openText": "진료시간 확인 필요",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNDgxNzAyIzIxIyQxIyQ5IyQ5MiQyNjEyMjIjNDEjJDEjJDQjJDgz",
+      "ykiho": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNDgxNzAyIzIxIyQxIyQ5IyQ5MiQyNjEyMjIjNDEjJDEjJDQjJDgz",
+      "name": "남동탄두리이비인후과의원",
+      "address": "경기도 화성시 동탄구 동탄대로5길 9, 그랑파사쥬 4022~4024호 (송동)",
+      "phone": "031-376-7581",
+      "lat": 37.1676291,
+      "lng": 127.1058272,
+      "type": "소아청소년과",
+      "zone": "dt13",
+      "zoneId": "dt13",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": null,
+      "todayOpen": null,
+      "openText": "진료시간 확인 필요",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNDgxMTkxIzUxIyQxIyQxIyQwMyQzNjE0ODEjNTEjJDEjJDYjJDgz",
+      "ykiho": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNDgxMTkxIzUxIyQxIyQxIyQwMyQzNjE0ODEjNTEjJDEjJDYjJDgz",
+      "name": "남승우소아청소년과의원",
+      "address": "경기도 화성시 동탄구 동탄대로 469-12, 2003~2005호 (오산동, 동탄역 린스트라우스)",
+      "phone": "031-375-8842",
+      "lat": 37.1962985,
+      "lng": 127.0974953,
+      "type": "소아청소년과",
+      "zone": "dt13",
+      "zoneId": "dt13",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": null,
+      "todayOpen": null,
+      "openText": "진료시간 확인 필요",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNTgxMzUxIzIxIyQxIyQ1IyQ5MiQyNjEyMjIjODEjJDEjJDYjJDgz",
+      "ykiho": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNTgxMzUxIzIxIyQxIyQ1IyQ5MiQyNjEyMjIjODEjJDEjJDYjJDgz",
+      "name": "남양 길이비인후과의원",
+      "address": "경기도 화성시 만세구 남양읍 남양로 829, 306,307호",
+      "phone": "031-357-0033",
+      "lat": 37.2097486,
+      "lng": 126.8322769,
+      "type": "소아청소년과",
+      "zone": "ny",
+      "zoneId": "ny",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": null,
+      "todayOpen": null,
+      "openText": "진료시간 확인 필요",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkMzgxNzAyIzMxIyQxIyQzIyQwMyQzNjEwMDIjNjEjJDEjJDgjJDgz",
+      "ykiho": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkMzgxNzAyIzMxIyQxIyQzIyQwMyQzNjEwMDIjNjEjJDEjJDgjJDgz",
+      "name": "남양박내과의원",
+      "address": "경기도 화성시 만세구 남양읍 남양성지로 139-1, 303호 (국제포인트프라자)",
+      "phone": "031-356-0533",
+      "lat": 37.2090838,
+      "lng": 126.8183638,
+      "type": "소아청소년과",
+      "zone": "ny",
+      "zoneId": "ny",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": null,
+      "todayOpen": null,
+      "openText": "진료시간 확인 필요",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNDgxMTkxIzIxIyQxIyQ1IyQ5OSQzNjE0ODEjODEjJDEjJDIjJDgz",
+      "ykiho": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNDgxMTkxIzIxIyQxIyQ1IyQ5OSQzNjE0ODEjODEjJDEjJDIjJDgz",
+      "name": "남양삼성가정의학과의원",
+      "address": "경기도 화성시 만세구 남양읍 남양시장로 81, 2층",
+      "phone": "031-355-0315",
+      "lat": 37.2098934,
+      "lng": 126.818119,
+      "type": "소아청소년과",
+      "zone": "ny",
+      "zoneId": "ny",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": null,
+      "todayOpen": null,
+      "openText": "진료시간 확인 필요",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNDgxMzUxIzIxIyQxIyQ5IyQ3MiQzNjE4MzIjNDEjJDEjJDQjJDgz",
+      "ykiho": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNDgxMzUxIzIxIyQxIyQ5IyQ3MiQzNjE4MzIjNDEjJDEjJDQjJDgz",
+      "name": "남양수내과의원",
+      "address": "경기도 화성시 만세구 남양읍 남양성지로 151, 302호 (현대프라자)",
+      "phone": "031-356-3542",
+      "lat": 37.2097904,
+      "lng": 126.8193039,
+      "type": "소아청소년과",
+      "zone": "ny",
+      "zoneId": "ny",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": null,
+      "todayOpen": null,
+      "openText": "진료시간 확인 필요",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNTgxMzUxIzQxIyQxIyQ3IyQ3OSQyNjEyMjIjNTEjJDEjJDYjJDgz",
+      "ykiho": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNTgxMzUxIzQxIyQxIyQ3IyQ3OSQyNjEyMjIjNTEjJDEjJDYjJDgz",
+      "name": "남양아이언소아청소년과의원",
+      "address": "경기도 화성시 만세구 남양읍 남양성지로 135, 302호",
+      "phone": "031-357-2060",
+      "lat": 37.2089704,
+      "lng": 126.8180764,
+      "type": "소아청소년과",
+      "zone": "ny",
+      "zoneId": "ny",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": {
+        "mon": {
+          "start": "0830",
+          "end": "1900"
+        },
+        "tue": {
+          "start": "0830",
+          "end": "1900"
+        },
+        "wed": {
+          "start": "0830",
+          "end": "1230"
+        },
+        "thu": {
+          "start": "0830",
+          "end": "1900"
+        },
+        "fri": {
+          "start": "0830",
+          "end": "1900"
+        },
+        "sat": {
+          "start": "0830",
+          "end": "1230"
+        },
+        "sun": null,
+        "hol": null
+      },
+      "todayOpen": false,
+      "openText": "08:30~19:00",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDQ4MTYyMiM1MSMkMiMkMCMkMDAkMzgxMTkxIzExIyQxIyQ3IyQ5MiQyNjE4MzIjODEjJDEjJDYjJDgz",
+      "ykiho": "JDQ4MTYyMiM1MSMkMiMkMCMkMDAkMzgxMTkxIzExIyQxIyQ3IyQ5MiQyNjE4MzIjODEjJDEjJDYjJDgz",
+      "name": "남양연세이비인후과의원",
+      "address": "경기도 화성시 만세구 남양성지로 139-1, 108호 (남양동, 국제포인트프라자)",
+      "phone": "031-356-6625",
+      "lat": 37.2090838,
+      "lng": 126.8183638,
+      "type": "소아청소년과",
+      "zone": "ny",
+      "zoneId": "ny",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": {
+        "mon": {
+          "start": "0900",
+          "end": "1750"
+        },
+        "tue": {
+          "start": "0900",
+          "end": "1750"
+        },
+        "wed": {
+          "start": "0900",
+          "end": "1750"
+        },
+        "thu": {
+          "start": "0900",
+          "end": "1750"
+        },
+        "fri": {
+          "start": "0900",
+          "end": "1750"
+        },
+        "sat": {
+          "start": "0900",
+          "end": "1150"
+        },
+        "sun": null,
+        "hol": null
+      },
+      "todayOpen": false,
+      "openText": "09:00~17:50",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDQ4MTYyMiM1MSMkMiMkMCMkMDAkNDgxOTYxIzMxIyQxIyQ3IyQ5MiQyNjEwMDIjNDEjJDEjJDgjJDgz",
+      "ykiho": "JDQ4MTYyMiM1MSMkMiMkMCMkMDAkNDgxOTYxIzMxIyQxIyQ3IyQ5MiQyNjEwMDIjNDEjJDEjJDgjJDgz",
+      "name": "남양정형외과의원",
+      "address": "경기도 화성시 만세구 남양읍 남양성지로 135, 4층 401,403호",
+      "phone": "031-356-7499",
+      "lat": 37.2089704,
+      "lng": 126.8180764,
+      "type": "소아청소년과",
+      "zone": "ny",
+      "zoneId": "ny",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": {
+        "mon": {
+          "start": "0900",
+          "end": "1800"
+        },
+        "tue": {
+          "start": "0900",
+          "end": "1800"
+        },
+        "wed": {
+          "start": "0900",
+          "end": "1800"
+        },
+        "thu": {
+          "start": "0900",
+          "end": "1800"
+        },
+        "fri": {
+          "start": "0900",
+          "end": "1800"
+        },
+        "sat": {
+          "start": "0900",
+          "end": "1300"
+        },
+        "sun": null,
+        "hol": null
+      },
+      "todayOpen": false,
+      "openText": "09:00~18:00",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkMzgxOTYxIzUxIyQxIyQ1IyQxMyQzNjE0ODEjNDEjJDEjJDQjJDgz",
+      "ykiho": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkMzgxOTYxIzUxIyQxIyQ1IyQxMyQzNjE0ODEjNDEjJDEjJDQjJDgz",
+      "name": "남양편안한내과의원",
+      "address": "경기도 화성시 만세구 남양읍 시청로 7, 4층",
+      "phone": "031-356-6780",
+      "lat": 37.2085691,
+      "lng": 126.8192545,
+      "type": "소아청소년과",
+      "zone": "ny",
+      "zoneId": "ny",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": {
+        "mon": {
+          "start": "0830",
+          "end": "1800"
+        },
+        "tue": {
+          "start": "0830",
+          "end": "1800"
+        },
+        "wed": {
+          "start": "0830",
+          "end": "1800"
+        },
+        "thu": {
+          "start": "0830",
+          "end": "1800"
+        },
+        "fri": {
+          "start": "0830",
+          "end": "1800"
+        },
+        "sat": {
+          "start": "0830",
+          "end": "1400"
+        },
+        "sun": null,
+        "hol": null
+      },
+      "todayOpen": false,
+      "openText": "08:30~18:00",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNDgxMTkxIzIxIyQxIyQ1IyQ5MiQ0NjE0ODEjNzEjJDEjJDgjJDgz",
+      "ykiho": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNDgxMTkxIzIxIyQxIyQ1IyQ5MiQ0NjE0ODEjNzEjJDEjJDgjJDgz",
+      "name": "남양하나이비인후과의원",
+      "address": "경기도 화성시 만세구 남양읍 남양로 671, 512,513,612호",
+      "phone": "031-8055-8677",
+      "lat": 37.1984814,
+      "lng": 126.8260365,
+      "type": "소아청소년과",
+      "zone": "ny",
+      "zoneId": "ny",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": null,
+      "todayOpen": null,
+      "openText": "진료시간 확인 필요",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkMzgxMzUxIzMxIyQxIyQ3IyQ4OSQzNjEyMjIjNTEjJDEjJDYjJDgz",
+      "ykiho": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkMzgxMzUxIzMxIyQxIyQ3IyQ4OSQzNjEyMjIjNTEjJDEjJDYjJDgz",
+      "name": "넥스트라인의원",
+      "address": "경기도 화성시 동탄구 동탄순환대로 686, 401~403호 (영천동)",
+      "phone": "031-8077-2575",
+      "lat": 37.2063306,
+      "lng": 127.1117227,
+      "type": "소아청소년과",
+      "zone": "dt13",
+      "zoneId": "dt13",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": null,
+      "todayOpen": null,
+      "openText": "진료시간 확인 필요",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNDgxNzAyIzIxIyQxIyQ1IyQ3OSQyNjE0ODEjNjEjJDEjJDgjJDgz",
+      "ykiho": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNDgxNzAyIzIxIyQxIyQ1IyQ3OSQyNjE0ODEjNjEjJDEjJDgjJDgz",
+      "name": "동탄365키즈소아청소년과의원",
+      "address": "경기도 화성시 동탄구 동탄순환대로20길 124, 우성스타파크 A 301,302,508,509,510호 (목동)",
+      "phone": "031-373-3889",
+      "lat": 37.1826526,
+      "lng": 127.1246944,
+      "type": "소아청소년과",
+      "zone": "dt13",
+      "zoneId": "dt13",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": null,
+      "todayOpen": null,
+      "openText": "진료시간 확인 필요",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkMzgxMTkxIzExIyQxIyQzIyQ5OSQyNjEyMjIjNDEjJDEjJDgjJDgz",
+      "ykiho": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkMzgxMTkxIzExIyQxIyQzIyQ5OSQyNjEyMjIjNDEjJDEjJDgjJDgz",
+      "name": "동탄마취통증의학과의원",
+      "address": "경기도 화성시 동탄구 동탄오산로 82, 305호 (오산동, 동탄역퍼스트프라자)",
+      "phone": "031-378-0133",
+      "lat": 37.198165,
+      "lng": 127.0971269,
+      "type": "소아청소년과",
+      "zone": "dt13",
+      "zoneId": "dt13",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": null,
+      "todayOpen": null,
+      "openText": "진료시간 확인 필요",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNDgxMTkxIzMxIyQyIyQ3IyQwMCQ0NjEwMDIjNjEjJDEjJDQjJDgz",
+      "ykiho": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNDgxMTkxIzMxIyQyIyQ3IyQwMCQ0NjEwMDIjNjEjJDEjJDQjJDgz",
+      "name": "동탄맑은이비인후과의원",
+      "address": "경기도 화성시 동탄구 동탄순환대로 263, 풍산리치안타워 306,307호 (산척동)",
+      "phone": "031-375-5375",
+      "lat": 37.1711527,
+      "lng": 127.1185789,
+      "type": "소아청소년과",
+      "zone": "dt13",
+      "zoneId": "dt13",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": null,
+      "todayOpen": null,
+      "openText": "진료시간 확인 필요",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNDgxMTkxIzIxIyQxIyQxIyQ3OSQzNjE4MzIjNDEjJDEjJDgjJDgz",
+      "ykiho": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNDgxMTkxIzIxIyQxIyQxIyQ3OSQzNjE4MzIjNDEjJDEjJDgjJDgz",
+      "name": "동탄메디365의원",
+      "address": "경기도 화성시 동탄구 동탄역로 150, B동 312,313호 (오산동, 동탄역 롯데캐슬)",
+      "phone": "031-377-7264",
+      "lat": 37.1995005,
+      "lng": 127.0967855,
+      "type": "소아청소년과",
+      "zone": "dt13",
+      "zoneId": "dt13",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": {
+        "mon": {
+          "start": "0900",
+          "end": "1830"
+        },
+        "tue": {
+          "start": "0900",
+          "end": "1830"
+        },
+        "wed": {
+          "start": "0900",
+          "end": "1830"
+        },
+        "thu": {
+          "start": "0900",
+          "end": "1830"
+        },
+        "fri": {
+          "start": "0900",
+          "end": "1830"
+        },
+        "sat": {
+          "start": "0900",
+          "end": "1300"
+        },
+        "sun": {
+          "start": "0900",
+          "end": "1300"
+        },
+        "hol": null
+      },
+      "todayOpen": false,
+      "openText": "09:00~18:30",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNDgxMTkxIzExIyQxIyQzIyQ3OSQyNjE0ODEjNDEjJDEjJDgjJDgz",
+      "ykiho": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNDgxMTkxIzExIyQxIyQzIyQ3OSQyNjE0ODEjNDEjJDEjJDgjJDgz",
+      "name": "동탄미소소아청소년과의원",
+      "address": "경기도 화성시 동탄구 동탄대로시범길 142, 403호 (청계동, 센텀프라자)",
+      "phone": "031-375-9393",
+      "lat": 37.1999195,
+      "lng": 127.1133874,
+      "type": "소아청소년과",
+      "zone": "dt13",
+      "zoneId": "dt13",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": null,
+      "todayOpen": null,
+      "openText": "진료시간 확인 필요",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNDgxMTkxIzIxIyQxIyQxIyQ3OSQzNjEyMjIjNTEjJDEjJDYjJDgz",
+      "ykiho": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNDgxMTkxIzIxIyQxIyQxIyQ3OSQzNjEyMjIjNTEjJDEjJDYjJDgz",
+      "name": "동탄삼성의원",
+      "address": "경기도 화성시 동탄구 동탄신리천로 278, 303,304호 (오산동)",
+      "phone": "031-8077-2338",
+      "lat": 37.1833723,
+      "lng": 127.1088524,
+      "type": "소아청소년과",
+      "zone": "dt13",
+      "zoneId": "dt13",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": null,
+      "todayOpen": null,
+      "openText": "진료시간 확인 필요",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNDgxMTkxIzUxIyQxIyQxIyQ2MiQzNjE0ODEjNjEjJDEjJDAjJDgz",
+      "ykiho": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNDgxMTkxIzUxIyQxIyQxIyQ2MiQzNjE0ODEjNjEjJDEjJDAjJDgz",
+      "name": "동탄삼성이비인후과의원",
+      "address": "경기도 화성시 동탄구 동탄순환대로 127-5, 우성센트럴타워 4층 408~410호 (산척동)",
+      "phone": "031-374-1003",
+      "lat": 37.1660595,
+      "lng": 127.1072823,
+      "type": "소아청소년과",
+      "zone": "dt13",
+      "zoneId": "dt13",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": null,
+      "todayOpen": null,
+      "openText": "진료시간 확인 필요",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNDgxMTkxIzUxIyQxIyQxIyQ4MiQzNjEyMjIjNjEjJDEjJDQjJDgz",
+      "ykiho": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNDgxMTkxIzUxIyQxIyQxIyQ4MiQzNjEyMjIjNjEjJDEjJDQjJDgz",
+      "name": "동탄서울내과의원",
+      "address": "경기도 화성시 동탄구 동탄순환대로 127-5, 우성센트럴타워 309~314호, 501~511호 (산척동)",
+      "phone": "031-831-8363",
+      "lat": 37.1660595,
+      "lng": 127.1072823,
+      "type": "소아청소년과",
+      "zone": "dt13",
+      "zoneId": "dt13",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": null,
+      "todayOpen": null,
+      "openText": "진료시간 확인 필요",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNDgxMTkxIzIxIyQxIyQxIyQ3MiQ0NjE0ODEjNjEjJDEjJDgjJDgz",
+      "ykiho": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNDgxMTkxIzIxIyQxIyQxIyQ3MiQ0NjE0ODEjNjEjJDEjJDgjJDgz",
+      "name": "동탄서울아산내과의원",
+      "address": "경기도 화성시 동탄구 동탄순환대로 686, 302,303호 (영천동)",
+      "phone": "031-377-2355",
+      "lat": 37.2063306,
+      "lng": 127.1117227,
+      "type": "소아청소년과",
+      "zone": "dt13",
+      "zoneId": "dt13",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": null,
+      "todayOpen": null,
+      "openText": "진료시간 확인 필요",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNDgxMTkxIzUxIyQxIyQxIyQ4MiQyNjEyMjIjNTEjJDEjJDIjJDgz",
+      "ykiho": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNDgxMTkxIzUxIyQxIyQxIyQ4MiQyNjEyMjIjNTEjJDEjJDIjJDgz",
+      "name": "동탄서울안과의원",
+      "address": "경기도 화성시 동탄구 동탄순환대로 127-17, 우성메디피아 5층 508~510호 (산척동)",
+      "phone": "031-306-8875",
+      "lat": 37.1670009,
+      "lng": 127.1072679,
+      "type": "소아청소년과",
+      "zone": "dt13",
+      "zoneId": "dt13",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": null,
+      "todayOpen": null,
+      "openText": "진료시간 확인 필요",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNTgxMzUxIzExIyQxIyQzIyQwMyQyNjEwMDIjODEjJDEjJDYjJDgz",
+      "ykiho": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNTgxMzUxIzExIyQxIyQzIyQwMyQyNjEwMDIjODEjJDEjJDYjJDgz",
+      "name": "동탄서울의원",
+      "address": "경기도 화성시 동탄구 동탄솔빛로 68, 계림개발 301호 (반송동)",
+      "phone": "031-8003-5975",
+      "lat": 37.1944452,
+      "lng": 127.0748602,
+      "type": "소아청소년과",
+      "zone": "dt13",
+      "zoneId": "dt13",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": {
+        "mon": {
+          "start": "0900",
+          "end": "0630"
+        },
+        "tue": {
+          "start": "0900",
+          "end": "0630"
+        },
+        "wed": {
+          "start": "0900",
+          "end": "0630"
+        },
+        "thu": {
+          "start": "0900",
+          "end": "0630"
+        },
+        "fri": {
+          "start": "0900",
+          "end": "0630"
+        },
+        "sat": {
+          "start": "0900",
+          "end": "1300"
+        },
+        "sun": null,
+        "hol": null
+      },
+      "todayOpen": false,
+      "openText": "09:00~06:30",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNTgxOTYxIzIxIyQxIyQ5IyQ3MiQ0NjE0ODEjNjEjJDEjJDQjJDgz",
+      "ykiho": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNTgxOTYxIzIxIyQxIyQ5IyQ3MiQ0NjE0ODEjNjEjJDEjJDQjJDgz",
+      "name": "동탄센트럴이비인후과의원",
+      "address": "경기도 화성시 동탄구 동탄대로4길 39, 포트센트럴파크 203호 (장지동)",
+      "phone": "031-8043-5422",
+      "lat": 37.1618176,
+      "lng": 127.1102472,
+      "type": "소아청소년과",
+      "zone": "dt13",
+      "zoneId": "dt13",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": null,
+      "todayOpen": null,
+      "openText": "진료시간 확인 필요",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNDgxOTYxIzIxIyQxIyQxIyQ2MiQzNjEwMDIjODEjJDEjJDYjJDgz",
+      "ykiho": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNDgxOTYxIzIxIyQxIyQxIyQ2MiQzNjEwMDIjODEjJDEjJDYjJDgz",
+      "name": "동탄수내과의원",
+      "address": "경기도 화성시 동탄구 동탄대로시범길 146, 4층 401,402호 (청계동, 포트센트럴시티)",
+      "phone": "031-8043-5445",
+      "lat": 37.2003439,
+      "lng": 127.1131432,
+      "type": "소아청소년과",
+      "zone": "dt13",
+      "zoneId": "dt13",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": {
+        "mon": {
+          "start": "0830",
+          "end": "1800"
+        },
+        "tue": {
+          "start": "0830",
+          "end": "1800"
+        },
+        "wed": {
+          "start": "0830",
+          "end": "1800"
+        },
+        "thu": {
+          "start": "0830",
+          "end": "1800"
+        },
+        "fri": {
+          "start": "0830",
+          "end": "1800"
+        },
+        "sat": {
+          "start": "0830",
+          "end": "1400"
+        },
+        "sun": null,
+        "hol": null
+      },
+      "todayOpen": false,
+      "openText": "08:30~18:00",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNTgxMzUxIzExIyQxIyQzIyQ3OSQzNjEwMDIjNTEjJDEjJDYjJDgz",
+      "ykiho": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNTgxMzUxIzExIyQxIyQzIyQ3OSQzNjEwMDIjNTEjJDEjJDYjJDgz",
+      "name": "동탄아이언소아청소년과의원",
+      "address": "경기도 화성시 동탄구 동탄대로시범길 261, 리더스프라자 203호 (청계동)",
+      "phone": "031-378-4939",
+      "lat": 37.2016986,
+      "lng": 127.1021941,
+      "type": "소아청소년과",
+      "zone": "dt13",
+      "zoneId": "dt13",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": null,
+      "todayOpen": null,
+      "openText": "진료시간 확인 필요",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDU4MTI3MSM1MSMkMiMkNCMkMDAkMzgxMzUxIzExIyQxIyQzIyQ5MiQzNjE4MzIjNDEjJDEjJDgjJDgz",
+      "ykiho": "JDU4MTI3MSM1MSMkMiMkNCMkMDAkMzgxMzUxIzExIyQxIyQzIyQ5MiQzNjE4MzIjNDEjJDEjJDgjJDgz",
+      "name": "동탄아이엠유의원",
+      "address": "경기도 화성시 동탄구 노작로1가길 8, 나루프라자 117~124호 (반송동)",
+      "phone": "031-613-7717",
+      "lat": 37.1949274,
+      "lng": 127.0816032,
+      "type": "소아청소년과",
+      "zone": "dt13",
+      "zoneId": "dt13",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": null,
+      "todayOpen": null,
+      "openText": "진료시간 확인 필요",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkMzgxNzAyIzIxIyQxIyQxIyQ5OSQzNjEyMjIjNDEjJDEjJDgjJDgz",
+      "ykiho": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkMzgxNzAyIzIxIyQxIyQxIyQ5OSQzNjEyMjIjNDEjJDEjJDgjJDgz",
+      "name": "동탄에스소아청소년과의원",
+      "address": "경기도 화성시 동탄구 동탄순환대로18길 16, 센타프라자 404~406호 (목동)",
+      "phone": "031-372-2544",
+      "lat": 37.1831044,
+      "lng": 127.1243017,
+      "type": "소아청소년과",
+      "zone": "dt13",
+      "zoneId": "dt13",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": null,
+      "todayOpen": null,
+      "openText": "진료시간 확인 필요",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNDgxMTkxIzQxIyQxIyQ3IyQ3MiQyNjEyMjIjODEjJDEjJDYjJDgz",
+      "ykiho": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNDgxMTkxIzQxIyQxIyQ3IyQ3MiQyNjEyMjIjODEjJDEjJDYjJDgz",
+      "name": "동탄역아주시원한이비인후과의원",
+      "address": "경기도 화성시 동탄구 동탄대로 489, 동탄역우성타워 211일부,304,305,903,904호 (오산동)",
+      "phone": "031-377-5082",
+      "lat": 37.1973592,
+      "lng": 127.0982637,
+      "type": "소아청소년과",
+      "zone": "dt13",
+      "zoneId": "dt13",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": null,
+      "todayOpen": null,
+      "openText": "진료시간 확인 필요",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkMzgxOTYxIzQxIyQxIyQ3IyQ3MiQyNjE4MzIjNDEjJDEjJDQjJDgz",
+      "ykiho": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkMzgxOTYxIzQxIyQxIyQ3IyQ3MiQyNjE4MzIjNDEjJDEjJDQjJDgz",
+      "name": "동탄연세소아청소년과의원",
+      "address": "경기도 화성시 동탄구 동탄중앙로 200, B블럭(상가동) 312~313호호 (반송동, 메타폴리스)",
+      "phone": "031-613-6080",
+      "lat": 37.2027924,
+      "lng": 127.0688912,
+      "type": "소아청소년과",
+      "zone": "dt13",
+      "zoneId": "dt13",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": {
+        "mon": {
+          "start": "0830",
+          "end": "2100"
+        },
+        "tue": {
+          "start": "0830",
+          "end": "2100"
+        },
+        "wed": {
+          "start": "0830",
+          "end": "2100"
+        },
+        "thu": {
+          "start": "0830",
+          "end": "2100"
+        },
+        "fri": {
+          "start": "0830",
+          "end": "2100"
+        },
+        "sat": {
+          "start": "0830",
+          "end": "1600"
+        },
+        "sun": {
+          "start": "0900",
+          "end": "1300"
+        },
+        "hol": null
+      },
+      "todayOpen": false,
+      "openText": "08:30~21:00",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNDgxOTYxIzQxIyQxIyQ3IyQ3MiQzNjEwMDIjODEjJDEjJDIjJDgz",
+      "ykiho": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNDgxOTYxIzQxIyQxIyQ3IyQ3MiQzNjEwMDIjODEjJDEjJDIjJDgz",
+      "name": "동탄연세의원",
+      "address": "경기도 화성시 병점구 동탄원천로 382-46, (반월동)",
+      "phone": "031-898-9595",
+      "lat": 37.2230229,
+      "lng": 127.0584085,
+      "type": "소아청소년과",
+      "zone": "dt13",
+      "zoneId": "dt13",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": null,
+      "todayOpen": null,
+      "openText": "진료시간 확인 필요",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkMzgxMTkxIzExIyQxIyQzIyQ3MiQzNjEyMjIjNjEjJDEjJDQjJDgz",
+      "ykiho": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkMzgxMTkxIzExIyQxIyQzIyQ3MiQzNjEyMjIjNjEjJDEjJDQjJDgz",
+      "name": "동탄연세이비인후과의원",
+      "address": "경기도 화성시 동탄구 동탄지성로 141, 아크리아빌딩, 403호 (능동)",
+      "phone": "031-8003-7582",
+      "lat": 37.2094353,
+      "lng": 127.059924,
+      "type": "소아청소년과",
+      "zone": "dt13",
+      "zoneId": "dt13",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": {
+        "mon": {
+          "start": "0900",
+          "end": "1800"
+        },
+        "tue": {
+          "start": "0900",
+          "end": "1800"
+        },
+        "wed": {
+          "start": "0900",
+          "end": "1800"
+        },
+        "thu": {
+          "start": "0900",
+          "end": "1800"
+        },
+        "fri": {
+          "start": "0900",
+          "end": "1800"
+        },
+        "sat": {
+          "start": "0900",
+          "end": "1300"
+        },
+        "sun": null,
+        "hol": null
+      },
+      "todayOpen": false,
+      "openText": "09:00~18:00",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNDgxMTkxIzMxIyQxIyQ3IyQ4OSQzNjEyMjIjNjEjJDEjJDgjJDgz",
+      "ykiho": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNDgxMTkxIzMxIyQxIyQ3IyQ4OSQzNjEyMjIjNjEjJDEjJDgjJDgz",
+      "name": "동탄이소아청소년과의원",
+      "address": "경기도 화성시 동탄구 동탄순환대로 263, 풍산리치안타워 301호 (산척동)",
+      "phone": "031-8055-8737",
+      "lat": 37.1711527,
+      "lng": 127.1185789,
+      "type": "소아청소년과",
+      "zone": "dt13",
+      "zoneId": "dt13",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": {
+        "mon": {
+          "start": "0900",
+          "end": "1900"
+        },
+        "tue": {
+          "start": "0900",
+          "end": "1900"
+        },
+        "wed": {
+          "start": "0900",
+          "end": "1900"
+        },
+        "thu": {
+          "start": "0900",
+          "end": "1900"
+        },
+        "fri": {
+          "start": "0900",
+          "end": "1900"
+        },
+        "sat": {
+          "start": "0900",
+          "end": "1400"
+        },
+        "sun": null,
+        "hol": null
+      },
+      "todayOpen": false,
+      "openText": "09:00~19:00",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNTgxMzUxIzUxIyQxIyQ1IyQ2MiQyNjEyMjIjNjEjJDEjJDQjJDgz",
+      "ykiho": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNTgxMzUxIzUxIyQxIyQ1IyQ2MiQyNjEyMjIjNjEjJDEjJDQjJDgz",
+      "name": "동탄이엠365의원",
+      "address": "경기도 화성시 동탄구 동탄대로4길 47, AJ프라자 204~220호 (장지동)",
+      "phone": "031-374-2811",
+      "lat": 37.1617914,
+      "lng": 127.1112837,
+      "type": "소아청소년과",
+      "zone": "dt13",
+      "zoneId": "dt13",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": null,
+      "todayOpen": null,
+      "openText": "진료시간 확인 필요",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNDgxOTYxIzMxIyQxIyQ3IyQ5OSQzNjE0ODEjNDEjJDEjJDgjJDgz",
+      "ykiho": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNDgxOTYxIzMxIyQxIyQ3IyQ5OSQzNjE0ODEjNDEjJDEjJDgjJDgz",
+      "name": "동탄조은내과의원",
+      "address": "경기도 화성시 동탄구 동탄순환대로 706, 302.303.304호 (영천동, 서건에듀프라자2동)",
+      "phone": "031-373-7558",
+      "lat": 37.2078125,
+      "lng": 127.1105919,
+      "type": "소아청소년과",
+      "zone": "dt13",
+      "zoneId": "dt13",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": null,
+      "todayOpen": null,
+      "openText": "진료시간 확인 필요",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkMzgxMzUxIzIxIyQxIyQ5IyQ3MiQyNjEwMDIjODEjJDEjJDYjJDgz",
+      "ykiho": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkMzgxMzUxIzIxIyQxIyQ5IyQ3MiQyNjEwMDIjODEjJDEjJDYjJDgz",
+      "name": "동탄키즈웰소아청소년과의원",
+      "address": "경기도 화성시 동탄구 동탄대로 198, 드림타워 4층 406호 (산척동)",
+      "phone": "031-376-6619",
+      "lat": 37.1721233,
+      "lng": 127.1073075,
+      "type": "소아청소년과",
+      "zone": "dt13",
+      "zoneId": "dt13",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": null,
+      "todayOpen": null,
+      "openText": "진료시간 확인 필요",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNTgxMzUxIzIxIyQxIyQ5IyQxMyQzNjE4MzIjNDEjJDEjJDgjJDgz",
+      "ykiho": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNTgxMzUxIzIxIyQxIyQ5IyQxMyQzNjE4MzIjNDEjJDEjJDgjJDgz",
+      "name": "동탄탑내과의원",
+      "address": "경기도 화성시 동탄구 동탄중앙로 76, 서건프라자 2층 (반송동)",
+      "phone": "031-8015-2175",
+      "lat": 37.1931792,
+      "lng": 127.0725751,
+      "type": "소아청소년과",
+      "zone": "dt13",
+      "zoneId": "dt13",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": null,
+      "todayOpen": null,
+      "openText": "진료시간 확인 필요",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNTgxOTYxIzUxIyQxIyQ1IyQxMyQyNjE4MzIjNjEjJDEjJDQjJDgz",
+      "ykiho": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNTgxOTYxIzUxIyQxIyQ1IyQxMyQyNjE4MzIjNjEjJDEjJDQjJDgz",
+      "name": "동탄해와달소아청소년과의원",
+      "address": "경기도 화성시 동탄구 동탄순환대로 707, 대성프라자 201호 (영천동)",
+      "phone": "031-375-1271",
+      "lat": 37.2076133,
+      "lng": 127.1096443,
+      "type": "소아청소년과",
+      "zone": "dt13",
+      "zoneId": "dt13",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": null,
+      "todayOpen": null,
+      "openText": "진료시간 확인 필요",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNDgxMzUxIzUxIyQyIyQ1IyQwMCQyNjEyMjIjNjEjJDEjJDgjJDgz",
+      "ykiho": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNDgxMzUxIzUxIyQyIyQ1IyQwMCQyNjEyMjIjNjEjJDEjJDgjJDgz",
+      "name": "동탄호수소아청소년과의원",
+      "address": "경기도 화성시 동탄구 동탄대로5길 15, 그랑파사쥬 4027~4029호 (송동)",
+      "phone": "031-308-7582",
+      "lat": 37.1661162,
+      "lng": 127.1051213,
+      "type": "소아청소년과",
+      "zone": "dt13",
+      "zoneId": "dt13",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": {
+        "mon": {
+          "start": "0900",
+          "end": "2000"
+        },
+        "tue": {
+          "start": "0900",
+          "end": "2000"
+        },
+        "wed": {
+          "start": "0900",
+          "end": "2000"
+        },
+        "thu": {
+          "start": "0900",
+          "end": "2000"
+        },
+        "fri": {
+          "start": "0900",
+          "end": "2000"
+        },
+        "sat": {
+          "start": "0900",
+          "end": "1600"
+        },
+        "sun": null,
+        "hol": null
+      },
+      "todayOpen": false,
+      "openText": "09:00~20:00",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNDgxMzUxIzUxIyQxIyQxIyQxMyQzNjEyMjIjNjEjJDEjJDgjJDgz",
+      "ykiho": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNDgxMzUxIzUxIyQxIyQxIyQxMyQzNjEyMjIjNjEjJDEjJDgjJDgz",
+      "name": "둘이이비인후과의원",
+      "address": "경기도 화성시 효행구 봉담읍 동화길 93-2, 401호 (제이스프라자)",
+      "phone": "031-227-0191",
+      "lat": 37.2162972,
+      "lng": 126.9591576,
+      "type": "소아청소년과",
+      "zone": "bd",
+      "zoneId": "bd",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": null,
+      "todayOpen": null,
+      "openText": "진료시간 확인 필요",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNDgxMzUxIzExIyQxIyQzIyQ3OSQyNjE4MzIjNjEjJDEjJDQjJDgz",
+      "ykiho": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNDgxMzUxIzExIyQxIyQzIyQ3OSQyNjE4MzIjNjEjJDEjJDQjJDgz",
+      "name": "드림모아의원",
+      "address": "경기도 화성시 효행구 봉담읍 효행로 278, (이마트)",
+      "phone": "031-222-7589",
+      "lat": 37.2224904,
+      "lng": 126.972699,
+      "type": "소아청소년과",
+      "zone": "bd",
+      "zoneId": "bd",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": {
+        "mon": {
+          "start": "1000",
+          "end": "2030"
+        },
+        "tue": {
+          "start": "1000",
+          "end": "2030"
+        },
+        "wed": {
+          "start": "1000",
+          "end": "2030"
+        },
+        "thu": {
+          "start": "1000",
+          "end": "2030"
+        },
+        "fri": {
+          "start": "1000",
+          "end": "2030"
+        },
+        "sat": {
+          "start": "1000",
+          "end": "1700"
+        },
+        "sun": {
+          "start": "1000",
+          "end": "1500"
+        },
+        "hol": null
+      },
+      "todayOpen": false,
+      "openText": "10:00~20:30",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNDgxMTkxIzUxIyQxIyQxIyQ4MiQzNjE0ODEjODEjJDEjJDYjJDgz",
+      "ykiho": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNDgxMTkxIzUxIyQxIyQxIyQ4MiQzNjE0ODEjODEjJDEjJDYjJDgz",
+      "name": "드림이비인후과의원",
+      "address": "경기도 화성시 동탄구 동탄순환대로20길 118, 우성스타파크 B동 304,305호 (목동)",
+      "phone": "031-378-0989",
+      "lat": 37.1830112,
+      "lng": 127.1248249,
+      "type": "소아청소년과",
+      "zone": "dt13",
+      "zoneId": "dt13",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": null,
+      "todayOpen": null,
+      "openText": "진료시간 확인 필요",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNDgxOTYxIzQxIyQxIyQ3IyQ5MiQyNjE4MzIjNjEjJDEjJDgjJDgz",
+      "ykiho": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNDgxOTYxIzQxIyQxIyQ3IyQ5MiQyNjE4MzIjNjEjJDEjJDgjJDgz",
+      "name": "리앤김소아청소년과의원",
+      "address": "경기도 화성시 만세구 향남읍 상신하길로298번길 7-21, 1동 5층 511,512호 (kt시네마)",
+      "phone": "031-366-1003",
+      "lat": 37.1151722,
+      "lng": 126.9124754,
+      "type": "소아청소년과",
+      "zone": "hn",
+      "zoneId": "hn",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": null,
+      "todayOpen": null,
+      "openText": "진료시간 확인 필요",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkMzgxNzAyIzExIyQxIyQzIyQ5MiQzNjE0ODEjODEjJDEjJDYjJDgz",
+      "ykiho": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkMzgxNzAyIzExIyQxIyQzIyQ5MiQzNjE0ODEjODEjJDEjJDYjJDgz",
+      "name": "마음담은내과의원",
+      "address": "경기도 화성시 동탄구 동탄지성로 134, 한솔프라자, 403호 (능동)",
+      "phone": "031-8015-3700",
+      "lat": 37.2095824,
+      "lng": 127.0609874,
+      "type": "소아청소년과",
+      "zone": "dt13",
+      "zoneId": "dt13",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": null,
+      "todayOpen": null,
+      "openText": "진료시간 확인 필요",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNDgxNzAyIzIxIyQxIyQ1IyQ2MiQ0NjE0ODEjNDEjJDEjJDgjJDgz",
+      "ykiho": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNDgxNzAyIzIxIyQxIyQ1IyQ2MiQ0NjE0ODEjNDEjJDEjJDgjJDgz",
+      "name": "미래의원",
+      "address": "경기도 화성시 만세구 우정읍 조암남로 39, 3층",
+      "phone": "031-831-8518",
+      "lat": 37.0843942,
+      "lng": 126.8193183,
+      "type": "소아청소년과",
+      "zone": "dt13",
+      "zoneId": "dt13",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": null,
+      "todayOpen": null,
+      "openText": "진료시간 확인 필요",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNTgxOTYxIzExIyQxIyQzIyQwMyQ0NjEwMDIjNDEjJDEjJDQjJDgz",
+      "ykiho": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNTgxOTYxIzExIyQxIyQzIyQwMyQ0NjEwMDIjNDEjJDEjJDQjJDgz",
+      "name": "바로이비인후과의원",
+      "address": "경기도 화성시 병점구 장조2로 12, 3층 310,311,312호 (안녕동)",
+      "phone": "031-221-3400",
+      "lat": 37.2040933,
+      "lng": 126.9993994,
+      "type": "소아청소년과",
+      "zone": "bj",
+      "zoneId": "bj",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": null,
+      "todayOpen": null,
+      "openText": "진료시간 확인 필요",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNTgxMzUxIzExIyQxIyQ3IyQwMyQzNjEwMDIjODEjJDEjJDIjJDgz",
+      "ykiho": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNTgxMzUxIzExIyQxIyQ3IyQwMyQzNjEwMDIjODEjJDEjJDIjJDgz",
+      "name": "바른속내과의원",
+      "address": "경기도 화성시 효행구 봉담읍 상리2길 51, 403호",
+      "phone": "031-305-8484",
+      "lat": 37.2245561,
+      "lng": 126.9471441,
+      "type": "소아청소년과",
+      "zone": "bd",
+      "zoneId": "bd",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": null,
+      "todayOpen": null,
+      "openText": "진료시간 확인 필요",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDQ4MTYyMiM1MSMkMiMkMCMkMDAkNTgxOTYxIzMxIyQxIyQzIyQxMyQzNjEyMjIjNDEjJDEjJDgjJDgz",
+      "ykiho": "JDQ4MTYyMiM1MSMkMiMkMCMkMDAkNTgxOTYxIzMxIyQxIyQzIyQxMyQzNjEyMjIjNDEjJDEjJDgjJDgz",
+      "name": "바른정형외과의원",
+      "address": "경기도 화성시 병점구 병점2로 6, 4층 (병점동, 금강빌딩)",
+      "phone": "031-238-4321",
+      "lat": 37.2050347,
+      "lng": 127.0377716,
+      "type": "소아청소년과",
+      "zone": "bj",
+      "zoneId": "bj",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": {
+        "mon": {
+          "start": "0900",
+          "end": "1830"
+        },
+        "tue": {
+          "start": "0900",
+          "end": "1830"
+        },
+        "wed": {
+          "start": "0900",
+          "end": "1830"
+        },
+        "thu": {
+          "start": "0900",
+          "end": "1830"
+        },
+        "fri": {
+          "start": "0900",
+          "end": "1830"
+        },
+        "sat": {
+          "start": "0900",
+          "end": "1300"
+        },
+        "sun": null,
+        "hol": null
+      },
+      "todayOpen": false,
+      "openText": "09:00~18:30",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDQ4MTYyMiM1MSMkMiMkMCMkMDAkNDgxOTYxIzQxIyQxIyQ3IyQ2MiQzNjE0ODEjNDEjJDEjJDQjJDgz",
+      "ykiho": "JDQ4MTYyMiM1MSMkMiMkMCMkMDAkNDgxOTYxIzQxIyQxIyQ3IyQ2MiQzNjE0ODEjNDEjJDEjJDQjJDgz",
+      "name": "박동수외과의원",
+      "address": "경기도 화성시 병점구 효행로 1385, (반월동)",
+      "phone": "031-204-8275",
+      "lat": 37.2310243,
+      "lng": 127.0652818,
+      "type": "소아청소년과",
+      "zone": "bj",
+      "zoneId": "bj",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": {
+        "mon": {
+          "start": "0900",
+          "end": "1800"
+        },
+        "tue": {
+          "start": "0900",
+          "end": "1800"
+        },
+        "wed": {
+          "start": "0900",
+          "end": "1800"
+        },
+        "thu": {
+          "start": "0900",
+          "end": "1800"
+        },
+        "fri": {
+          "start": "0900",
+          "end": "1800"
+        },
+        "sat": {
+          "start": "0900",
+          "end": "1300"
+        },
+        "sun": null,
+        "hol": null
+      },
+      "todayOpen": false,
+      "openText": "09:00~18:00",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDQ4MTYyMiM1MSMkMiMkMCMkMDAkNTgxMzUxIzIxIyQyIyQ5IyQwMCQzNjE0ODEjNDEjJDEjJDQjJDgz",
+      "ykiho": "JDQ4MTYyMiM1MSMkMiMkMCMkMDAkNTgxMzUxIzIxIyQyIyQ5IyQwMCQzNjE0ODEjNDEjJDEjJDQjJDgz",
+      "name": "반디소아청소년과의원",
+      "address": "경기도 화성시 동탄구 동탄광역환승로 73, 124,125호 (오산동, 동탄역 반도유보라 아이비파크 8.0)",
+      "phone": "031-372-8220",
+      "lat": 37.2026473,
+      "lng": 127.0907013,
+      "type": "소아청소년과",
+      "zone": "dt13",
+      "zoneId": "dt13",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": null,
+      "todayOpen": null,
+      "openText": "진료시간 확인 필요",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNDgxMTkxIzExIyQyIyQ3IyQwMCQ0NjE0ODEjNjEjJDEjJDQjJDgz",
+      "ykiho": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNDgxMTkxIzExIyQyIyQ3IyQwMCQ0NjE0ODEjNjEjJDEjJDQjJDgz",
+      "name": "발안우리들의원",
+      "address": "경기도 화성시 만세구 향남읍 발안남로55번길 27, (향남읍)",
+      "phone": "031-366-1980",
+      "lat": 37.1299987,
+      "lng": 126.9049602,
+      "type": "소아청소년과",
+      "zone": "hn",
+      "zoneId": "hn",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": null,
+      "todayOpen": null,
+      "openText": "진료시간 확인 필요",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDQ4MTYyMiM1MSMkMiMkMCMkMDAkNDgxOTYxIzIxIyQxIyQ5IyQ3OSQzNjEyMjIjODEjJDEjJDIjJDgz",
+      "ykiho": "JDQ4MTYyMiM1MSMkMiMkMCMkMDAkNDgxOTYxIzIxIyQxIyQ5IyQ3OSQzNjEyMjIjODEjJDEjJDIjJDgz",
+      "name": "발안제일의원",
+      "address": "경기도 화성시 만세구 향남읍 발안로 103-6, 3층",
+      "phone": "031-352-3711",
+      "lat": 37.1317503,
+      "lng": 126.9219987,
+      "type": "소아청소년과",
+      "zone": "hn",
+      "zoneId": "hn",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": null,
+      "todayOpen": null,
+      "openText": "진료시간 확인 필요",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNTgxMzUxIzUxIyQxIyQxIyQ3OSQ0NjEwMDIjNzEjJDEjJDgjJDgz",
+      "ykiho": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNTgxMzUxIzUxIyQxIyQxIyQ3OSQ0NjEwMDIjNzEjJDEjJDgjJDgz",
+      "name": "배영민소아청소년과의원",
+      "address": "경기도 화성시 병점구 병점2로 30, 2층 207호 (병점동, 명신프라자)",
+      "phone": "031-232-2338",
+      "lat": 37.2060923,
+      "lng": 127.0402958,
+      "type": "소아청소년과",
+      "zone": "bj",
+      "zoneId": "bj",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": {
+        "mon": {
+          "start": "0850",
+          "end": "1830"
+        },
+        "tue": {
+          "start": "0850",
+          "end": "1830"
+        },
+        "wed": {
+          "start": "0850",
+          "end": "1830"
+        },
+        "thu": null,
+        "fri": {
+          "start": "0850",
+          "end": "1850"
+        },
+        "sat": {
+          "start": "0840",
+          "end": "1330"
+        },
+        "sun": {
+          "start": "0840",
+          "end": "1300"
+        },
+        "hol": null
+      },
+      "todayOpen": false,
+      "openText": "08:50~18:30",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNDgxNzAyIzMxIyQxIyQzIyQ3OSQzNjEwMDIjNDEjJDEjJDQjJDgz",
+      "ykiho": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNDgxNzAyIzMxIyQxIyQzIyQ3OSQzNjEwMDIjNDEjJDEjJDQjJDgz",
+      "name": "베스트내과의원",
+      "address": "경기도 화성시 동탄구 동탄대로 537, 라스플로레스 A동 235~239,244~247호 (오산동)",
+      "phone": "031-365-3611",
+      "lat": 37.2022262,
+      "lng": 127.097959,
+      "type": "소아청소년과",
+      "zone": "dt13",
+      "zoneId": "dt13",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": null,
+      "todayOpen": null,
+      "openText": "진료시간 확인 필요",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDQ4MTYyMiM1MSMkMiMkMCMkMDAkNDgxMzUxIzMxIyQxIyQ3IyQ4MiQzNjE0ODEjNTEjJDEjJDIjJDgz",
+      "ykiho": "JDQ4MTYyMiM1MSMkMiMkMCMkMDAkNDgxMzUxIzMxIyQxIyQ3IyQ4MiQzNjE0ODEjNTEjJDEjJDIjJDgz",
+      "name": "병점메디칼의원",
+      "address": "경기도 화성시 병점구 경기대로 1008, 2층 (병점동)",
+      "phone": "224-7102",
+      "lat": 37.206053,
+      "lng": 127.0368538,
+      "type": "소아청소년과",
+      "zone": "bj",
+      "zoneId": "bj",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": null,
+      "todayOpen": null,
+      "openText": "진료시간 확인 필요",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNTgxOTYxIzIxIyQxIyQ1IyQ5MiQyNjEyMjIjNjEjJDEjJDAjJDgz",
+      "ykiho": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNTgxOTYxIzIxIyQxIyQ1IyQ5MiQyNjEyMjIjNjEjJDEjJDAjJDgz",
+      "name": "병점센트럴이비인후과의원",
+      "address": "경기도 화성시 병점구 병점노을4로 29, 408~411호 (병점동)",
+      "phone": "031-302-0100",
+      "lat": 37.2058724,
+      "lng": 127.031861,
+      "type": "소아청소년과",
+      "zone": "bj",
+      "zoneId": "bj",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": {
+        "mon": {
+          "start": "0900",
+          "end": "2000"
+        },
+        "tue": {
+          "start": "0900",
+          "end": "1900"
+        },
+        "wed": {
+          "start": "0900",
+          "end": "1900"
+        },
+        "thu": {
+          "start": "0900",
+          "end": "2000"
+        },
+        "fri": {
+          "start": "0900",
+          "end": "1900"
+        },
+        "sat": {
+          "start": "0900",
+          "end": "1500"
+        },
+        "sun": null,
+        "hol": null
+      },
+      "todayOpen": false,
+      "openText": "09:00~19:00",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDU4MTI3MSM1MSMkMiMkNCMkMDAkMzgxMzUxIzExIyQxIyQzIyQ5OSQzNjE4MzIjNjEjJDEjJDAjJDgz",
+      "ykiho": "JDU4MTI3MSM1MSMkMiMkNCMkMDAkMzgxMzUxIzExIyQxIyQzIyQ5OSQzNjE4MzIjNjEjJDEjJDAjJDgz",
+      "name": "병점역바로내과의원",
+      "address": "경기도 화성시 병점구 병점노을4로 29, 10층 전체호 (병점동)",
+      "phone": "031-222-7585",
+      "lat": 37.2058724,
+      "lng": 127.031861,
+      "type": "소아청소년과",
+      "zone": "bj",
+      "zoneId": "bj",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": null,
+      "todayOpen": null,
+      "openText": "진료시간 확인 필요",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNDgxMzUxIzIxIyQxIyQxIyQ4MiQ0NjEwMDIjNDEjJDEjJDgjJDgz",
+      "ykiho": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNDgxMzUxIzIxIyQxIyQxIyQ4MiQ0NjEwMDIjNDEjJDEjJDgjJDgz",
+      "name": "병점탑내과의원",
+      "address": "경기도 화성시 병점구 효행로 1065, 2층 201~202호 (진안동, 나라프라자)",
+      "phone": "031-231-1090",
+      "lat": 37.2151272,
+      "lng": 127.0434054,
+      "type": "소아청소년과",
+      "zone": "bj",
+      "zoneId": "bj",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": {
+        "mon": {
+          "start": "0900",
+          "end": "1800"
+        },
+        "tue": {
+          "start": "0900",
+          "end": "1800"
+        },
+        "wed": {
+          "start": "0900",
+          "end": "1300"
+        },
+        "thu": {
+          "start": "0900",
+          "end": "1800"
+        },
+        "fri": {
+          "start": "0900",
+          "end": "1800"
+        },
+        "sat": {
+          "start": "0900",
+          "end": "1300"
+        },
+        "sun": {
+          "start": "0000",
+          "end": "0000"
+        },
+        "hol": null
+      },
+      "todayOpen": false,
+      "openText": "09:00~18:00",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDQ4MTYyMiM1MSMkMiMkMCMkMDAkNDgxOTYxIzIxIyQxIyQxIyQxMyQyNjEwMDIjNDEjJDEjJDQjJDgz",
+      "ykiho": "JDQ4MTYyMiM1MSMkMiMkMCMkMDAkNDgxOTYxIzIxIyQxIyQxIyQxMyQyNjEwMDIjNDEjJDEjJDQjJDgz",
+      "name": "봄소아청소년과의원",
+      "address": "경기도 화성시 효행구 봉담읍 참샘길 2, 1층",
+      "phone": "031-223-6554",
+      "lat": 37.2157441,
+      "lng": 126.9762,
+      "type": "소아청소년과",
+      "zone": "bd",
+      "zoneId": "bd",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": null,
+      "todayOpen": null,
+      "openText": "진료시간 확인 필요",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNDgxNzAyIzIxIyQxIyQ5IyQ5MiQzNjEwMDIjNjEjJDEjJDAjJDgz",
+      "ykiho": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNDgxNzAyIzIxIyQxIyQ5IyQ5MiQzNjEwMDIjNjEjJDEjJDAjJDgz",
+      "name": "봉담도담소아청소년과의원",
+      "address": "경기도 화성시 효행구 봉담읍 매봉로 443, 301호",
+      "phone": "031-548-1580",
+      "lat": 37.2239401,
+      "lng": 126.9473799,
+      "type": "소아청소년과",
+      "zone": "bd",
+      "zoneId": "bd",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": null,
+      "todayOpen": null,
+      "openText": "진료시간 확인 필요",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNDgxNzAyIzExIyQxIyQzIyQ4OSQyNjEyMjIjNDEjJDEjJDgjJDgz",
+      "ykiho": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNDgxNzAyIzExIyQxIyQzIyQ4OSQyNjEyMjIjNDEjJDEjJDgjJDgz",
+      "name": "봉담삼육오웰의원",
+      "address": "경기도 화성시 효행구 봉담읍 와우로 24, 도원프라자 A동 301,302호",
+      "phone": "031-224-3655",
+      "lat": 37.214537,
+      "lng": 126.9690585,
+      "type": "소아청소년과",
+      "zone": "bd",
+      "zoneId": "bd",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": {
+        "mon": {
+          "start": "0900",
+          "end": "2100"
+        },
+        "tue": {
+          "start": "0900",
+          "end": "2100"
+        },
+        "wed": {
+          "start": "0900",
+          "end": "2100"
+        },
+        "thu": {
+          "start": "0900",
+          "end": "2100"
+        },
+        "fri": {
+          "start": "0900",
+          "end": "2100"
+        },
+        "sat": {
+          "start": "0900",
+          "end": "1400"
+        },
+        "sun": {
+          "start": "0900",
+          "end": "1800"
+        },
+        "hol": null
+      },
+      "todayOpen": false,
+      "openText": "09:00~21:00",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDQ4MTYyMiM1MSMkMiMkMCMkMDAkMzgxMTkxIzMxIyQxIyQ3IyQwMyQyNjEwMDIjNDEjJDEjJDgjJDgz",
+      "ykiho": "JDQ4MTYyMiM1MSMkMiMkMCMkMDAkMzgxMTkxIzMxIyQxIyQ3IyQwMyQyNjEwMDIjNDEjJDEjJDgjJDgz",
+      "name": "봉담성모의원",
+      "address": "경기도 화성시 효행구 봉담읍 진등1길 65, (봉담읍)",
+      "phone": "031-227-7888",
+      "lat": 37.2213505,
+      "lng": 126.9498111,
+      "type": "소아청소년과",
+      "zone": "bd",
+      "zoneId": "bd",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": {
+        "mon": {
+          "start": "0900",
+          "end": "1830"
+        },
+        "tue": {
+          "start": "0900",
+          "end": "1830"
+        },
+        "wed": {
+          "start": "0900",
+          "end": "1830"
+        },
+        "thu": {
+          "start": "0900",
+          "end": "1830"
+        },
+        "fri": {
+          "start": "0900",
+          "end": "1830"
+        },
+        "sat": {
+          "start": "0900",
+          "end": "1400"
+        },
+        "sun": null,
+        "hol": null
+      },
+      "todayOpen": false,
+      "openText": "09:00~18:30",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNTgxMzUxIzMxIyQxIyQ3IyQ4MiQzNjEyMjIjNTEjJDEjJDYjJDgz",
+      "ykiho": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNTgxMzUxIzMxIyQxIyQ3IyQ4MiQzNjEyMjIjNTEjJDEjJDYjJDgz",
+      "name": "봉담세화의원",
+      "address": "경기도 화성시 효행구 봉담읍 샘마을길 33, (봉담읍)",
+      "phone": "298-3377",
+      "lat": 37.2174811,
+      "lng": 126.9508004,
+      "type": "소아청소년과",
+      "zone": "bd",
+      "zoneId": "bd",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": null,
+      "todayOpen": null,
+      "openText": "진료시간 확인 필요",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNTgxMzUxIzIxIyQxIyQxIyQ4OSQyNjE0ODEjNTEjJDEjJDIjJDgz",
+      "ykiho": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNTgxMzUxIzIxIyQxIyQxIyQ4OSQyNjE0ODEjNTEjJDEjJDIjJDgz",
+      "name": "봉담센트럴내과의원",
+      "address": "경기도 화성시 효행구 봉담읍 상리2길 55, 504~506호",
+      "phone": "031-307-1000",
+      "lat": 37.2250815,
+      "lng": 126.9469963,
+      "type": "소아청소년과",
+      "zone": "bd",
+      "zoneId": "bd",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": null,
+      "todayOpen": null,
+      "openText": "진료시간 확인 필요",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNDgxNzAyIzUxIyQxIyQ1IyQwMyQyNjE4MzIjNzEjJDEjJDgjJDgz",
+      "ykiho": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNDgxNzAyIzUxIyQxIyQ1IyQwMyQyNjE4MzIjNzEjJDEjJDgjJDgz",
+      "name": "봉담은혜내과의원",
+      "address": "경기도 화성시 효행구 봉담읍 상리3길 43-12, 301~304,307~310호",
+      "phone": "031-295-8275",
+      "lat": 37.2284762,
+      "lng": 126.9431344,
+      "type": "소아청소년과",
+      "zone": "bd",
+      "zoneId": "bd",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": null,
+      "todayOpen": null,
+      "openText": "진료시간 확인 필요",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNTgxMzUxIzUxIyQxIyQxIyQwMyQzNjE0ODEjNjEjJDEjJDAjJDgz",
+      "ykiho": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNTgxMzUxIzUxIyQxIyQxIyQwMyQzNjE0ODEjNjEjJDEjJDAjJDgz",
+      "name": "봉담장항외과의원",
+      "address": "경기도 화성시 효행구 봉담읍 상리2길 55, 어반센터프라자 3층 301~304호",
+      "phone": "031-292-8288",
+      "lat": 37.2250815,
+      "lng": 126.9469963,
+      "type": "소아청소년과",
+      "zone": "bd",
+      "zoneId": "bd",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": null,
+      "todayOpen": null,
+      "openText": "진료시간 확인 필요",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNDgxOTYxIzUxIyQxIyQ1IyQ5MiQzNjE4MzIjNDEjJDEjJDgjJDgz",
+      "ykiho": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNDgxOTYxIzUxIyQxIyQ1IyQ5MiQzNjE4MzIjNDEjJDEjJDgjJDgz",
+      "name": "봉담튼튼정형외과의원",
+      "address": "경기도 화성시 효행구 봉담읍 동화길 81-10, (봉담읍)",
+      "phone": "031-227-7775",
+      "lat": 37.2171678,
+      "lng": 126.9586387,
+      "type": "소아청소년과",
+      "zone": "bd",
+      "zoneId": "bd",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": null,
+      "todayOpen": null,
+      "openText": "진료시간 확인 필요",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNTgxMzUxIzIxIyQxIyQ1IyQ3OSQzNjE0ODEjNjEjJDEjJDAjJDgz",
+      "ykiho": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNTgxMzUxIzIxIyQxIyQ1IyQ3OSQzNjE0ODEjNjEjJDEjJDAjJDgz",
+      "name": "비전성모내과의원",
+      "address": "경기도 화성시 효행구 효행로 271, 3층 일부호 (기안동)",
+      "phone": "031-831-9834",
+      "lat": 37.2236813,
+      "lng": 126.9732282,
+      "type": "소아청소년과",
+      "zone": "dt13",
+      "zoneId": "dt13",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": null,
+      "todayOpen": null,
+      "openText": "진료시간 확인 필요",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDQ4MTYyMiM1MSMkMiMkMCMkMDAkNDgxMTkxIzExIyQxIyQ3IyQ2MiQzNjE0ODEjNzEjJDEjJDgjJDgz",
+      "ykiho": "JDQ4MTYyMiM1MSMkMiMkMCMkMDAkNDgxMTkxIzExIyQxIyQ3IyQ2MiQzNjE0ODEjNzEjJDEjJDgjJDgz",
+      "name": "사강정형외과의원",
+      "address": "경기도 화성시 만세구 송산면 사강로 212, (송산면)",
+      "phone": "031-357-7588",
+      "lat": 37.2131765,
+      "lng": 126.7395462,
+      "type": "소아청소년과",
+      "zone": "ss",
+      "zoneId": "ss",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": null,
+      "todayOpen": null,
+      "openText": "진료시간 확인 필요",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNDgxOTYxIzIxIyQxIyQxIyQ3OSQzNjEyMjIjODEjJDEjJDIjJDgz",
+      "ykiho": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNDgxOTYxIzIxIyQxIyQxIyQ3OSQzNjEyMjIjODEjJDEjJDIjJDgz",
+      "name": "사단법인 공감직업환경의학센터 향남공감의원",
+      "address": "경기도 화성시 만세구 향남읍 행정서로3길 34-6, (3,4층)",
+      "phone": "031-352-0911",
+      "lat": 37.1307652,
+      "lng": 126.918716,
+      "type": "소아청소년과",
+      "zone": "hn",
+      "zoneId": "hn",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": {
+        "mon": {
+          "start": "0800",
+          "end": "1900"
+        },
+        "tue": {
+          "start": "0800",
+          "end": "1900"
+        },
+        "wed": {
+          "start": "0800",
+          "end": "1900"
+        },
+        "thu": {
+          "start": "0800",
+          "end": "1900"
+        },
+        "fri": {
+          "start": "0800",
+          "end": "1900"
+        },
+        "sat": {
+          "start": "0800",
+          "end": "1300"
+        },
+        "sun": null,
+        "hol": null
+      },
+      "todayOpen": false,
+      "openText": "08:00~19:00",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNTgxOTYxIzQxIyQxIyQ3IyQ3MiQzNjEyMjIjODEjJDEjJDIjJDgz",
+      "ykiho": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNTgxOTYxIzQxIyQxIyQ3IyQ3MiQzNjEyMjIjODEjJDEjJDIjJDgz",
+      "name": "삶신경과의원",
+      "address": "경기도 화성시 동탄구 동탄오산로 82, 401,402호 (오산동)",
+      "phone": "031-8043-5986",
+      "lat": 37.198165,
+      "lng": 127.0971269,
+      "type": "소아청소년과",
+      "zone": "dt13",
+      "zoneId": "dt13",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": null,
+      "todayOpen": null,
+      "openText": "진료시간 확인 필요",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNDgxNzAyIzExIyQxIyQzIyQ2MiQzNjE4MzIjNTEjJDEjJDYjJDgz",
+      "ykiho": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNDgxNzAyIzExIyQxIyQzIyQ2MiQzNjE4MzIjNTEjJDEjJDYjJDgz",
+      "name": "삼성365소아청소년과의원",
+      "address": "경기도 화성시 동탄구 동탄순환대로20길 45, 201호 (목동, 동탄 금강펜테리움 센트럴파크Ⅳ)",
+      "phone": "031-375-0365",
+      "lat": 37.1896357,
+      "lng": 127.1288205,
+      "type": "소아청소년과",
+      "zone": "dt13",
+      "zoneId": "dt13",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": null,
+      "todayOpen": null,
+      "openText": "진료시간 확인 필요",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNDgxMTkxIzUxIyQxIyQ1IyQ4MiQyNjEwMDIjNDEjJDEjJDgjJDgz",
+      "ykiho": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNDgxMTkxIzUxIyQxIyQ1IyQ4MiQyNjEwMDIjNDEjJDEjJDgjJDgz",
+      "name": "삼성드림내과의원",
+      "address": "경기도 화성시 효행구 봉담읍 와우로 20, 3층 302,303호",
+      "phone": "031-238-8708",
+      "lat": 37.215265,
+      "lng": 126.9690813,
+      "type": "소아청소년과",
+      "zone": "bd",
+      "zoneId": "bd",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": null,
+      "todayOpen": null,
+      "openText": "진료시간 확인 필요",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDQ4MTYyMiM1MSMkMiMkMCMkMDAkNDgxNzAyIzIxIyQxIyQ1IyQ2MiQzNjE4MzIjNDEjJDEjJDQjJDgz",
+      "ykiho": "JDQ4MTYyMiM1MSMkMiMkMCMkMDAkNDgxNzAyIzIxIyQxIyQ1IyQ2MiQzNjE4MzIjNDEjJDEjJDQjJDgz",
+      "name": "삼성메디칼정형외과의원",
+      "address": "경기도 화성시 병점구 영통로80번길 2, (반월동)",
+      "phone": "031-273-9119",
+      "lat": 37.2367335,
+      "lng": 127.060829,
+      "type": "소아청소년과",
+      "zone": "bj",
+      "zoneId": "bj",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": {
+        "mon": {
+          "start": "0900",
+          "end": "1800"
+        },
+        "tue": {
+          "start": "0900",
+          "end": "1800"
+        },
+        "wed": {
+          "start": "0900",
+          "end": "1800"
+        },
+        "thu": {
+          "start": "0900",
+          "end": "1800"
+        },
+        "fri": {
+          "start": "0900",
+          "end": "1800"
+        },
+        "sat": {
+          "start": "0900",
+          "end": "1300"
+        },
+        "sun": null,
+        "hol": null
+      },
+      "todayOpen": false,
+      "openText": "09:00~18:00",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkMzgxNzAyIzMxIyQxIyQzIyQwMyQzNjEyMjIjNjEjJDEjJDAjJDgz",
+      "ykiho": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkMzgxNzAyIzMxIyQxIyQzIyQwMyQzNjEyMjIjNjEjJDEjJDAjJDgz",
+      "name": "삼성연합의원",
+      "address": "경기도 화성시 병점구 병점2로 46, 3층 302,303호 (병점동, 테성빌딩)",
+      "phone": "031-221-8575",
+      "lat": 37.2066612,
+      "lng": 127.0417739,
+      "type": "소아청소년과",
+      "zone": "bj",
+      "zoneId": "bj",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": {
+        "mon": {
+          "start": "0800",
+          "end": "2000"
+        },
+        "tue": {
+          "start": "0800",
+          "end": "2000"
+        },
+        "wed": {
+          "start": "0800",
+          "end": "2000"
+        },
+        "thu": {
+          "start": "0800",
+          "end": "2000"
+        },
+        "fri": {
+          "start": "0800",
+          "end": "2000"
+        },
+        "sat": {
+          "start": "0800",
+          "end": "1300"
+        },
+        "sun": null,
+        "hol": null
+      },
+      "todayOpen": false,
+      "openText": "08:00~20:00",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDQ4MTYyMiM1MSMkMiMkMCMkMDAkNTgxOTYxIzIxIyQxIyQ1IyQ5OSQzNjE0ODEjNDEjJDEjJDgjJDgz",
+      "ykiho": "JDQ4MTYyMiM1MSMkMiMkMCMkMDAkNTgxOTYxIzIxIyQxIyQ1IyQ5OSQzNjE0ODEjNDEjJDEjJDgjJDgz",
+      "name": "삼성의원",
+      "address": "경기도 화성시 효행구 봉담읍 참샘길 7, (봉담읍)",
+      "phone": "031-222-2811",
+      "lat": 37.2150695,
+      "lng": 126.9764774,
+      "type": "소아청소년과",
+      "zone": "bd",
+      "zoneId": "bd",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": null,
+      "todayOpen": null,
+      "openText": "진료시간 확인 필요",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNDgxMTkxIzUxIyQxIyQxIyQxMyQyNjEwMDIjNjEjJDEjJDgjJDgz",
+      "ykiho": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNDgxMTkxIzUxIyQxIyQxIyQxMyQyNjEwMDIjNjEjJDEjJDgjJDgz",
+      "name": "삼성정형외과의원",
+      "address": "경기도 화성시 효행구 봉담읍 삼천병마로 1316, (봉담읍)",
+      "phone": "031-298-7119",
+      "lat": 37.2222678,
+      "lng": 126.9518962,
+      "type": "소아청소년과",
+      "zone": "bd",
+      "zoneId": "bd",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": {
+        "mon": {
+          "start": "0900",
+          "end": "1900"
+        },
+        "tue": {
+          "start": "0900",
+          "end": "1900"
+        },
+        "wed": {
+          "start": "0900",
+          "end": "1900"
+        },
+        "thu": {
+          "start": "0900",
+          "end": "1900"
+        },
+        "fri": {
+          "start": "0900",
+          "end": "1900"
+        },
+        "sat": {
+          "start": "0900",
+          "end": "1300"
+        },
+        "sun": null,
+        "hol": null
+      },
+      "todayOpen": false,
+      "openText": "09:00~19:00",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkMzgxMzUxIzUxIyQxIyQ1IyQ3MiQyNjEyMjIjODEjJDEjJDYjJDgz",
+      "ykiho": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkMzgxMzUxIzUxIyQxIyQ1IyQ3MiQyNjEyMjIjODEjJDEjJDYjJDgz",
+      "name": "삼성제일소아청소년과의원",
+      "address": "경기도 화성시 동탄구 동탄솔빛로 67, 303호 (반송동, 성우프라자)",
+      "phone": "031-8003-0001",
+      "lat": 37.1948353,
+      "lng": 127.0743036,
+      "type": "소아청소년과",
+      "zone": "dt13",
+      "zoneId": "dt13",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": null,
+      "todayOpen": null,
+      "openText": "진료시간 확인 필요",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNDgxMTkxIzUxIyQxIyQxIyQ4MiQyNjE4MzIjNDEjJDEjJDgjJDgz",
+      "ykiho": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNDgxMTkxIzUxIyQxIyQxIyQ4MiQyNjE4MzIjNDEjJDEjJDgjJDgz",
+      "name": "삼성키즈소아청소년과의원",
+      "address": "경기도 화성시 동탄구 동탄순환대로20길 118, 우성스타파크 B동 5층 506,507호 (목동)",
+      "phone": "031-526-7777",
+      "lat": 37.1830112,
+      "lng": 127.1248249,
+      "type": "소아청소년과",
+      "zone": "dt13",
+      "zoneId": "dt13",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": null,
+      "todayOpen": null,
+      "openText": "진료시간 확인 필요",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNDgxOTYxIzExIyQxIyQzIyQ5OSQzNjE0ODEjNTEjJDEjJDYjJDgz",
+      "ykiho": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNDgxOTYxIzExIyQxIyQzIyQ5OSQzNjE0ODEjNTEjJDEjJDYjJDgz",
+      "name": "삼성항외과의원",
+      "address": "경기도 화성시 동탄구 동탄순환대로 693, 대성메디컬프라자 4층 404호 (영천동)",
+      "phone": "031-8058-2323",
+      "lat": 37.2065265,
+      "lng": 127.1105117,
+      "type": "소아청소년과",
+      "zone": "dt13",
+      "zoneId": "dt13",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": {
+        "mon": {
+          "start": "0900",
+          "end": "1800"
+        },
+        "tue": {
+          "start": "0900",
+          "end": "1800"
+        },
+        "wed": null,
+        "thu": {
+          "start": "0900",
+          "end": "1800"
+        },
+        "fri": {
+          "start": "0900",
+          "end": "2000"
+        },
+        "sat": {
+          "start": "0900",
+          "end": "1300"
+        },
+        "sun": null,
+        "hol": null
+      },
+      "todayOpen": false,
+      "openText": "09:00~18:00",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkMzgxOTYxIzUxIyQxIyQ1IyQ5OSQzNjEyMjIjNjEjJDEjJDQjJDgz",
+      "ykiho": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkMzgxOTYxIzUxIyQxIyQ1IyQ5OSQzNjEyMjIjNjEjJDEjJDQjJDgz",
+      "name": "상쾌한이비인후과의원",
+      "address": "경기도 화성시 동탄구 동탄솔빛로 44, 301, 302호 (반송동, 신성프라자)",
+      "phone": "031-8003-8275",
+      "lat": 37.1928999,
+      "lng": 127.0729529,
+      "type": "소아청소년과",
+      "zone": "dt13",
+      "zoneId": "dt13",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": null,
+      "todayOpen": null,
+      "openText": "진료시간 확인 필요",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDQ4MTYyMiM1MSMkMiMkMCMkMDAkMzgxNzAyIzUxIyQxIyQ1IyQ5OSQ0NjEwMDIjODEjJDEjJDIjJDgz",
+      "ykiho": "JDQ4MTYyMiM1MSMkMiMkMCMkMDAkMzgxNzAyIzUxIyQxIyQ1IyQ5OSQ0NjEwMDIjODEjJDEjJDIjJDgz",
+      "name": "새서울메디컬의원",
+      "address": "경기도 화성시 병점구 경기대로 1042, (진안동)",
+      "phone": "031-238-8278",
+      "lat": 37.2087138,
+      "lng": 127.034737,
+      "type": "소아청소년과",
+      "zone": "bj",
+      "zoneId": "bj",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": null,
+      "todayOpen": null,
+      "openText": "진료시간 확인 필요",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNDgxMTkxIzUxIyQxIyQ1IyQ5MiQyNjEyMjIjNjEjJDEjJDgjJDgz",
+      "ykiho": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNDgxMTkxIzUxIyQxIyQ1IyQ5MiQyNjEyMjIjNjEjJDEjJDgjJDgz",
+      "name": "새솔조은내과의원",
+      "address": "경기도 화성시 만세구 수노을중앙로 146, 호평프라자 5층 504호 (새솔동)",
+      "phone": "031-357-7584",
+      "lat": 37.2840125,
+      "lng": 126.8188712,
+      "type": "소아청소년과",
+      "zone": "dt13",
+      "zoneId": "dt13",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": null,
+      "todayOpen": null,
+      "openText": "진료시간 확인 필요",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNDgxMTkxIzExIyQxIyQzIyQ5OSQyNjEwMDIjNjEjJDEjJDAjJDgz",
+      "ykiho": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNDgxMTkxIzExIyQxIyQzIyQ5OSQyNjEwMDIjNjEjJDEjJDAjJDgz",
+      "name": "서울365메디칼의원",
+      "address": "경기도 화성시 동탄구 동탄신리천로1길 73, 3층 301~306호 (산척동)",
+      "phone": "031-376-1127",
+      "lat": 37.1794414,
+      "lng": 127.1193389,
+      "type": "소아청소년과",
+      "zone": "dt13",
+      "zoneId": "dt13",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": {
+        "mon": {
+          "start": "0900",
+          "end": "1900"
+        },
+        "tue": {
+          "start": "0900",
+          "end": "1900"
+        },
+        "wed": {
+          "start": "0900",
+          "end": "1900"
+        },
+        "thu": {
+          "start": "0900",
+          "end": "1900"
+        },
+        "fri": {
+          "start": "0900",
+          "end": "1900"
+        },
+        "sat": {
+          "start": "0900",
+          "end": "1700"
+        },
+        "sun": null,
+        "hol": null
+      },
+      "todayOpen": false,
+      "openText": "09:00~19:00",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkMzgxMzUxIzExIyQxIyQ3IyQxMyQzNjEwMDIjNDEjJDEjJDgjJDgz",
+      "ykiho": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkMzgxMzUxIzExIyQxIyQ3IyQxMyQzNjEwMDIjNDEjJDEjJDgjJDgz",
+      "name": "서울내과의원",
+      "address": "경기도 화성시 병점구 효행로 1072, 405,406호 (병점동, 상록프라자)",
+      "phone": "031-222-7506",
+      "lat": 37.2149646,
+      "lng": 127.0442957,
+      "type": "소아청소년과",
+      "zone": "bj",
+      "zoneId": "bj",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": null,
+      "todayOpen": null,
+      "openText": "진료시간 확인 필요",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNTgxOTYxIzQxIyQxIyQ3IyQ5MiQzNjE4MzIjNDEjJDEjJDgjJDgz",
+      "ykiho": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNTgxOTYxIzQxIyQxIyQ3IyQ5MiQzNjE4MzIjNDEjJDEjJDgjJDgz",
+      "name": "서울동탄비뇨의학과의원",
+      "address": "경기도 화성시 동탄구 동탄순환대로 257, 종산타워 504~505호 (산척동)",
+      "phone": "031-8050-1080",
+      "lat": 37.1706204,
+      "lng": 127.1185212,
+      "type": "소아청소년과",
+      "zone": "dt13",
+      "zoneId": "dt13",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": null,
+      "todayOpen": null,
+      "openText": "진료시간 확인 필요",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDQ4MTYyMiM1MSMkMiMkMCMkMDAkMzgxOTYxIzExIyQxIyQzIyQ5OSQ0NjE0ODEjNDEjJDEjJDgjJDgz",
+      "ykiho": "JDQ4MTYyMiM1MSMkMiMkMCMkMDAkMzgxOTYxIzExIyQxIyQzIyQ5OSQ0NjE0ODEjNDEjJDEjJDgjJDgz",
+      "name": "서울메디컬의원",
+      "address": "경기도 화성시 효행구 비봉면 간곡2길 8, 4층, 5층(영도프라자)",
+      "phone": "031-831-3850",
+      "lat": 37.2479737,
+      "lng": 126.8719158,
+      "type": "소아청소년과",
+      "zone": "dt13",
+      "zoneId": "dt13",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": null,
+      "todayOpen": null,
+      "openText": "진료시간 확인 필요",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNDgxMTkxIzIxIyQxIyQxIyQ4OSQyNjEyMjIjODEjJDEjJDIjJDgz",
+      "ykiho": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNDgxMTkxIzIxIyQxIyQxIyQ4OSQyNjEyMjIjODEjJDEjJDIjJDgz",
+      "name": "서울명의원",
+      "address": "경기도 화성시 만세구 향남읍 상신하길로 66, (향남읍)",
+      "phone": "031-353-8255",
+      "lat": 37.1004943,
+      "lng": 126.8966893,
+      "type": "소아청소년과",
+      "zone": "hn",
+      "zoneId": "hn",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": null,
+      "todayOpen": null,
+      "openText": "진료시간 확인 필요",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkMzgxNzAyIzQxIyQxIyQ3IyQ2MiQzNjEyMjIjODEjJDEjJDIjJDgz",
+      "ykiho": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkMzgxNzAyIzQxIyQxIyQ3IyQ2MiQzNjEyMjIjODEjJDEjJDIjJDgz",
+      "name": "서울명진내과의원",
+      "address": "경기도 화성시 만세구 향남읍 상신하길로298번길 7-21, 4층 407-410호",
+      "phone": "031-8043-5688",
+      "lat": 37.1151722,
+      "lng": 126.9124754,
+      "type": "소아청소년과",
+      "zone": "hn",
+      "zoneId": "hn",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": null,
+      "todayOpen": null,
+      "openText": "진료시간 확인 필요",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNTgxOTYxIzUxIyQxIyQ1IyQxMyQyNjEwMDIjODEjJDEjJDYjJDgz",
+      "ykiho": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNTgxOTYxIzUxIyQxIyQ1IyQxMyQyNjEwMDIjODEjJDEjJDYjJDgz",
+      "name": "서울바른내과의원",
+      "address": "경기도 화성시 동탄구 동탄순환대로20길 118, 우성스타파크 B동 5층 501~505호 (목동)",
+      "phone": "031-831-8931",
+      "lat": 37.1830112,
+      "lng": 127.1248249,
+      "type": "소아청소년과",
+      "zone": "dt13",
+      "zoneId": "dt13",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": null,
+      "todayOpen": null,
+      "openText": "진료시간 확인 필요",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNDgxNzAyIzIxIyQxIyQ5IyQ4OSQ0NjE0ODEjNjEjJDEjJDQjJDgz",
+      "ykiho": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNDgxNzAyIzIxIyQxIyQ5IyQ4OSQ0NjE0ODEjNjEjJDEjJDQjJDgz",
+      "name": "서울바른소아청소년과의원",
+      "address": "경기도 화성시 만세구 수노을중앙로 118, 402,403호 (새솔동)",
+      "phone": "031-8077-9871",
+      "lat": 37.2856799,
+      "lng": 126.8169504,
+      "type": "소아청소년과",
+      "zone": "dt13",
+      "zoneId": "dt13",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": null,
+      "todayOpen": null,
+      "openText": "진료시간 확인 필요",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkMzgxOTYxIzMxIyQxIyQzIyQ3MiQzNjEyMjIjNDEjJDEjJDgjJDgz",
+      "ykiho": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkMzgxOTYxIzMxIyQxIyQzIyQ3MiQzNjEyMjIjNDEjJDEjJDgjJDgz",
+      "name": "서울삼성내과의원",
+      "address": "경기도 화성시 병점구 병점2로 38, 2층(전체),3층 (302~303)호 (병점동)",
+      "phone": "031-231-0055",
+      "lat": 37.2064035,
+      "lng": 127.0410123,
+      "type": "소아청소년과",
+      "zone": "bj",
+      "zoneId": "bj",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": {
+        "mon": {
+          "start": "0830",
+          "end": "1830"
+        },
+        "tue": {
+          "start": "0830",
+          "end": "1830"
+        },
+        "wed": {
+          "start": "0830",
+          "end": "1830"
+        },
+        "thu": {
+          "start": "0830",
+          "end": "1830"
+        },
+        "fri": {
+          "start": "0830",
+          "end": "1830"
+        },
+        "sat": {
+          "start": "0830",
+          "end": "1300"
+        },
+        "sun": null,
+        "hol": null
+      },
+      "todayOpen": false,
+      "openText": "08:30~18:30",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNDgxNzAyIzExIyQxIyQ3IyQ4OSQ0NjE0ODEjNjEjJDEjJDgjJDgz",
+      "ykiho": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNDgxNzAyIzExIyQxIyQ3IyQ4OSQ0NjE0ODEjNjEjJDEjJDgjJDgz",
+      "name": "서울선내과의원",
+      "address": "경기도 화성시 만세구 송산면 사강로 161, 2층",
+      "phone": "031-356-3265",
+      "lat": 37.213186,
+      "lng": 126.7339351,
+      "type": "소아청소년과",
+      "zone": "ss",
+      "zoneId": "ss",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": null,
+      "todayOpen": null,
+      "openText": "진료시간 확인 필요",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDQ4MTYyMiM1MSMkMiMkMCMkMDAkNTgxMzUxIzUxIyQxIyQ1IyQwMyQyNjE0ODEjNjEjJDEjJDQjJDgz",
+      "ykiho": "JDQ4MTYyMiM1MSMkMiMkMCMkMDAkNTgxMzUxIzUxIyQxIyQ1IyQwMyQyNjE0ODEjNjEjJDEjJDQjJDgz",
+      "name": "서울성모이비인후과의원",
+      "address": "경기도 화성시 병점구 병점서로 33, 302호 (병점동, 두산탑프라자)",
+      "phone": "031-239-5075",
+      "lat": 37.2055335,
+      "lng": 127.0399264,
+      "type": "소아청소년과",
+      "zone": "bj",
+      "zoneId": "bj",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": null,
+      "todayOpen": null,
+      "openText": "진료시간 확인 필요",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNTgxMzUxIzQxIyQxIyQ3IyQ5MiQyNjE4MzIjNTEjJDEjJDIjJDgz",
+      "ykiho": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNTgxMzUxIzQxIyQxIyQ3IyQ5MiQyNjE4MzIjNTEjJDEjJDIjJDgz",
+      "name": "서울아산센트럴내과의원",
+      "address": "경기도 화성시 동탄구 동탄순환대로 257, 종산타워 301~304호 (산척동)",
+      "phone": "031-375-0020",
+      "lat": 37.1706204,
+      "lng": 127.1185212,
+      "type": "소아청소년과",
+      "zone": "dt13",
+      "zoneId": "dt13",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": null,
+      "todayOpen": null,
+      "openText": "진료시간 확인 필요",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNDgxMzUxIzMxIyQxIyQzIyQ5OSQ0NjE0ODEjNTEjJDEjJDIjJDgz",
+      "ykiho": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNDgxMzUxIzMxIyQxIyQzIyQ5OSQ0NjE0ODEjNTEjJDEjJDIjJDgz",
+      "name": "서울여성의원",
+      "address": "경기도 화성시 병점구 경기대로1010번길 6, (병점동)",
+      "phone": "031-233-4411",
+      "lat": 37.2061925,
+      "lng": 127.0370128,
+      "type": "소아청소년과",
+      "zone": "bj",
+      "zoneId": "bj",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": null,
+      "todayOpen": null,
+      "openText": "진료시간 확인 필요",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNDgxOTYxIzIxIyQxIyQ1IyQ5MiQ0NjEwMDIjNDEjJDEjJDQjJDgz",
+      "ykiho": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkNDgxOTYxIzIxIyQxIyQ1IyQ5MiQ0NjEwMDIjNDEjJDEjJDQjJDgz",
+      "name": "서울연합의원",
+      "address": "경기도 화성시 동탄구 동탄대로 446, 그란비아스타 3001~3004호 (청계동)",
+      "phone": "031-378-6734",
+      "lat": 37.1933905,
+      "lng": 127.1000579,
+      "type": "소아청소년과",
+      "zone": "dt13",
+      "zoneId": "dt13",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": {
+        "mon": {
+          "start": "0900",
+          "end": "1900"
+        },
+        "tue": {
+          "start": "0900",
+          "end": "1900"
+        },
+        "wed": {
+          "start": "0900",
+          "end": "1900"
+        },
+        "thu": {
+          "start": "0900",
+          "end": "1900"
+        },
+        "fri": {
+          "start": "0900",
+          "end": "1900"
+        },
+        "sat": {
+          "start": "0900",
+          "end": "1400"
+        },
+        "sun": null,
+        "hol": null
+      },
+      "todayOpen": false,
+      "openText": "09:00~19:00",
+      "isReal": true,
+      "source": "public-api"
+    },
+    {
+      "id": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkMzgxMTkxIzIxIyQxIyQ5IyQ5OSQzNjE4MzIjNzEjJDEjJDgjJDgz",
+      "ykiho": "JDU4MTI3MSM1MSMkMiMkMCMkMDAkMzgxMTkxIzIxIyQxIyQ5IyQ5OSQzNjE4MzIjNzEjJDEjJDgjJDgz",
+      "name": "서울우리내과의원",
+      "address": "경기도 화성시 동탄구 동탄순환대로 685, 501호, 504호 (영천동)",
+      "phone": "031-377-6777",
+      "lat": 37.2059564,
+      "lng": 127.1109261,
+      "type": "소아청소년과",
+      "zone": "dt13",
+      "zoneId": "dt13",
+      "departments": [
+        "소아청소년과"
+      ],
+      "hours": {
+        "mon": {
+          "start": "0900",
+          "end": "1900"
+        },
+        "tue": {
+          "start": "0900",
+          "end": "1900"
+        },
+        "wed": {
+          "start": "0900",
+          "end": "1900"
+        },
+        "thu": {
+          "start": "0900",
+          "end": "1900"
+        },
+        "fri": {
+          "start": "0900",
+          "end": "1900"
+        },
+        "sat": {
+          "start": "0900",
+          "end": "1400"
+        },
+        "sun": null,
+        "hol": null
+      },
+      "todayOpen": false,
+      "openText": "09:00~19:00",
+      "isReal": true,
+      "source": "public-api"
+    }
+  ],
+  "withHoursCount": 37,
+  "cacheStatus": "static-cache-source",
+  "builtBy": "scripts/build-clinics-cache.js"
+}
