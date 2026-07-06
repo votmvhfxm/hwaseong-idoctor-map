@@ -201,6 +201,22 @@ function getTodayOpenStatus(hours, now = new Date()) {
   return current >= start && current < end;
 }
 
+function setClinicsCacheHeader(res, clinics, enrichment) {
+  const withHoursCount = clinics.filter((clinic) => clinic.hours).length;
+  const isGoodClinicsResponse =
+    clinics.length >= 50 &&
+    withHoursCount >= 10 &&
+    enrichment.subjectStats.pediatrics >= 50 &&
+    enrichment.detailStats.failed === 0;
+
+  res.setHeader(
+    "Cache-Control",
+    isGoodClinicsResponse ? "s-maxage=21600, stale-while-revalidate=86400" : "no-store"
+  );
+
+  return { withHoursCount, isGoodClinicsResponse };
+}
+
 function formatTime(value) {
   return value ? value.slice(0, 2) + ":" + value.slice(2, 4) : "";
 }
@@ -423,20 +439,22 @@ async function enrichClinics(serviceKey, baseItems) {
 module.exports = async (req, res) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "GET, OPTIONS");
-  res.setHeader("Cache-Control", "s-maxage=21600, stale-while-revalidate=86400");
 
   if (req.method === "OPTIONS") {
+    res.setHeader("Cache-Control", "no-store");
     res.status(204).end();
     return;
   }
 
   if (req.method !== "GET") {
+    res.setHeader("Cache-Control", "no-store");
     res.status(405).json({ error: "GET only" });
     return;
   }
 
   const serviceKey = process.env.HIRA_SERVICE_KEY || process.env.PUBLIC_DATA_SERVICE_KEY;
   if (!serviceKey) {
+    res.setHeader("Cache-Control", "no-store");
     res.status(500).json({
       error: "HIRA_SERVICE_KEY is not configured",
       hint: "Set HIRA_SERVICE_KEY in Vercel environment variables.",
@@ -452,11 +470,14 @@ module.exports = async (req, res) => {
     const clinics = enrichment.detailResults
       .map((result, index) => toClinic(result.item, index, result))
       .filter((clinic) => clinic.name && clinic.address);
+    const cache = setClinicsCacheHeader(res, clinics, enrichment);
 
     res.status(200).json({
       source: "HIRA",
       strategy: "sidoCd=310000 page scan, address includes 화성, getDgsbjtInfo2.8 pediatrics filter, getDtlInfo2.8 hours",
       count: clinics.length,
+      withHoursCount: cache.withHoursCount,
+      cacheStatus: cache.isGoodClinicsResponse ? "cacheable" : "no-store",
       scan: {
         totalCount: scan.totalCount,
         totalPages: scan.totalPages,
@@ -475,6 +496,7 @@ module.exports = async (req, res) => {
       clinics,
     });
   } catch (error) {
+    res.setHeader("Cache-Control", "no-store");
     res.status(502).json({
       error: "Failed to scan HIRA clinics",
       message: error.name === "AbortError" ? "HIRA request timed out" : error.message,
